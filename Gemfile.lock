@@ -278,6 +278,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.8.0)
     uri (0.13.1)
+    wdm (0.2.0)
     webrick (1.8.2)
 
 PLATFORMS
@@ -293,6 +294,7 @@ DEPENDENCIES
   github-pages
   jekyll (~> 3.9)
   kramdown-math-katex (~> 1.0)
+  wdm (>= 0.1.0)
   webrick (~> 1.7)
 
 BUNDLED WITH

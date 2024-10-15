@@ -2,7 +2,7 @@ title: Buddurid's blog
 email: bbahae624@gmail.com
 description: >-
   this is a blog for my CTF's writeups  (mainly PWN) and maybe my future research papers .
-baseurl: "/buddurid.github.io"
+baseurl: "/"
 url: "https://buddurid.github.io"
 github: buddurid
 twitter: buddurid
