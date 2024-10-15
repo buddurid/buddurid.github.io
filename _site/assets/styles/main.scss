@@ -1,0 +1,39 @@
+// set a margin-left on content when navbar is open
+body:has(nav.open) .content {
+    margin-left: var(--nav-width);
+}
+
+body:has(.nav-toggle.enabled) {
+    padding-top: 1rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+
+    main {
+        padding: 2rem 7%;
+        min-height: 65rem;
+
+        img {
+            width: 80%;
+            margin: 20px auto;
+            display: block;
+            max-height: 60vh;
+            /**
+             * object-fit: cover should probably not exist but keep it
+             * just to be sure we don't break anything
+             */
+            object-fit: cover;
+        }
+
+        /* for ctf writeup, do not hide parts of the image if it is too tall */
+        article {
+            img {
+                object-fit: contain;
+            }
+        }
+    }
+}

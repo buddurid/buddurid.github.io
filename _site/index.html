@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="assets/images/luffy.jpg" sizes="any">
+    <link rel="icon" href="assets/images/luffy.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <title>Buddurid's blog</title>
+
+    <!-- SEO Metadata -->
+    <meta property="og:title" content="Buddurid's blog" />
+    <meta property="og:site_name" content="Buddurid's blog" />
+    <meta property="description" content="this is a blog for my CTF's writeups  (mainly PWN) and maybe my future research papers ." />
+    <meta property="og:description" content="this is a blog for my CTF's writeups  (mainly PWN) and maybe my future research papers ." />
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:4000/assets/images/luffy.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#FFBD3F" />
+    <link rel="canonical" href="http://localhost:4000/" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+</head>
+<body><div class="load" id="load">
+    <pre class="term" id="term">buddurid@CTF:~$ </pre>
+    <script src="/assets/splashscreen.js"></script>
+</div><nav class="open">
+    <div class="hex" role="img" aria-label="Navigation bar background graphic, styled like the address panel of a hex editor.">
+        <ol><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/></ol>
+    </div>
+    <ul>
+        <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
+                <a href="/"
+                   title="Me"highlighted>Me</a>
+            </li><li style="z-index: 1;">
+                <a href="/blog"
+                   title="Blog">Blog</a>
+            </li><li >
+                <a href="/ctfs"
+                   title="CTFs">CTFs</a>
+            </li></ul>
+
+</nav>
+
+<div class="nav-toggle hamburger-container">
+    <div class="hamburger-button"></div>
+</div>
+
+
+<script>
+    const responsiveNavThreshold = 500;
+    const navOpener = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    const toggle = (cl, attr) => cl.contains(attr) ? cl.remove(attr) : cl.add(attr);
+
+    navOpener.addEventListener('click', () => {
+        toggle(nav.classList, 'open');
+    });
+
+    let enabled = false;
+
+    const setResponsive = () => {
+        if (window.innerWidth < responsiveNavThreshold) {
+            if (enabled) return;
+            enabled = true;
+            nav.classList.remove('open');
+            navOpener.classList.add('enabled');
+        }
+        else {
+            if (!enabled) return;
+            enabled = false;
+            nav.classList.add('open');
+            navOpener.classList.remove('enabled');
+        }
+    };
+    setResponsive();
+    window.addEventListener('resize', setResponsive);
+</script>
+<div class="content">
+            <main>
+                <h2 style="text-align:center; margin-bottom: 1px;">Bahae bahrini</h2>
+<h2 style="text-align:center; margin-top: 1px;">'Buddurid'</h2>
+<div class="row">
+  <div class="column">
+    <div class="card">
+      <img src="/assets/images/luffy.jpg" style="width:20%; border-radius:50%;" />
+      <div class="container">
+<b>
+<b>
+<b>
+
+<div class="about-section">
+  <h1>$ WHOAMI</h1>
+
+
+
+  <p>Salemou alaykom . I'm Bahae Bahrini , AKA 'Buddurid' , a , tunisian , 21 yo , ICT engineering student . </p>
+  <p>I'm a CTF player with <a href="https://ctftime.org/team/280918">CrémeTartinéFabuleuse</a> .  </p>
+  <p>I mainly play PWN , else i play Reverse Engineering or Misc .</p>
+  <p>This blog will contain some writeups of the challenges i play or author (mostly PWN) .</p>
+<br />
+
+<h1>$ CVE's</h1>
+    <ul>
+        <li>
+            None (for the moment at least xD)
+        </li>
+    </ul>
+<br />
+
+
+
+  <h1>$ INTERESTS</h1>
+  <p>
+    As i deem I mastered (not delusional xD ) usual Userland exploitation (heap included) , I'm moving forward to learn these topics .
+  </p>
+  <ul>
+    <li>kernel exploitation , I'm starting with linux kernel .</li>
+    <li>browser exploitation . very interesting , still noob tho </li>
+    <li>vm escape . vmware , virtual box , docker escapes ...</li>
+    <li>mobile and hardware security </li>
+  
+  </ul>
+<br />
+
+<h1>$ how do i waste my time ?</h1>
+<p>I'm an expert when it comes to this xD . I do like playing and watching football .</p>
+<p>I play league of legends . I'm more of a storymode games enjoyer now .</p>
+<p>I like watching series , breaking bad is my fav. I also watch anime very often .</p>
+
+</div>
+</b></b></b></div></div></div></div>
+
+            </main><footer>
+    <div class="window-container">
+        <div class="window">
+            <div class="contacts">
+                <p><a href="https://github.com/buddurid">Github</a></p>
+                <p><a href="mailto:bbahae624@gmail.com">Email</a></p>
+                <p><a href="https://x.com/buddurid">Twitter</a></p>
+                <p><a href="https://www.linkedin.com/in/bahae-bahrini/">LinkedIn</a></p>
+                <p><a href="">Discord:#buddurid</a></p>
+                <p><a href="">CTFTime</a></p>
+            </div>
+            <p>©2024    Buddurid</p>
+            <p>Hosted on <a href="https://github.com/buddurid/buddurid.github.io/">GitHub Pages.</a></p>
+        </div>
+    </div>
+    <script src="/assets/footer-fix.js"></script>
+</footer>
+</div>
+    </body>
+</html>
