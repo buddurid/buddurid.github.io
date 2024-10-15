@@ -5,7 +5,7 @@ description: Some CTFs our team has played in the past!
 ---
 
 <h1>Past CTFs</h1>
-<p>Here are some of the CTFs we have played in the past! For more information, check out our <a href="https://ctftime.org/team/186494">CTF Time!</a></p>
+<p>Here are some of the CTFs i played with my team <a href="https://ctftime.org/team/280918">CrémeTartinéFabuleuse</a></a></p>
 
 {% for year in site.data.ctfs.ctfs %}
     <h2 class="ctf-year">{{ year.year }}</h2>    
@@ -13,14 +13,18 @@ description: Some CTFs our team has played in the past!
         {% for ctf in year.ctfs %}
             <li>
                 <div class="ctf-details">
-                    {% if ctf.place == "organizers" %}
-                    <div class="ctf-organizers">ORGANIZERS</div>
+                    {% if ctf.place == "author" %}
+                    <div class="ctf-organizers">author</div>
                     {% else %}
                     <div class="ctf-place">#{{ ctf.place }}</div>
                     {% endif %}
+                    {% if ctf.id !=0 %}
                     <div class="ctf-time-link">
                         <a href="https://ctftime.org/event/{{ ctf.id }}">CTF Time</a> →
                     </div>
+                    {% else %}
+                    <div class="ctf-time-link">local CTF</div>
+                    {% endif %}
                 </div>
                 <div class="ctf-name">
                     {{ ctf.name }}

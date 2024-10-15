@@ -1,20 +1,10 @@
-- name: Home
+- name: Me
   href: /
 
 - name: Blog
   href: /blog
-  # make sure g isn't cut off
   z-index: 1
   has_posts: true
 
-- name: Team
-  href: /team
-
-- name: Wiki
-  href: /wiki
-
 - name: CTFs
   href: /ctfs
-
-- name: Past
-  href: /past

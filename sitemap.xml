@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>http://pbr.uclaacm.com/index.html</loc>
+        <loc>https://buddurid.github.io/index.html</loc>
     </url>
     <url>
-        <loc>http://pbr.uclaacm.com/team.html</loc>
+        <loc>https://buddurid.github.io/ctfs.html</loc>
     </url>
     <url>
-        <loc>http://pbr.uclaacm.com/ctfs.html</loc>
-    </url>
-    <url>
-        <loc>http://pbr.uclaacm.com/blog.html</loc>
-    </url>
-    <url>
-        <loc>http://pbr.uclaacm.com/past.html</loc>
+        <loc>https://buddurid.github.io/blog.html</loc>
     </url>
 </urlset>

@@ -2,7 +2,7 @@
 
 const textarea = document.getElementById("term");
 const load = document.getElementById("load");
-const text = "welcome to psi beta rho";
+const text = "welcome to Buddurid's blog ";
 const hexdump = "  2a 2a 2a 2a 2a 2a 2a 2a  2a 2a 2a 2a 2a 2a 2a 2a  |****************|";
 
 const disableAnimation = Boolean(
@@ -37,10 +37,21 @@ function runner(i) {
 
 function feedbacker(i) {
     if (i == 8) {
-        textarea.innerHTML += "00000080  2a 2a <span style='color:#FFBD3F'>50 73 69 20 42 65  74 61 20 52 68 6F</span> 2a 2a  |**<span style='color:#FFBD3F'>Psi Beta Rho</span>**|<br>";
+        textarea.innerHTML += "00000080  2a 2a <span style='color:#FFBD3F'>50 73 69 20 42 65  74 61 20 52 68 6F</span> 2a 2a  |***<span style='color:#FFBD3F'>Buddurid</span>*****|<br>";
     } else if (i == 9) {
-        textarea.innerHTML += "00000090  2a 2a 2a 2a 2a 2a 2a <span style='color:#F44D89'>61  74 20 55 43 4C 41</span> 2a 2a  |*******<span style='color:#F44D89'>at UCLA</span>**|<br>";
-    } else {
+        textarea.innerHTML += "00000090  2a 2a 2a 2a 2a 2a 2a <span style='color:#F44D89'>61  74 20 55 43 4C 41</span> 2a 2a  |***<span style='color:#1dc4a0'>@</span>************|<br>";
+        }
+
+     else if (i == 10) {
+    textarea.innerHTML += "00000090  2a 2a 2a 2a 2a 2a 2a <span style='color:#F44D89'>61  74 20 55 43 4C 41</span> 2a 2a  |***<span style='color:#F44D89'>Créme</span>********|<br>";
+    }
+    else if (i == 11) {
+        textarea.innerHTML += "00000090  2a 2a 2a 2a 2a 2a 2a <span style='color:#F44D89'>61  74 20 55 43 4C 41</span> 2a 2a  |***<span style='color:#F44D89'>Tartiné</span>******|<br>";
+        }
+    else if (i == 12) {
+            textarea.innerHTML += "00000090  2a 2a 2a 2a 2a 2a 2a <span style='color:#F44D89'>61  74 20 55 43 4C 41</span> 2a 2a  |***<span style='color:#F44D89'>Fabuleuse</span>****|<br>";
+            }
+    else {
         textarea.append(leftPad(Number(i).toString(16).toUpperCase(), 7, '0') + '0' + hexdump + "\n");
     }
     

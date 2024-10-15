@@ -1,12 +1,12 @@
-title: Psi Beta Rho | UCLA
-email: psibetarho@gmail.com
+title: Buddurid's blog
+email: bbahae624@gmail.com
 description: >-
-  Psi Beta Rho is UCLA's competitive cybersecurity and CTF team! PBR is a part of ACM Cyber at UCLA.
+  this is a blog for my CTF's writeups  (mainly PWN) and maybe my future research papers .
 baseurl: "/"
-url: "https://pbr.uclaacm.com"
-github: pbrucla
-twitter: pbrucla
-image: "assets/images/pbr-team-photo.jpeg"
+url: "buddurid.github.io"
+github: buddurid
+twitter: buddurid
+image: "assets/images/luffy.jpg"
 permalink: /:categories/:year/:month/:day/:title
 
 sass:
@@ -16,5 +16,5 @@ kramdown:
   math_engine: katex
 
 exclude:
-- README.md
-- .github/
+  - README.md
+  - .github/
