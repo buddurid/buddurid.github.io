@@ -1,6 +1,9 @@
 ctfs:
   - year: 2024
     ctfs:
+      - name: 0xL4ugh CTF
+        id: 2587
+        place: 24
       - name: Securinets CTF Quals 2024
         id: 2520
         place: 5
