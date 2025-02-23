@@ -1,6 +1,9 @@
 ctfs:
   - year: 2025
     ctfs:
+      - name: SparkCTF 2025
+        id: 0
+        place: 1
       - name: Darkest-Hour CTF 2025
         id: 0
         place: author
