@@ -16,10 +16,8 @@ layout: default
 <div class="about-section">
   <h1>$ WHOAMI</h1>
 
-
-
   <p>Salemou alaykom . I'm Bahae Bahrini , AKA 'Buddurid' , a , tunisian , 21 yo , ICT engineering student . </p>
-  <p>I'm a CTF player with <a href="https://ctftime.org/team/280918">CrémeTartinéFabuleuse</a> .  </p>
+  <p>I'm a CTF player with WorldWideFlags 🐧 and <a href="https://ctftime.org/team/280918">CrémeTartinéFabuleuse</a> .  </p>
   <p>I mainly play PWN , else i play Reverse Engineering or Misc .</p>
   <p>This blog will contain some writeups of the challenges i play or author (mostly PWN) .</p>
 <br>
@@ -31,8 +29,6 @@ layout: default
         </li>
     </ul>
 <br>
-
-
 
   <h1>$ INTERESTS</h1>
   <p>

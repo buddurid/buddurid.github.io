@@ -1,6 +1,9 @@
 ctfs:
   - year: 2025
     ctfs:
+      - name: Cyber Apocalypse CTF 2025|Tales from Eldoria
+        id: 2674
+        place: 17
       - name: SparkCTF 2025
         id: 0
         place: 1
