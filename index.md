@@ -35,10 +35,10 @@ layout: default
     As i deem I mastered (not delusional xD ) usual Userland exploitation (heap included) , I'm moving forward to learn these topics .
   </p>
   <ul>
-    <li>kernel exploitation , I'm starting with linux kernel .</li>
+    <li>kernel exploitation , currently exploring the linux kernel .</li>
     <li>browser exploitation . very interesting , still noob tho </li>
     <li>vm escape . vmware , virtual box , docker escapes ...</li>
-    <li>mobile and hardware security </li>
+    <li>mobile security </li>
   
   </ul>
 <br>
