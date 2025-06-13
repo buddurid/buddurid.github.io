@@ -1,6 +1,9 @@
 ctfs:
   - year: 2025
     ctfs:
+      - name: TJCTF 2025
+        id: 2809
+        place: 3
       - name: Cyber Apocalypse CTF 2025|Tales from Eldoria
         id: 2674
         place: 17

