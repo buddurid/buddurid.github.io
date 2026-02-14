@@ -16,29 +16,27 @@ layout: default
 <div class="about-section">
   <h1>$ WHOAMI</h1>
 
-  <p>Salemou alaykom . I'm Bahae Bahrini , AKA 'Buddurid' , a tunisian , 21 yo , ICT engineering student . </p>
-  <p>I'm a CTF player with  <a href="https://ctftime.org/team/283853">WorldWideFlags 🐧</a> and <a href="https://ctftime.org/team/280918">CrémeTartinéFabuleuse</a> .  </p>
-  <p>I mainly play PWN , else i play Reverse Engineering or Misc .</p>
-  <p>This blog will contain some writeups of the challenges i play or author (mostly PWN) .</p>
+  <p>I'm Bahae Bahrini , AKA 'Buddurid' , 22 yo , ICT engineering student from Tunisia . </p>
+  <p>I usually play CTF's with  <a href="https://ctftime.org/team/283853">WorldWideFlags 🐧</a> and <a href="https://ctftime.org/team/280918">CrémeTartinéFabuleuse</a> locally .  </p>
+  <p>This blog will contain some writeups of the challenges i play or author (mostly PWN stuff) .</p>
 <br>
 
 <h1>$ CVE's</h1>
     <ul>
         <li>
-            No public ones yet 😭
+          <a href="https://github.com/net-snmp/net-snmp/security/advisories/GHSA-4389-rwqf-q9gq">CVE-2025-68615</a> in Net-SNMP 
         </li>
     </ul>
 <br>
 
-  <h1>$ INTERESTS</h1>
+<h1>$ INTERESTS</h1>
   <p>
-    Userland exploitation got boaring so i'm exploring these topics
+    i'm diving into these topics
   </p>
   <ul>
 
-    <li>kernel exploitation , currently exploring the linux kernel .</li>
-    <li>browser exploitation . very interesting , still noob tho </li>
-    <li>mobile security </li>
+    <li>kernel exploitation , currently exploring the linux kernel </li>
+    <li>browser exploitation , mostly v8 , still noob tho 🤞 </li>
 
   </ul>
 <br>
