@@ -1,12 +1,18 @@
 ctfs:
   - year: 2025
     ctfs:
+      - name: Securinets Finals 2025
+        id: 0
+        place: author
       - name: Securinets Quals 2025
         id: 2884
         place: author
       - name: TJCTF 2025
         id: 2809
         place: 3
+      - name: World Wide CTF 2025
+        id: 2753
+        place: author
       - name: Cyber Apocalypse CTF 2025|Tales from Eldoria
         id: 2674
         place: 17

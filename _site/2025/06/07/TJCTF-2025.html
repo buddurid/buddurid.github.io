@@ -13,10 +13,10 @@
     <meta property="description" content="explanation and thought process for solving the last pwn challenge 'linked' . I played with WorldWideFlags and we got 🥉 3rd place . I also used to hate regex now i hate it even more ." />
     <meta property="og:description" content="explanation and thought process for solving the last pwn challenge 'linked' . I played with WorldWideFlags and we got 🥉 3rd place . I also used to hate regex now i hate it even more ." />
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://buddurid.github.io/assets/images/luffy.jpg">
+    <meta property="og:image" content="http://localhost:4000/assets/images/luffy.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#FFBD3F" />
-    <link rel="canonical" href="https://buddurid.github.io/2025/06/07/TJCTF-2025" />
+    <link rel="canonical" href="http://localhost:4000/2025/06/07/TJCTF-2025" />
 
     <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
@@ -107,7 +107,15 @@
 
     <hr>
 
-    <h3 id="reading-source-code-">reading source code :</h3>
+    <table>
+  <tbody>
+    <tr>
+      <td>EDIT : this writeup later won the best writeup award .</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="reading-source-code-">reading source code :</h3>
 
 <p>we were provided source code for this challenge , let’s analyse it’s main components :</p>
 
@@ -237,9 +245,7 @@ again this is just a speculation so lets dive into the rest of the code</li>
 
 <ol>
   <li>before the loop (usually setup) , we declare a head for our linked list in the variable <code class="language-plaintext highlighter-rouge">events</code> , and we immediatly allocate a node (<code class="language-plaintext highlighter-rouge">event</code> object) and we assign the head of the linked list to it</li>
-  <li>
-    <p>what happens in each iteration of the loop ?</p>
-
+  <li>what happens in each iteration of the loop ?
     <ol>
       <li>we go to last element in the linked list by navugating the next pointer until we reach an object where ``next==null` , in other words no next element</li>
     </ol>
@@ -254,14 +260,14 @@ again this is just a speculation so lets dive into the rest of the code</li>
     <ol>
       <li>we allocate a new node and set it to the last node , so the node we’ll be interacting with will be the one allocated in setup for the first iteration , and the one allocated in first iteration for the second iteration</li>
       <li>read a valid time integer into it , otherwise it skips this iteration</li>
-      <li>then we read a name into this stack variable <code class="language-plaintext highlighter-rouge">char inputBuffer[256]</code> with the its correct size byu using <code class="language-plaintext highlighter-rouge">sizeof(inputBuffer)</code> . this means there is no overflow right ? right this moment i asked myself these 2 questions .</li>
+      <li>then we read a name into this stack variable <code class="language-plaintext highlighter-rouge">char inputBuffer[256]</code> with the its correct size byu using <code class="language-plaintext highlighter-rouge">sizeof(inputBuffer)</code> . this means there is no overflow right ? right this moment i asked myself these 2 questions .
+        <ul>
+          <li>our input isn’t directly read into our allocated node , its read into a stack variable . so there must a copy function used to later copy our input read from this stack variable to our node . looking a little bit further , turns out to be the <code class="language-plaintext highlighter-rouge">incpy</code> function</li>
+          <li>is the size read (in our case 256) the same as the true size of the <code class="language-plaintext highlighter-rouge">name string</code> of our node allocated ? looking at <code class="language-plaintext highlighter-rouge">char name[128];</code> in the struct definition immediatly answers our suspicion . and the answer is no , it’s much smaller than i thought (thats what she said) .</li>
+          <li>so combining our 2 questions and their answers , we get this conclusion .</li>
+        </ul>
+      </li>
     </ol>
-
-    <ul>
-      <li>our input isn’t directly read into our allocated node , its read into a stack variable . so there must a copy function used to later copy our input read from this stack variable to our node . looking a little bit further , turns out to be the <code class="language-plaintext highlighter-rouge">incpy</code> function</li>
-      <li>is the size read (in our case 256) the same as the true size of the <code class="language-plaintext highlighter-rouge">name string</code> of our node allocated ? looking at <code class="language-plaintext highlighter-rouge">char name[128];</code> in the struct definition immediatly answers our suspicion . and the answer is no , it’s much smaller than i thought (thats what she said) .</li>
-      <li>so combining our 2 questions and their answers , we get this conclusion .</li>
-    </ul>
 
     <h4 id="we-are-reading-a-256-byte-string-then-we-gonna-copy-that-string-into-a-128-byte-string-until-we-encounter-a-newline-overflow">we are reading a 256 byte string then we gonna copy that string into a 128 byte string until we encounter a newline »&gt; OVERFLOW</h4>
 

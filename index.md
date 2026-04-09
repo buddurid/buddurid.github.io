@@ -17,7 +17,7 @@ layout: default
   <h1>$ WHOAMI</h1>
 
   <p>I'm Bahae Bahrini , AKA 'Buddurid' , 22 yo , ICT engineering student from Tunisia . </p>
-  <p>I usually play CTF's with  <a href="https://ctftime.org/team/283853">WorldWideFlags 🐧</a> and <a href="https://ctftime.org/team/280918">CrémeTartinéFabuleuse</a> locally .  </p>
+  <p>I usually play CTF's with  <a href="https://ctftime.org/team/128734">AresX</a> or <a href="https://ctftime.org/team/283853">WorldWideFlags🐧</a> ,  and CrémeTartinéFabuleuse locally .  </p>
   <p>This blog will contain some writeups of the challenges i play or author (mostly PWN stuff) .</p>
 <br>
 
@@ -36,7 +36,7 @@ layout: default
   <ul>
 
     <li>kernel exploitation , currently exploring the linux kernel </li>
-    <li>browser exploitation , mostly v8 , still noob tho 🤞 </li>
+    <li>browser exploitation , mostly v8 </li>
 
   </ul>
 <br>
