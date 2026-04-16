@@ -9,6 +9,18 @@ twitter: buddurid
 image: "assets/images/luffy.jpg"
 permalink: /:categories/:year/:month/:day/:title
 
+collections:
+  ndays:
+    output: true
+    permalink: /ndays/:name
+
+defaults:
+  - scope:
+      path: ""
+      type: ndays
+    values:
+      layout: post
+
 sass:
   sass_dir: assets/styles
 

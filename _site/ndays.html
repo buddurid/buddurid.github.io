@@ -5,18 +5,18 @@
     <link rel="shortcut icon" href="assets/images/luffy.jpg" sizes="any">
     <link rel="icon" href="assets/images/luffy.jpg" type="image/svg+xml">
     <link rel="stylesheet" href="/assets/styles/global.css">
-    <title>Buddurid's blog</title>
+    <title>Ndays | Buddurid's blog</title>
 
     <!-- SEO Metadata -->
-    <meta property="og:title" content="Buddurid's blog" />
+    <meta property="og:title" content="Ndays | Buddurid's blog" />
     <meta property="og:site_name" content="Buddurid's blog" />
-    <meta property="description" content="this is a blog for my CTF's writeups  (mainly PWN) and maybe my future research papers ." />
-    <meta property="og:description" content="this is a blog for my CTF's writeups  (mainly PWN) and maybe my future research papers ." />
+    <meta property="description" content="N-day writeups and analysis notes." />
+    <meta property="og:description" content="N-day writeups and analysis notes." />
     <meta property="og:type" content="website">
     <meta property="og:image" content="http://localhost:4000/assets/images/luffy.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#FFBD3F" />
-    <link rel="canonical" href="http://localhost:4000/" />
+    <link rel="canonical" href="http://localhost:4000/ndays" />
 
     <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
@@ -32,7 +32,7 @@
     <ul>
         <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
                 <a href="/"
-                   title="Me"highlighted>Me</a>
+                   title="Me">Me</a>
             </li><li style="z-index: 1;">
                 <a href="/blog"
                    title="Blog">Blog</a>
@@ -41,7 +41,7 @@
                    title="CTFs">CTFs</a>
             </li><li >
                 <a href="/ndays"
-                   title="Ndays">Ndays</a>
+                   title="Ndays"highlighted>Ndays</a>
             </li></ul>
 
 </nav>
@@ -83,45 +83,47 @@
 </script>
 <div class="content">
             <main>
-                <h2 style="text-align:center; margin-bottom: 1px;">Bahae bahrini</h2>
-<h2 style="text-align:center; margin-top: 1px;">'Buddurid'</h2>
-<div class="row">
-  <div class="column">
-    <div class="card">
-      <img src="/assets/images/luffy.jpg" style="width:20%; border-radius:50%;" />
-      <div class="container">
-<b>
-<b>
-<b>
-
-<div class="about-section">
-  <h1>$ WHOAMI</h1>
-
-  <p>I'm Bahae Bahrini , AKA 'Buddurid' , 22 yo , ICT engineering student from Tunisia . </p>
-  <p>I usually play CTF's with  <a href="https://ctftime.org/team/128734">AresX</a> or <a href="https://ctftime.org/team/283853">WorldWideFlags🐧</a> ,  and CrémeTartinéFabuleuse locally .  </p>
-  <p>This blog will contain some writeups of the challenges i play or author (mostly PWN stuff) .</p>
-<br />
-
-<h1>$ CVE's</h1>
-    <ul>
-        <li>
-          <a href="https://github.com/net-snmp/net-snmp/security/advisories/GHSA-4389-rwqf-q9gq">CVE-2025-68615</a> in Net-SNMP 
-        </li>
-    </ul>
-<br />
-
-<h1>$ INTERESTS</h1>
-  <p>
-    i'm diving into these topics
-  </p>
-  <ul>
-
-    <li>kernel exploitation , currently exploring the linux kernel </li>
-    <li>browser exploitation , mostly v8 </li>
-
-  </ul>
-<br />
-</div></b></b></b></div></div></div></div>
+                <h1>Ndays</h1>
+<p>Everything you read here should be taken with a grain of salt . If you find any mistakes or inaccuracies, please let me know through my discord or w/e.</p>
+<p>Note that all exploit code can be found in my <a href="https://github.com/buddurid/Linux-Kernel-ndays/">repository</a>.</p>
+<ul class="blog-cards">
+    
+    
+    <li>
+        <a href="/ndays/2026-04-10-cve-2020-27786">
+            <div class="card-title">CVE-2020-27786</div>
+            <div class="card-date-author">April 10, 2026</div>
+            <div class="tags">
+                
+                <span>kernel</span>
+                
+                <span>race-condition</span>
+                
+                <span>userfaultd</span>
+                
+                <span>MIDI</span>
+                
+            </div>
+            <p class="card-summary">POC and Analysis of CVE-2020-27786 , a race condition leading to UAF in the sound driver MIDI . Tested on kernel 5.6.0</p>
+        </a>
+    </li>
+    
+    <li>
+        <a href="/ndays/2026-04-02-dirtypipe-cve-2016-5195">
+            <div class="card-title">DirtyPipe - CVE-2016-5195</div>
+            <div class="card-date-author">April 2, 2026</div>
+            <div class="tags">
+                
+                <span>kernel</span>
+                
+                <span>DirtyPipe</span>
+                
+            </div>
+            <p class="card-summary">POC and Analysis of the infamous DirtyPipe exploit , tested on kernel 5.8.0</p>
+        </a>
+    </li>
+    
+</ul>
 
             </main><footer>
     <div class="window-container">

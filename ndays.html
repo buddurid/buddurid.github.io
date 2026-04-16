@@ -1,0 +1,28 @@
+---
+layout: default
+title: Ndays
+description: N-day writeups and analysis notes.
+---
+
+<h1>Ndays</h1>
+<p>Everything you read here should be taken with a grain of salt . If you find any mistakes or inaccuracies, please let me know through my discord or w/e.</p>
+<p>Note that all exploit code can be found in my <a href="https://github.com/buddurid/Linux-Kernel-ndays/">repository</a>.</p>
+<ul class="blog-cards">
+    {% assign ndays_sorted = site.ndays | sort: 'date' | reverse %}
+    {% for post in ndays_sorted %}
+    <li>
+        <a href="{{ post.url }}">
+            <div class="card-title">{{ post.title }}</div>
+            <div class="card-date-author">{{ post.date | date: "%B %-d, %Y" }}{% if post.author %} - {{ post.author }}{% endif %}</div>
+            <div class="tags">
+                {% for tag in post.tags %}
+                <span>{{tag}}</span>
+                {% endfor %}
+            </div>
+            <p class="card-summary">{{ post.description | strip_html | newline_to_br | strip_newlines | replace: '<br />', '
+                ' | strip_html |
+                strip | truncate: 200 }}</p>
+        </a>
+    </li>
+    {% endfor %}
+</ul>

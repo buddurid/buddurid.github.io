@@ -8,3 +8,7 @@
 
 - name: CTFs
   href: /ctfs
+
+- name: Ndays
+  collection: ndays
+  href: /ndays

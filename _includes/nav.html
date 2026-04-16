@@ -10,12 +10,13 @@
         <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li>
         {%- assign stripped-page-url = page.url | remove: ".html" -%}
         {%- for entry in site.data.navbar -%}
+            {%- assign entry_subpath = entry.href | append: "/" -%}
             <li {% if entry.z-index != nil -%}style="z-index: {{ entry.z-index }};"{%- endif -%}>
                 <a href="{{ entry.href }}"
                    title="{{ entry.name }}"
-                   {%- if stripped-page-url == entry.href or (entry.has_posts != nil and layout.layout == "default") -%}highlighted{%- endif -%}
+                   {%- if stripped-page-url == entry.href or (entry.href != "/" and stripped-page-url contains entry_subpath) or (entry.has_posts != nil and page.collection == "posts") or (entry.collection != nil and page.collection == entry.collection) -%}highlighted{%- endif -%}
                 >
-                    {{- entry.name | truncate: 4, "" -}}
+                    {{- entry.name | truncate: 6, "" -}}
                 </a>
             </li>
         {%- endfor -%}

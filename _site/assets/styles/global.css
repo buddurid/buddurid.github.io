@@ -58,7 +58,7 @@ nav ul li:first-child { opacity: 0%; user-select: none; pointer-events: none; }
 nav ul li a { display: block; float: right; isolation: isolate; color: #FFFFFF; background-color: #2C2C2C; text-decoration: none; text-align: center; }
 nav ul li a:not([highlighted]) { margin: 0 2ch; }
 nav ul li a[highlighted], nav ul li a:hover { color: #FFBD3F; }
-nav ul li a[highlighted]::before { content: ">>"; }
+nav ul li a[highlighted]::before { content: ">"; }
 nav ul li a[highlighted]::after { content: "<<"; }
 
 /* Safari doesn't support @counter-style but has upper-hexadecimal built-in, so using this name works for all browsers! */
