@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="assets/images/luffy.jpg" sizes="any">
+    <link rel="icon" href="assets/images/luffy.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <title>G-Cup CTF v2 | Pwn Writeups | Buddurid's blog</title>
+
+    <!-- SEO Metadata -->
+    <meta property="og:title" content="G-Cup CTF v2 | Pwn Writeups | Buddurid's blog" />
+    <meta property="og:site_name" content="Buddurid's blog" />
+    <meta property="description" content="Author Pwn Writeups" />
+    <meta property="og:description" content="Author Pwn Writeups" />
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:4000/assets/images/luffy.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#FFBD3F" />
+    <link rel="canonical" href="http://localhost:4000/2026/06/13/GCup-CTF-v2" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+</head>
+<body><div class="load" id="load">
+    <pre class="term" id="term">buddurid@CTF:~$ </pre>
+    <script src="/assets/splashscreen.js"></script>
+</div><nav class="open">
+    <div class="hex" role="img" aria-label="Navigation bar background graphic, styled like the address panel of a hex editor.">
+        <ol><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/></ol>
+    </div>
+    <ul>
+        <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
+                <a href="/"
+                   title="Me">Me</a>
+            </li><li style="z-index: 1;">
+                <a href="/blog"
+                   title="Blog"highlighted>Blog</a>
+            </li><li >
+                <a href="/ctfs"
+                   title="CTFs">CTFs</a>
+            </li><li >
+                <a href="/ndays"
+                   title="Ndays">Ndays</a>
+            </li></ul>
+
+</nav>
+
+<div class="nav-toggle hamburger-container">
+    <div class="hamburger-button"></div>
+</div>
+
+
+<script>
+    const responsiveNavThreshold = 500;
+    const navOpener = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    const toggle = (cl, attr) => cl.contains(attr) ? cl.remove(attr) : cl.add(attr);
+
+    navOpener.addEventListener('click', () => {
+        toggle(nav.classList, 'open');
+    });
+
+    let enabled = false;
+
+    const setResponsive = () => {
+        if (window.innerWidth < responsiveNavThreshold) {
+            if (enabled) return;
+            enabled = true;
+            nav.classList.remove('open');
+            navOpener.classList.add('enabled');
+        }
+        else {
+            if (!enabled) return;
+            enabled = false;
+            nav.classList.add('open');
+            navOpener.classList.remove('enabled');
+        }
+    };
+    setResponsive();
+    window.addEventListener('resize', setResponsive);
+</script>
+<div class="content">
+            <main>
+                <article>
+    <h1 class="post-title">G-Cup CTF v2 | Pwn Writeups</h1>
+    <p class="post-author-date"><b></b><em> - June 13, 2026</em></p>
+
+
+    <div class="tags">
+
+        <strong>Categories: </strong>
+
+        
+        <span>pwn</span>
+        
+        <span>ROP</span>
+        
+        <span>ret2gets</span>
+        
+        <span>kernel</span>
+        
+
+    </div>
+
+    <p><i>Author Pwn Writeups</i></p>
+
+    <hr>
+
+    <p>G-Cup CTF is a local Tunisian CTF hosted by Securinets Insat members , in collaboration with <strong>Gotei13</strong> and <strong>Institut francaise de Tunisie</strong> . It was a fun CTF especially with the Gaming event running in the same Venue . From an Author’s POV tho , it wasnt very fun because AI was allowed without any restrictions. “AI is part of the game now bla bla “ yeah sure STFU now . Anyways , hopefully whoever played my challs had bits of fun . Also there was a small twist at the end of the CTF , the last 2 hours , AI was banned and a new set of ‘easier’ challenges dropped in every category</p>
+
+<p>Also Youssef abid , the web Author had some very fun Web-challenges , they were very AI proof midst the CTF . Feel free to check his <a href="https://medium.com/@youssef.abid">writeups</a> . Waiting for other authors to Post online their writeups 🙏</p>
+
+<h1 id="warmup">Warmup</h1>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setup</span><span class="p">();</span>
+    <span class="k">struct</span>
+    <span class="p">{</span>
+        <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mh">0x50</span><span class="p">];</span>
+        <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+        <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">x</span><span class="p">.</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">.</span><span class="n">buf</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">getchar</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">c</span> <span class="o">==</span> <span class="sc">'\n'</span><span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="n">x</span><span class="p">.</span><span class="n">buf</span><span class="p">[</span><span class="n">x</span><span class="p">.</span><span class="n">i</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">c</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>checksec <span class="nt">--file</span><span class="o">=</span>main
+RELRO           STACK CANARY      NX            PIE             RPATH      RUNPATH      Symbols         FORTIFY Fortified       FortifiableFILE
+Full RELRO      Canary found      NX disabled   PIE enabled     No RPATH   No RUNPATH   42 Symbols        No    0               1          main
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">NX disabled</code> + obvious stack BOF , easy ret2shellcode .</li>
+  <li>the small twist is how to bypass the canary ?</li>
+  <li>when we’re overtflowing , we’re corrupting the <code class="language-plaintext highlighter-rouge">i</code> variable , we just corrupt it to be past the canary then overwrite the <strong>saved return address</strong> without touching the canary</li>
+  <li>overwrite the saved return address to point to our buffer , where we write our <code class="language-plaintext highlighter-rouge">SYSCALL(execve,"/bin/sh",NULL,NULL)</code> shellcode</li>
+</ul>
+
+<h1 id="ret2">ret2?</h1>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ret2gets checksec <span class="nt">--file</span><span class="o">=</span>main
+RELRO           STACK CANARY      NX            PIE             RPATH      RUNPATH      Symbols         FORTIFY Fortified       FortifiableFILE
+Partial RELRO   No canary found   NX enabled    No PIE          No RPATH   RW-RUNPATH   40 Symbols        No    0               2          main
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">setbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setup</span><span class="p">();</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"holaaaa"</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">":</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mh">0x20</span><span class="p">];</span>
+    <span class="n">gets</span><span class="p">(</span><span class="n">buf</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mh">0x1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>the challenge simply demonstrates a technique called ret2gets , you better read about it <a href="https://sashactf.gitbook.io/pwn-notes/pwn/rop-2.34+/ret2gets">here</a> . It’s a very cool technique and it has 2 exploitation scenarios , the challenge explores the first easy one .</p>
+
+<h4 id="tldr">TLDR</h4>
+
+<ul>
+  <li>after Gets terminates , the <code class="language-plaintext highlighter-rouge">rdi</code> value always points to somewhere writable writable inside libc</li>
+  <li>now we have the primitive of having rdi with arbitrary content . Lets call this rdi value X .</li>
+  <li>our ropchain can look like this <code class="language-plaintext highlighter-rouge">gets + gets + printf + main</code> , the first gets returns X inside <code class="language-plaintext highlighter-rouge">rdi</code> , the second <code class="language-plaintext highlighter-rouge">gets</code> gets X value as first parameter ,so we write our content in X address . then <code class="language-plaintext highlighter-rouge">gets</code> returns X inside rdi (which we have written arbitrary content into ) , which we pass directly to printf , thus executing a format string payload , getting some leaks , then restart and ret2libc</li>
+</ul>
+
+<h1 id="java-is-love">Java is love</h1>
+
+<p>Some complex Java Heap challenge , will detail this task at another time</p>
+
+<h1 id="krnel">krnel</h1>
+
+<p>made this challenge to be the first linux kernel challenge , it’s the absolute easiest baby kernel challenge you can ever have . To my surprise (well it wasnt very surprising) it got more solves then the first WARMUP challenge xd . ye whatever .</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define PWN_IOCTL_COPY 0x1331
+</span><span class="kt">long</span> <span class="nf">pwn_ioctl</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">cmd</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">stack_input</span><span class="p">[</span><span class="mh">0x100</span><span class="p">];</span>
+    <span class="n">inp</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">inp</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">file</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">cmd</span> <span class="o">!=</span> <span class="n">PWN_IOCTL_COPY</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">ENOTTY</span><span class="p">;</span>
+
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">stack_input</span><span class="p">,</span> <span class="n">x</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>the IOCTL driver for the vuln driver has an obvious stack BOF , also canaries + KASLR are disabled »&gt; kernel ropchain</li>
+  <li>kernel ROPchain differ than userland ropchain in the sense that after executing our logic , we need to return to userland safely , if not , the kernel will crash and we would lose our progress . We do that by swapping the context , using the <code class="language-plaintext highlighter-rouge">swapgs</code> instruction gadget , then executing the <code class="language-plaintext highlighter-rouge">iret</code> or <code class="language-plaintext highlighter-rouge">sysret</code> instruction , usually we use iret because it’s easier to manage</li>
+  <li>what should our ropchain do ? it Should somehow change our UID to 0 . For this we use the commit_creds() function which takes a struct called <code class="language-plaintext highlighter-rouge">cred_struct</code> which has a <code class="language-plaintext highlighter-rouge">uid</code> and <code class="language-plaintext highlighter-rouge">gid</code> … field within it , then applies those creds to the current user-process credentials . From Where do we get a good <code class="language-plaintext highlighter-rouge">cred_struct</code> object ? we can just create one ourselves with the <code class="language-plaintext highlighter-rouge">prepare_kernel_cred</code> function , which if <code class="language-plaintext highlighter-rouge">arg1=NULL</code> creates and returns a pointer to cred_struct with <code class="language-plaintext highlighter-rouge">uid=0</code></li>
+  <li>the Ropchain should look like this <code class="language-plaintext highlighter-rouge">prepare_kernel_cred + NULL + mov_rdi_rax + commit_creds + swapgs + iretq + userland_rip + saved_es+ saved_eflags + saved_rsp + saved_ss</code></li>
+  <li>well i just lied , i compiled the most recent kernel (at the time) , so <code class="language-plaintext highlighter-rouge">prepare_kernel_cred(NULL)</code> shouldnt work because it’s patched to fail on <code class="language-plaintext highlighter-rouge">NULL</code> first argument , so just do <code class="language-plaintext highlighter-rouge">commit_creds(init_cred)</code> , init_cred is a global <code class="language-plaintext highlighter-rouge">root cred</code> already inside kernel base memory , so we know it’s address with kaslr disabled</li>
+  <li>profit</li>
+</ul>
+
+<h1 id="shelllllcoding">shelllllcoding</h1>
+
+<p>this challenge was dropped at the SLOPLESS phase</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+
+    <span class="n">setup</span><span class="p">();</span>
+
+    <span class="kt">char</span> <span class="o">*</span><span class="n">code</span> <span class="o">=</span> <span class="n">mmap</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="mh">0x13371337</span><span class="p">,</span> <span class="mh">0x1000</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">MAP_ANONYMOUS</span> <span class="o">|</span> <span class="n">MAP_PRIVATE</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"give your shellcode : "</span><span class="p">);</span>
+    <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">code</span><span class="p">,</span> <span class="mh">0x100</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mh">0x100</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">memcmp</span><span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">code</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="s">"</span><span class="se">\x0f\x05</span><span class="s">"</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">puts</span><span class="p">(</span><span class="s">"syscall not allowed"</span><span class="p">);</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">mprotect</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="mh">0x1000</span><span class="p">,</span> <span class="n">PROT_READ</span> <span class="o">|</span> <span class="n">PROT_EXEC</span><span class="p">);</span>
+
+    <span class="p">((</span><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="p">)())</span><span class="n">code</span><span class="p">)();</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+</code></pre></div></div>
+
+<p>the challenge executes shellcode from the user , but it prevents the byte sequence “\x0f\x05” (syscall instruction) from being in the shellcode</p>
+
+<ul>
+  <li>intended solution so to use the <code class="language-plaintext highlighter-rouge">int 0x80</code> instruction which uses the x86 syscall ABI , which essentially means execute a syscall as if we were in 32bit mode</li>
+  <li>i’m pretty sure there were other solutions , like ropchaining from within shellcode or ret2libc , or even using the <code class="language-plaintext highlighter-rouge">sysenter</code> instruction …</li>
+</ul>
+
+</article>
+
+            </main><footer>
+    <div class="window-container">
+        <div class="window">
+            <div class="contacts">
+                <p><a href="https://github.com/buddurid">Github</a></p>
+                <p><a href="mailto:bbahae624@gmail.com">Email</a></p>
+                <p><a href="https://x.com/buddurid">Twitter</a></p>
+                <p><a href="https://www.linkedin.com/in/bahae-bahrini/">LinkedIn</a></p>
+                <p><a href="">Discord:#buddurid</a></p>
+                <p><a href="">CTFTime</a></p>
+            </div>
+            <p>©2024    Buddurid</p>
+            <p>Hosted on <a href="https://github.com/buddurid/buddurid.github.io/">GitHub Pages.</a></p>
+        </div>
+    </div>
+    <script src="/assets/footer-fix.js"></script>
+</footer>
+</div>
+    </body>
+</html>

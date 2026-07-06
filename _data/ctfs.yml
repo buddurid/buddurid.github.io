@@ -1,4 +1,12 @@
 ctfs:
+  - year: 2026
+    ctfs:
+      - name: G-cup 2 CTF , at IFT
+        id: 0
+        place: author
+      - name: G-cup CTF , at IFT
+        id: 0
+        place: author
   - year: 2025
     ctfs:
       - name: Securinets Finals 2025
