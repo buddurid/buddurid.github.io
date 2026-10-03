@@ -1,18 +1,12 @@
-```yaml
 title: Buddurid's blog
 email: bbahae624@gmail.com
-
 description: >-
-  this is a blog for my CTF's writeups (mainly PWN) and maybe my future research papers.
-
-baseurl: ""
+  this is a blog for my CTF's writeups  (mainly PWN) and maybe my future research papers .
+baseurl: "/"
 url: "https://blog.buddurid.tech"
-
 github: buddurid
 twitter: buddurid
-
-image: "/assets/images/luffy.jpg"
-
+image: "assets/images/luffy.jpg"
 permalink: /:categories/:year/:month/:day/:title
 
 collections:
@@ -36,4 +30,3 @@ kramdown:
 exclude:
   - README.md
   - .github/
-```
