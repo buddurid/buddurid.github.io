@@ -96,4 +96,5 @@ Learning from CTF's is still a viable option tho , you just shouldnt even glance
 
 Anyways , if you have an idea to make this even better , you can either open a pull request , or suggest the idea to me , you can find my socials below . Thanks for sticking out ❤️ 
 
-
+## def not self promo 
+all 4 of us are looking for 6 months internship , So please if you have any opportunities open , DM me on linkedin or discord .
