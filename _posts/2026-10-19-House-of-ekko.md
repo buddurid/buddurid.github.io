@@ -11,9 +11,6 @@ This is my yearly reminder atp , that i'm looking for a VR , Pentest Or Red team
 <img src="/assets/posts/house/please.jpg" alt="please" width="100" height=100>
 ~~yes i'm getting cooked that i have to self promo~~  
 
-
-
-
 ## context
 Since i'm authoring some pwn challs for Securinets CTF 2026 , i thought i'd put in some effort to find a new heap exploit technique that makes a good heap challenge . In the end , i decided to name this house **House of Ekko** .
 
